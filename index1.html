@@ -2713,11 +2713,9 @@
       })
         .append("path")
         .attr("d", "M 0 0 L 8 16 L -8 16 Z") // Path data for a triangle
-        .style("fill", "steelblue"); // Set the fill color to blue
+        .style("fill", "steelblue"); // Set the fill color to blue  
 
-
-
-
+        
       node
         .filter(function (d) {
           return d.isParent;
@@ -2769,7 +2767,7 @@
           return d.id;
         })
         .attr("class", "node-label");
-
+// tag4
       simulation.on("tick", function () {
         link
           .attr("x1", function (d) {
@@ -2782,7 +2780,14 @@
             return d.target.x;
           })
           .attr("y2", function (d) {
-            return d.target.y;
+            if (d.target.child_type === "disease_type")
+            { 
+              return d.target.y +8;
+              
+            }else{
+              
+              return d.target.y
+            }
           });
 
         node.attr("transform", function (d) {
