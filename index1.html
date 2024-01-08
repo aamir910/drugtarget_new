@@ -2500,6 +2500,7 @@
               target: disease,
               type: interaction, // You can customize the type for disease links
             });
+
           });
           console.log("here are the links", links);
           var childNodeMap = {};
@@ -2692,7 +2693,7 @@
       //  tag2
       node
         .filter(function (d) {
-          return d.child_type === 'protein_type';
+          return d.child_type === 'protein_type' && !d.isParent;
         })
         .append("circle")
         .attr("r", function (d) {
@@ -2708,11 +2709,11 @@
         });
 
       node.filter(function (d) {
-        return d.child_type === 'disease_type';
+        return d.child_type === 'disease_type' && !d.isParent ;
       })
         .append("path")
         .attr("d", "M 0 0 L 8 16 L -8 16 Z") // Path data for a triangle
-        .style("fill", "blue"); // Set the fill color to blue
+        .style("fill", "steelblue"); // Set the fill color to blue
 
 
 
@@ -3678,8 +3679,9 @@
       });
 
       // child nodes
+      // tag3 remove the new entry 
       d3.selectAll(".node:not(.node-parent)")
-        .selectAll("circle, text")
+        .selectAll("circle, text , path")
         .style("visibility", function (d) {
           if (d.hidden) {
             // if hidden by slider filter
