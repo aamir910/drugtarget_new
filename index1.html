@@ -2435,7 +2435,7 @@
               var drugType = row.drugtype; // Get the "Drug_status" value
               var proteinClass = row.Protein_Class;
               var disease = row.Disease_name; // getting the new disease
-
+              var Disease_class = row.Disease_class
 
               if (
                 !nodes.find(function (node) {
@@ -2476,6 +2476,7 @@
                   isParent: false,
                   child_type: "disease_type",
                   radius: 5,
+                  DiseaseClass :Disease_class
                   // Protein_Class: proteinClass,
                 }); // Include the "Protein_Class" value in the node object
               }
@@ -3323,7 +3324,7 @@
 
 
 
-
+// tag5 
   // funtion to the disease in the legend 
       function createDiseaseLegend() {
         var hiddendisease = {}; // Change this to hiddenProteinClasses
@@ -3385,6 +3386,16 @@
         var legendContent = d3.select("#legend_disease_status-content");
         
 
+        links.forEach(function (link) {
+          for(let i=0 ; i<diseases.length ; i++){
+            if(link.target.DiseaseClass === diseases[i])
+            {
+              console.log(link.target.DiseaseClass , "Disease_class");
+
+            }
+            
+          }
+        })
 
 
         // links.forEach(function (link) {
