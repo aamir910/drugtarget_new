@@ -926,6 +926,13 @@
           </div>
         </div>
 
+        <div id="">
+          <h3>Clinical phase </h3>
+          <div id="legend-content">
+            <!-- Legend items will be populated dynamically -->
+          </div>
+        </div>
+
         <div id="legend_protein_status">
           <h3>Protein super family</h3>
           <div id="legend_protein_status-content">
@@ -2301,6 +2308,7 @@
       var selectedInteractionName1 = "";
       var hiddenDrugStatuses = {};
       var hiddenProteinClasses = {};
+      var hiddenDiseaseClasses = {};
       var hiddenDrugTypes = {};
       var hiddenInteractionTypes = {};
       var nodeImages = {};
@@ -2430,13 +2438,17 @@
               var drugName = row.drug_name;
               var drugID = row.drugbank_id;
               var protein = row.protein;
-              var interaction = row.interaction;
+
+              // var interaction = interactions[row.Phase -1]; 
+              var interaction = row.interaction ;
+
+              
               var drugStatus = row.Drug_status; // Get the "Drug_status" value
               var drugType = row.drugtype; // Get the "Drug_status" value
               var proteinClass = row.Protein_Class;
               var disease = row.Disease_name; // getting the new disease
               var Disease_class = row.Disease_class
-
+             var  disease_phase  = row.Phase ; 
               if (
                 !nodes.find(function (node) {
                   return node.id === drugName;
@@ -2476,7 +2488,8 @@
                   isParent: false,
                   child_type: "disease_type",
                   radius: 5,
-                  DiseaseClass :Disease_class
+                  DiseaseClass: Disease_class,
+                  disease_phase : disease_phase
                   // Protein_Class: proteinClass,
                 }); // Include the "Protein_Class" value in the node object
               }
@@ -2540,7 +2553,7 @@
 
             // Create the chart using D3.js
             createChart(links);
-            // createLegend();
+            createLegend();
             createLegend_status();
             createLegend_drugType();
             createProteinsLegend();
@@ -2722,8 +2735,9 @@
         })
           .append("path")
           .attr("d", "M 0 0 L 8 16 L -8 16 Z") // Path data for a triangle
-          .style("fill", "steelblue"); // Set the fill color to blue  
-
+          .style("fill", function (d) {
+            return DiseaseColorMap[d.DiseaseClass] || "black";
+          })
 
         node
           .filter(function (d) {
@@ -2986,14 +3000,14 @@
       //Legends Dragable end code
 
       // Create the legend for interactions
+      var interactions = [
+        "Target",
+        "Enzyme",
+        "Transporter",
+        "Carrier",
+        "Unknown",
+      ];
       function createLegend() {
-        var interactions = [
-          "Target",
-          "Enzyme",
-          "Transporter",
-          "Carrier",
-          "Unknown",
-        ];
         var legendContent = d3.select("#legend-content");
 
         var uniqueInteractions = new Set();
@@ -3176,7 +3190,7 @@
 
 
       function createProteinsLegend() {
-        var hiddenProteins = {}; // Change this to hiddenProteinClasses
+        var hiddenProteins = {}; // Change this to 
         var proteins = [
           "Enzyme",
           "Epigenetic regulator",
@@ -3301,6 +3315,8 @@
 
             updateAllFilters();
           });
+
+
         }
 
         document.addEventListener("click", function (event) {
@@ -3321,13 +3337,42 @@
       }
 
 
+      // color of the disease 
+      let DiseaseColorMap = {
+        "Congenital and Neonatal": "#FF5733",
+        "Respiratory Tract": "#66CCCC",
+        "Cardiovascular": "#FF3333",
+        "Nutritional and Metabolic": "#FFD700",
+        "Neoplasms": "#9932CC",
+        "Mental Disorders": "#FF1493",
+        "Eye": "#00BFFF",
+        "Behavior Mechanisms": "#32CD32",
+        "Infections": "#FF4500",
+        "Digestive System": "#8B4513",
+        "Pathological Conditions": "#FF6347",
+        "Skin and Connective Tissue": "#FA8072",
+        "Hemic and Lymphatic": "#800080",
+        "Female_Urogenital": "#FF69B4",
+        "Nervous System": "#1E90FF",
+        "Immune System": "#00FF00",
+        "Chemically-Induced Disorders": "#FF8C00",
+        "Stomatognathic": "#FFDAB9",
+        "Musculoskeletal": "#B0E0E6",
+        "Wounds and Injuries": "#8B0000",
+        "Otorhinolaryngologic": "#FFA500",
+        "Endocrine System": "#FF7F50",
+        "Male Urogenital": "#9932CC",
+        "Occupational Diseases": "#2E8B57",
+        "Genetic Inborn": "#4B0082"
+      };
 
 
 
-// tag5 
-  // funtion to the disease in the legend 
+
+      // tag5 
+      // funtion to the disease in the legend 
       function createDiseaseLegend() {
-        var hiddendisease = {}; // Change this to hiddenProteinClasses
+        var hiddendisease = {}; // Change this to 
         var diseases = [
           "Congenital and Neonatal",
           "Respiratory Tract",
@@ -3342,7 +3387,7 @@
           "Pathological Conditions",
           "Skin and Connective Tissue",
           "Hemic and Lymphatic",
-          "Female Urogenital",
+          "Female_Urogenital",
           "Nervous System",
           "Immune System",
           "Chemically-Induced Disorders",
@@ -3355,73 +3400,61 @@
           "Occupational Diseases",
           "Genetic Inborn"
         ];
-        var diseaseColors = [
-          "#1f78b4",
-          "#33a02c",
-          "#e31a1c",
-          "#ff7f00",
-          "#6a3d9a",
-          "#a6cee3",
-          "#b2df8a",
-          "#fb9a99",
-          "#fdbf6f",
-          "#cab2d6",
-          "#ffff99",
-          "#8c564b",
-          "#bcbd22",
-          "#e377c2",
-          "#7f7f7f",
-          "#c7c7c7",
-          "#d62728",
-          "#9467bd",
-          "#8c564b",
-          "#7f7f7f",
-          "#1f78b4",
-          "#33a02c",
-          "#e31a1c",
-          "#ff7f00",
-          "#6a3d9a"
-        ];
-       
+
+
         var legendContent = d3.select("#legend_disease_status-content");
-        
 
-        links.forEach(function (link) {
-          for(let i=0 ; i<diseases.length ; i++){
-            if(link.target.DiseaseClass === diseases[i])
-            {
-              console.log(link.target.DiseaseClass , "Disease_class");
 
-            }
-            
-          }
-        })
+        // links.forEach(function (link) {
+        //   for(let i=0 ; i<diseases.length ; i++){
+        //     if(link.target.DiseaseClass === diseases[i])
+        //     {
+        //       console.log(link.target.DiseaseClass , "Disease_class");
 
+        //     }
+
+        //   }
+        // })
 
         // links.forEach(function (link) {
         //   var diceaseClass11 = link.target.Protein_Class; // No need to convert to lowercase
         //   //console.log(proteinClass11);
-    for(let i=0 ; i<diseases.length ; i++){
+        // for(let i=0 ; i<diseases.length ; i++){
 
-      if (true) {
+        //   if (true) {
 
-        createLegendItem(diseases[i], diseaseColors[i]);   
+        //     createLegendItem(diseases[i], diseaseColors[i]);   
 
-        // uniqueProteins.add(proteinClass11);
-      }
-      // });
-    }
+        //   }
+
+        // }
+        var uniqueDisease = new Set();
+
+        links.forEach(function (link) {
+          var diseaseClass11 = link.target.DiseaseClass; // No need to convert to lowercase
+          //console.log(proteinClass11);
+
+
+          if (
+            diseases.includes(diseaseClass11) &&
+            !uniqueDisease.has(diseaseClass11)
+          ) {
+            console.log(link.target.DiseaseClass);
+            createLegendItem(diseaseClass11, DiseaseColorMap[diseaseClass11]);
+            uniqueDisease.add(diseaseClass11);
+          }
+        });
 
 
 
 
-   function createLegendItem(disease , color) {
-        var legendItem = legendContent
+        function createLegendItem(disease, color) {
+          var legendItem = legendContent
             .append("div")
             .style("display", "flex")
             .style("align-items", "center")
             .style("margin-bottom", "5px")
-           
+
 
           var dropdown = legendItem
             .append("div")
@@ -3431,7 +3464,7 @@
             .style("height", "10px")
             .style("background-color", color)
 
-            var dropdownMenu = dropdown
+          var dropdownMenu = dropdown
             .append("div")
             .attr("class", "dropdown-menu2")
             .style("display", "none")
@@ -3439,7 +3472,7 @@
             .style("left", "25px")
             .style("height", "20px")
             .style("flex-direction", "row");
-           
+
 
 
 
@@ -3450,17 +3483,35 @@
               .style("width", "20px")
               .style("height", "20px")
               .style("background-color", "red")
-            }
+          }
 
-            var legendText = legendItem
+          var legendText = legendItem
             .append("span")
             .style("margin-left", "10px")
             .text(disease);
-}
+
+
+          legendText.on("click", function () {
+
+            var clickedText = d3.select(this);
+            var diseaseClass = clickedText.text();
+
+            if (clickedText.classed("text-through")) {
+              clickedText.classed("text-through", false);
+              hiddenDiseaseClasses[diseaseClass] = false;
+            } else {
+              clickedText.classed("text-through", true);
+              hiddenDiseaseClasses[diseaseClass] = true;
+            }
+
+            updateAllFilters();
+          });
+
+        }
 
 
       }
-          
+
 
 
 
@@ -3606,11 +3657,12 @@
       }
 
 
-    
+
 
 
 
       function updateVisibility_legends() {
+        console.log("abc")
         // Update visibility of nodes
         d3.selectAll(".node").style("visibility", function (d) {
           // Hide or show parent nodes based on the drug status, drug type and interaction
@@ -3633,6 +3685,20 @@
                 (l) => l.target.id === d.id && hiddenInteractions[l.type]
               ))
           ) {
+            
+            console.log("hello");
+            // return "hidden";
+          }
+             // Hide or show child nodes based on the disease class and interaction
+             if (
+            !d.isParent &&
+            (hiddenDiseaseClasses[d.DiseaseClass] ||
+              links.some(
+                
+                (l) => l.target.id === d.id && hiddenInteractions[l.type]
+              ))
+          ) {
+            console.log("hello")
             return "hidden";
           }
 
@@ -3640,6 +3706,9 @@
           return "visible";
         });
 
+
+
+        
         // Update visibility of links
         d3.selectAll(".link").style("visibility", function (d) {
           // Hide or show links based on the interaction type, drug status, drug type, and protein class
@@ -3647,8 +3716,10 @@
             hiddenInteractions[d.type] ||
             hiddenDrugStatuses[d.source.Drug_status] ||
             hiddenDrugTypes[d.source.Drug_type] ||
-            hiddenProteinClasses[d.target.Protein_Class]
-          ) {
+            hiddenProteinClasses[d.target.Protein_Class] ||
+            hiddenDiseaseClasses[d.target.DiseaseClass]
+          )
+           {
             return "hidden";
           }
 
@@ -3837,13 +3908,25 @@
 
           var relatedLinks = links.filter((l) => l.source.id === d.id);
           var anyVisibleChildren = relatedLinks.some(
+            
+            (l) =>
+            !hiddenInteractions[l.type] &&
+            !hiddenProteinClasses[
+              nodes.find((n) => n.id === l.target.id).Protein_Class
+            ]
+          );
+          // console.log(anyVisibleChildren , 'anyVisibleChildren')
+          var anyVisibledisease = relatedLinks.some(
             (l) =>
               !hiddenInteractions[l.type] &&
-              !hiddenProteinClasses[
-              nodes.find((n) => n.id === l.target.id).Protein_Class
+              !hiddenDiseaseClasses[
+              nodes.find((n) => n.id === l.target.id).DiseaseClass
               ]
+              
           );
 
+         
+          
           // Check Drug_status and Drug_type directly in the parent node
           var isHiddenBasedOnDrugStatus = hiddenDrugStatuses[d.Drug_status];
           var isHiddenBasedOnDrugType = hiddenDrugTypes[d.Drug_type];
@@ -3852,11 +3935,12 @@
             (l) => hiddenInteractions[l.type]
           );
           var isHiddenBasedOnProteinClass = !anyVisibleChildren;
-
+         var  isHiddenBasedOnDiseaseClass = !anyVisibledisease;
           if (
             isHiddenBasedOnInteraction ||
             isHiddenBasedOnProteinClass ||
             isHiddenBasedOnDrugStatus ||
+            isHiddenBasedOnDiseaseClass||
             isHiddenBasedOnDrugType
           ) {
             return "hidden";
@@ -3881,6 +3965,8 @@
             var isHiddenBasedOnProteinClass =
               hiddenProteinClasses[d.Protein_Class];
 
+              var isHiddenBasedOnDiseaseClass =
+              hiddenDiseaseClasses[d.DiseaseClass];
             // Hide if not connected to any parent
             if (relatedLinks.length === 0) {
               return "hidden";
@@ -3904,6 +3990,7 @@
             if (
               isHiddenBasedOnInteraction ||
               isHiddenBasedOnProteinClass ||
+              isHiddenBasedOnDiseaseClass||
               allParentsHidden
             ) {
               return "hidden";
@@ -3920,6 +4007,13 @@
           var isHiddenBasedOnInteraction = hiddenInteractions[d.type];
           var isHiddenBasedOnProteinClass =
             hiddenProteinClasses[d.target.Protein_Class];
+          
+            var isHiddenBasedOnDiseaseClass =
+            hiddenDiseaseClasses[d.target.DiseaseClass];
+            console.log(d.target.DiseaseClass , "cjeck")
+
+
+
           var isHiddenBasedOnDrugStatus =
             hiddenDrugStatuses[d.source.Drug_status];
           var isHiddenBasedOnDrugType = hiddenDrugTypes[d.source.Drug_type];
@@ -3935,6 +4029,7 @@
           if (
             isHiddenBasedOnInteraction ||
             isHiddenBasedOnProteinClass ||
+            isHiddenBasedOnDiseaseClass ||
             isHiddenBasedOnDrugStatus ||
             isHiddenBasedOnDrugType ||
             isSourceNodeHidden ||

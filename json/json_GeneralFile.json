@@ -2,31 +2,31 @@
     {
         "drugbank_id": "DB00014",
         "drug_name": "Goserelin",
-        "interaction": "target",
+        "interaction":"target",
         "protein": "P22888",
         "drugtype": "Small Molecule",
         "Drug_status": "Approved",
         "Protein_Class": "GPCR",
         "Disease_name": "Endometriosis",
-        "Disease_class": "Female Urogenital Diseases and Pregnancy Complications",
+        "Disease_class": "Female_Urogenital",
         "Phase": 4
     },
     {
         "drugbank_id": "DB00014",
         "drug_name": "Goserelin",
-        "interaction": "target",
+        "interaction":"enzyme",
         "protein": "P30968",
         "drugtype": "Small Molecule",
         "Drug_status": "Approved",
         "Protein_Class": "GPCR",
         "Disease_name": "Endometriosis",
-        "Disease_class": "Female Urogenital Diseases and Pregnancy Complications",
+        "Disease_class": "Female_Urogenital",
         "Phase": 4
     },
     {
         "drugbank_id": "DB15327",
         "drug_name": "Abivertinib",
-        "interaction": "target",
+        "interaction":"transporter",
         "protein": "P00533",
         "drugtype": "Small Molecule",
         "Drug_status": "Investigational",
@@ -38,7 +38,7 @@
     {
         "drugbank_id": "DB15327",
         "drug_name": "Abivertinib",
-        "interaction": "target",
+        "interaction":"transporter",
         "protein": "P00533",
         "drugtype": "Small Molecule",
         "Drug_status": "Investigational",
@@ -50,7 +50,7 @@
     {
         "drugbank_id": "DB15327",
         "drug_name": "Abivertinib",
-        "interaction": "target",
+        "interaction":"transporter",
         "protein": "P00533",
         "drugtype": "Small Molecule",
         "Drug_status": "Investigational",
@@ -62,7 +62,7 @@
     {
         "drugbank_id": "DB15327",
         "drug_name": "Abivertinib",
-        "interaction": "target",
+        "interaction":"transporter",
         "protein": "Q06187",
         "drugtype": "Small Molecule",
         "Drug_status": "Investigational",
@@ -74,7 +74,7 @@
     {
         "drugbank_id": "DB15327",
         "drug_name": "Abivertinib",
-        "interaction": "target",
+        "interaction":"transporter",
         "protein": "Q06187",
         "drugtype": "Small Molecule",
         "Drug_status": "Investigational",
@@ -86,7 +86,7 @@
     {
         "drugbank_id": "DB15327",
         "drug_name": "Abivertinib",
-        "interaction": "target",
+        "interaction":"transporter",
         "protein": "Q06187",
         "drugtype": "Small Molecule",
         "Drug_status": "Investigational",
@@ -98,7 +98,7 @@
     {
         "drugbank_id": "DB15399",
         "drug_name": "BMS-754807",
-        "interaction": "target",
+        "interaction":"transporter",
         "protein": "P08069",
         "drugtype": "Small Molecule",
         "Drug_status": "Investigational",
@@ -110,7 +110,7 @@
     {
         "drugbank_id": "DB15399",
         "drug_name": "BMS-754807",
-        "interaction": "target",
+        "interaction":"transporter",
         "protein": "P08069",
         "drugtype": "Small Molecule",
         "Drug_status": "Investigational",
