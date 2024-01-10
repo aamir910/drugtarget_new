@@ -3905,7 +3905,6 @@
             // if hidden by slider filter
             return "hidden";
           }
-
           var relatedLinks = links.filter((l) => l.source.id === d.id);
           var anyVisibleChildren = relatedLinks.some(
             
@@ -3915,7 +3914,6 @@
               nodes.find((n) => n.id === l.target.id).Protein_Class
             ]
           );
-          // console.log(anyVisibleChildren , 'anyVisibleChildren')
           var anyVisibledisease = relatedLinks.some(
             (l) =>
               !hiddenInteractions[l.type] &&
@@ -3936,6 +3934,9 @@
           );
           var isHiddenBasedOnProteinClass = !anyVisibleChildren;
          var  isHiddenBasedOnDiseaseClass = !anyVisibledisease;
+        //  console.log(isHiddenBasedOnDiseaseClass , ' is dease calss')
+         
+         console.log(isHiddenBasedOnProteinClass , ' is dease calss')
           if (
             isHiddenBasedOnInteraction ||
             isHiddenBasedOnProteinClass ||
@@ -3986,7 +3987,7 @@
                   hiddenInteractions[l.type]) // Here we use the interaction type of the link
               );
             });
-
+// remove the child node only 
             if (
               isHiddenBasedOnInteraction ||
               isHiddenBasedOnProteinClass ||
@@ -4010,7 +4011,6 @@
           
             var isHiddenBasedOnDiseaseClass =
             hiddenDiseaseClasses[d.target.DiseaseClass];
-            console.log(d.target.DiseaseClass , "cjeck")
 
 
 
