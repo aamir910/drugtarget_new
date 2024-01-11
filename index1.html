@@ -3438,16 +3438,18 @@
             .append("div")
             .style("display", "flex")
             .style("align-items", "center")
-            .style("margin-bottom", "5px")
-
+            .style("margin-bottom", "5px");
 
           var dropdown = legendItem
             .append("div")
-            .attr("class", "dropdown2")
+            .attr("class", "triangle")
             .style("position", "relative")
-            .style("width", "10px")
-            .style("height", "10px")
-            .style("background-color", color)
+            .style("width", "0")
+            .style("height", "0")
+            .style("border-left", "10px solid transparent")
+            .style("border-right", "10px solid transparent")
+            .style("border-bottom", "17px solid " + color)
+            .style("border-radius", "0"); // Add this line to remove the curve
 
           var dropdownMenu = dropdown
             .append("div")
@@ -3458,18 +3460,13 @@
             .style("height", "20px")
             .style("flex-direction", "row");
 
-
-
-
           for (let i = 0; i < diseases.length; i++) {
-
             dropdownMenu
               .append("div")
               .style("width", "20px")
               .style("height", "20px")
-              .style("background-color", "red")
+              .style("background-color", "red");
           }
-
           var legendText = legendItem
             .append("span")
             .style("margin-left", "10px")
@@ -3983,12 +3980,11 @@
           var flag = true;
           link.filter(function (temp) {
             var isLinkVisible = d3.select(this).style("visibility");
-           
-            if(relatedLinks.includes(temp)){
-              if(isLinkVisible === "visible")
-              {
 
-                flag =false ; 
+            if (relatedLinks.includes(temp)) {
+              if (isLinkVisible === "visible") {
+
+                flag = false;
               }
             }
 
