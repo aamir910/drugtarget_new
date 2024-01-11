@@ -2733,6 +2733,11 @@
           .style("fill", function (d) {
             return DiseaseColorMap[d.DiseaseClass] || "black";
           })
+          .on("click", function (event, d) {
+            window.open(`https://www.triangle.com/${d.id}`, "_blank");
+
+          });
+
 
         node
           .filter(function (d) {
@@ -3425,7 +3430,7 @@
             !uniqueDisease.has(diseaseClass11)
           ) {
             console.log(link.target.DiseaseClass);
-            createLegendItem(diseaseClass11, DiseaseColorMap[diseaseClass11] ,diseaseClass11 );
+            createLegendItem(diseaseClass11, DiseaseColorMap[diseaseClass11], diseaseClass11);
             uniqueDisease.add(diseaseClass11);
           }
         });
@@ -3433,7 +3438,7 @@
 
 
 
-        function createLegendItem(disease, color , diseasetemp) {
+        function createLegendItem(disease, color, diseasetemp) {
           var legendItem = legendContent
             .append("div")
             .style("display", "flex")
@@ -3450,12 +3455,6 @@
             .style("border-right", "10px solid transparent")
             .style("border-bottom", "17px solid " + color)
             .style("border-radius", "0")
-            .on("click" , function(d){ 
-              // console.log(diseasetemp  , "here is the temp" ) ;
-
-        window.open(`https://www.triangle.com/${diseasetemp}`, "_blank");
-        
-            }); // Add this line to remove the curve
 
           var dropdownMenu = dropdown
             .append("div")
