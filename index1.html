@@ -2428,9 +2428,9 @@
               var drugID = row.drugbank_id;
               var protein = row.protein;
 
-              // var interaction = interactions[row.Phase -1]; 
-              var interaction = row.interaction ;
-
+              var interaction = interactions[row.Phase -1].toLowerCase() ; 
+              // var interaction = row.interaction ;
+              console.log(interaction , "  interatction")
               
               var drugStatus = row.Drug_status; // Get the "Drug_status" value
               var drugType = row.drugtype; // Get the "Drug_status" value
@@ -2502,7 +2502,7 @@
               links.push({
                 source: drugName,
                 target: protein,
-                type: interaction,
+                type: "interaction",
               });
 
               links.push({
@@ -2662,7 +2662,14 @@
           .append("line")
           .attr("class", "link")
           .style("stroke", function (d) {
-            return "gray";
+            if(d.target.child_type === "disease_type")
+            {
+              
+              return  colorMap[d.type];
+            }
+            else{
+              return "gray";
+            }
           })
           .style("stroke-width", 2)
           .on("click", function (event, d) {
@@ -2992,7 +2999,7 @@
         "Enzyme",
         "Transporter",
         "Carrier",
-        "Unknown",
+        "unknown",
       ];
       function createLegend() {
         var legendContent = d3.select("#legend-content");
@@ -3062,6 +3069,7 @@
                   return function () {
                     var selectedColor = getColor(selectedInteraction);
                     var selectedLegendItem = d3.select(".selected-legend1");
+                    console.log(selectedLegendItem , "selectedLegendItem");
                     colorMap[interaction.toLowerCase()] = selectedColor;
                     dropdown.style("background-color", selectedColor);
                     if (selectedLegendItem.node()) {
@@ -3138,11 +3146,13 @@
       function redrawLinks() {
         // Update the 'stroke' style of the links using the updated colorMap
         //console.log(link)
-        link.filter(function (d){
+        link
+        .filter(function (d){
           if(d.target.child_type === "disease_type"){
             return d
           }
-        }).style("stroke", function (d) {
+        })
+        .style("stroke", function (d) {
           return colorMap[d.type];
         });
       }
