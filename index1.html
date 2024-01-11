@@ -3449,7 +3449,11 @@
             .style("border-left", "10px solid transparent")
             .style("border-right", "10px solid transparent")
             .style("border-bottom", "17px solid " + color)
-            .style("border-radius", "0"); // Add this line to remove the curve
+            .style("border-radius", "0")
+            .on("click" , function(){
+              
+        window.open("https://www.google.com", "_blank");
+            }); // Add this line to remove the curve
 
           var dropdownMenu = dropdown
             .append("div")
@@ -3493,13 +3497,6 @@
 
 
       }
-
-
-
-
-
-
-
 
 
 
