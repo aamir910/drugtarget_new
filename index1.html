@@ -1484,7 +1484,6 @@
           var firstSheetName = workbook.SheetNames[0];
           var worksheet = workbook.Sheets[firstSheetName];
           var rows = XLSX.utils.sheet_to_json(worksheet);
-          console.log(rows);
           // Filter the rows based on the filtered links
           var filteredRows = rows.filter((row) =>
             filteredLinks.some(
@@ -1666,8 +1665,6 @@
           var matchingRow = drug_xlsxData.find(
             (row) => row.name === drugNameValue
           );
-          console.log("tabi");
-          console.log(matchingRow);
 
           if (matchingRow) {
             var drugbank_id = matchingRow.drugbank_id;
@@ -1792,7 +1789,6 @@
         }
         // Function to convert drugtype reference number into meaningful labels
         function convertDrugType(drugType) {
-          console.log("aajaj= " + drugType);
           if (drugType === 0) {
             return "Biologic";
           } else if (drugType === 1) {
@@ -1971,7 +1967,6 @@
         if (activeTab === "protein-image") {
           showProteinImageTab();
         } else if (activeTab === "protein-structure") {
-          console.log("protein:  " + selectedProteinName1);
           showProteinStructureTab(selectedProteinName1);
         }
         showProteinImageTab();
@@ -1990,7 +1985,6 @@
           if (tabName === "protein-image") {
             showProteinImageTab();
           } else if (tabName === "protein-structure") {
-            console.log("protein:  " + selectedProteinName1);
             showProteinStructureTab(selectedProteinName1);
           }
         }
@@ -2020,7 +2014,6 @@
           var matchingRow = protein_xlsxData.find(
             (row) => row.uniprot_ID === drugNameValue
           );
-          console.log(matchingRow);
           if (matchingRow) {
             var drugbank_id = matchingRow.uniprot_ID;
 
@@ -2053,7 +2046,6 @@
         }
 
         function showProteinStructureTab(proteinName11111) {
-          console.log("dd: " + proteinName11111);
           var tabContent = document.querySelector(".tab-content1");
           tabContent.innerHTML = ""; // Clear the existing content
 
@@ -2062,7 +2054,6 @@
           var matchingRow = protein_xlsxData.find(
             (row) => row.uniprot_ID === proteinName11111
           );
-          console.log(matchingRow);
           if (matchingRow) {
             // Create a table to display the protein structure information
             var proteinStructureTable = document.createElement("div");
@@ -2141,7 +2132,6 @@
 
       //Interaction Dialog
       function showDialog_Links(title, interactionTy) {
-        console.log("title: " + title);
         var dialog = document.getElementById("dialog2");
         var drugName = document.getElementById("drug-name2");
         var closeButton = document.getElementById("close-button2");
@@ -2434,7 +2424,6 @@
             // console.log(data);
             chartDataJ = data;
             data.forEach(function (row) {
-              console.log(row);
               var drugName = row.drug_name;
               var drugID = row.drugbank_id;
               var protein = row.protein;
@@ -2748,8 +2737,6 @@
           .attr("class", "node-image")
           .attr("xlink:href", function (d) {
             var key = d.Drug_status + "|" + d.Drug_type;
-            console.log("key: ", key); // print the key
-            console.log("key: ", imagePaths[key]); // print the key
             //return imagePaths[key];
 
             return imagePaths[key];
@@ -3151,8 +3138,11 @@
       function redrawLinks() {
         // Update the 'stroke' style of the links using the updated colorMap
         //console.log(link)
-        link.style("stroke", function (d) {
-          console.log("Testinng Interaction :" + colorMap[d.type]);
+        link.filter(function (d){
+          if(d.target.child_type === "disease_type"){
+            return d
+          }
+        }).style("stroke", function (d) {
           return colorMap[d.type];
         });
       }
@@ -3661,72 +3651,70 @@
 
 
 
-      function updateVisibility_legends() {
-        console.log("abc")
-        // Update visibility of nodes
-        d3.selectAll(".node").style("visibility", function (d) {
-          // Hide or show parent nodes based on the drug status, drug type and interaction
-          if (
-            d.isParent &&
-            (hiddenDrugStatuses[d.Drug_status] ||
-              hiddenDrugTypes[d.Drug_type] ||
-              links.some(
-                (l) => l.source.id === d.id && hiddenInteractions[l.type]
-              ))
-          ) {
-            return "hidden";
-          }
+      // function updateVisibility_legends() {
+      //   console.log("abc")
+      //   // Update visibility of nodes
+      //   d3.selectAll(".node").style("visibility", function (d) {
+      //     // Hide or show parent nodes based on the drug status, drug type and interaction
+      //     if (
+      //       d.isParent &&
+      //       (hiddenDrugStatuses[d.Drug_status] ||
+      //         hiddenDrugTypes[d.Drug_type] ||
+      //         links.some(
+      //           (l) => l.source.id === d.id && hiddenInteractions[l.type]
+      //         ))
+      //     ) {
+      //       return "hidden";
+      //     }
 
-          // Hide or show child nodes based on the protein class and interaction
-          if (
-            !d.isParent &&
-            (hiddenProteinClasses[d.Protein_Class] ||
-              links.some(
-                (l) => l.target.id === d.id && hiddenInteractions[l.type]
-              ))
-          ) {
+      //     // Hide or show child nodes based on the protein class and interaction
+      //     if (
+      //       !d.isParent &&
+      //       (hiddenProteinClasses[d.Protein_Class] ||
+      //         links.some(
+      //           (l) => l.target.id === d.id && hiddenInteractions[l.type]
+      //         ))
+      //     ) {
             
-            console.log("hello");
-            // return "hidden";
-          }
-             // Hide or show child nodes based on the disease class and interaction
-             if (
-            !d.isParent &&
-            (hiddenDiseaseClasses[d.DiseaseClass] ||
-              links.some(
+      //       return "hidden";
+      //     }
+      //        // Hide or show child nodes based on the disease class and interaction
+      //        if (
+      //       !d.isParent &&
+      //       (hiddenDiseaseClasses[d.DiseaseClass] ||
+      //         links.some(
                 
-                (l) => l.target.id === d.id && hiddenInteractions[l.type]
-              ))
-          ) {
-            console.log("hello")
-            return "hidden";
-          }
+      //           (l) => l.target.id === d.id && hiddenInteractions[l.type]
+      //         ))
+      //     ) {
+      //       return "hidden";
+      //     }
 
-          // If the node is neither hidden by drug status, protein class nor interaction
-          return "visible";
-        });
+      //     // If the node is neither hidden by drug status, protein class nor interaction
+      //     return "visible";
+      //   });
 
 
 
         
-        // Update visibility of links
-        d3.selectAll(".link").style("visibility", function (d) {
-          // Hide or show links based on the interaction type, drug status, drug type, and protein class
-          if (
-            hiddenInteractions[d.type] ||
-            hiddenDrugStatuses[d.source.Drug_status] ||
-            hiddenDrugTypes[d.source.Drug_type] ||
-            hiddenProteinClasses[d.target.Protein_Class] ||
-            hiddenDiseaseClasses[d.target.DiseaseClass]
-          )
-           {
-            return "hidden";
-          }
+      //   // Update visibility of links
+      //   d3.selectAll(".link").style("visibility", function (d) {
+      //     // Hide or show links based on the interaction type, drug status, drug type, and protein class
+      //     if (
+      //       hiddenInteractions[d.type] ||
+      //       hiddenDrugStatuses[d.source.Drug_status] ||
+      //       hiddenDrugTypes[d.source.Drug_type] ||
+      //       hiddenProteinClasses[d.target.Protein_Class] ||
+      //       hiddenDiseaseClasses[d.target.DiseaseClass]
+      //     )
+      //      {
+      //       return "hidden";
+      //     }
 
-          // If the link is neither hidden by interaction type, drug status, nor protein class
-          return "visible";
-        });
-      }
+      //     // If the link is neither hidden by interaction type, drug status, nor protein class
+      //     return "visible";
+      //   });
+      // }
 
       function changeNodeImage(status, selectedColor) {
         const newImagePath = colorPalette[selectedColor];
@@ -3749,7 +3737,7 @@
             let drugTypeIndex = currentImagePath.match(/right(\d+)/)[1];
 
             const correctImagePath = `images/capsules/left${drugStatusIndex}right${drugTypeIndex}.png`;
-            console.log(correctImagePath);
+        
             nodeImages[node.id] = correctImagePath;
             d3.select(this)
               .select("image")
@@ -3765,7 +3753,6 @@
 
         links.forEach(function (link) {
           var drugTypeClass11 = link.source.Drug_type;
-          console.log(drugTypeClass11);
 
           if (
             drugTypeArray.includes(drugTypeClass11) &&
@@ -3885,12 +3872,11 @@
               .select(this)
               .select("image")
               .attr("xlink:href");
-            console.log(currentImagePath);
             // Extract drugStatusIndex from the current image path
             let drugStatusIndex = currentImagePath.match(/left(\d+)/)[1];
 
             const correctImagePath = `images/capsules/left${drugStatusIndex}right${drugTypeIndex}.png`;
-            console.log(correctImagePath);
+   
             nodeImages[node.id] = correctImagePath;
             d3.select(this)
               .select("image")
@@ -3934,9 +3920,7 @@
           );
           var isHiddenBasedOnProteinClass = !anyVisibleChildren;
          var  isHiddenBasedOnDiseaseClass = !anyVisibledisease;
-        //  console.log(isHiddenBasedOnDiseaseClass , ' is dease calss')
          
-         console.log(isHiddenBasedOnProteinClass , ' is dease calss')
           if (
             isHiddenBasedOnInteraction ||
             isHiddenBasedOnProteinClass ||
