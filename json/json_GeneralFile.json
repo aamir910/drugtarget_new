@@ -9,7 +9,7 @@
         "Protein_Class": "GPCR",
         "Disease_name": "Endometriosis",
         "Disease_class": "Female_Urogenital",
-        "Phase": "Phase4"
+        "Phase": "phase4"
     },
     {
         "drugbank_id": "DB00014",
@@ -21,7 +21,7 @@
         "Protein_Class": "GPCR",
         "Disease_name": "Endometriosis",
         "Disease_class": "Female_Urogenital",
-        "Phase": "Phase4"
+        "Phase": "phase4"
     },
     {
         "drugbank_id": "DB15327",
@@ -33,7 +33,7 @@
         "Protein_Class": "Kinase",
         "Disease_name": "Bronchioloalveolar Adenocarcinoma",
         "Disease_class": "Neoplasms",
-        "Phase": "Phase3"
+        "Phase": "phase3"
     },
     {
         "drugbank_id": "DB15327",
@@ -45,7 +45,7 @@
         "Protein_Class": "Kinase",
         "Disease_name": "Lymphoma, Follicular",
         "Disease_class": "Neoplasms",
-        "Phase": "Phase1"
+        "Phase": "phase1"
     },
     {
         "drugbank_id": "DB15327",
@@ -57,7 +57,7 @@
         "Protein_Class": "Kinase",
         "Disease_name": "Severe Acute Respiratory Syndrome",
         "Disease_class": "Infections",
-        "Phase": "Phase2"
+        "Phase": "phase2"
     },
     {
         "drugbank_id": "DB15327",
@@ -69,7 +69,7 @@
         "Protein_Class": "Kinase",
         "Disease_name": "Bronchioloalveolar Adenocarcinoma",
         "Disease_class": "Neoplasms",
-        "Phase": "Phase3"
+        "Phase": "phase3"
     },
     {
         "drugbank_id": "DB15327",
@@ -81,7 +81,7 @@
         "Protein_Class": "Kinase",
         "Disease_name": "Lymphoma, Follicular",
         "Disease_class": "Neoplasms",
-        "Phase": "Phase1"
+        "Phase": "phase1"
     },
     {
         "drugbank_id": "DB15327",
@@ -93,7 +93,7 @@
         "Protein_Class": "Kinase",
         "Disease_name": "Severe Acute Respiratory Syndrome",
         "Disease_class": "Infections",
-        "Phase": "Phase2"
+        "Phase": "phase2"
     },
     {
         "drugbank_id": "DB15399",
@@ -105,7 +105,7 @@
         "Protein_Class": "Kinase",
         "Disease_name": "Malignant Neoplasm of Breast",
         "Disease_class": "Neoplasms",
-        "Phase": "Phase2"
+        "Phase": "phase2"
     },
     {
         "drugbank_id": "DB15399",
@@ -117,6 +117,6 @@
         "Protein_Class": "Kinase",
         "Disease_name": "Neoplasms",
         "Disease_class": "Neoplasms",
-        "Phase": "Phase1"
+        "Phase": "phase1"
     }
 ]
