@@ -2428,8 +2428,8 @@
               var drugID = row.drugbank_id;
               var protein = row.protein;
 
-              var interaction = interactions[row.Phase - 1].toLowerCase();
-              // var interaction = row.interaction ;
+              // var interaction = interactions[row.Phase - 1].toLowerCase();
+              var interaction = row.interaction ;
               console.log(interaction, "  interatction")
 
               var drugStatus = row.Drug_status; // Get the "Drug_status" value
@@ -2502,13 +2502,13 @@
               links.push({
                 source: drugName,
                 target: protein,
-                type: "interaction",
+                type: interaction,
               });
 
               links.push({
                 source: drugName,
                 target: disease,
-                type: interaction, // You can customize the type for disease links
+                type: "interaction", // You can customize the type for disease links
               });
 
             });
@@ -2662,12 +2662,18 @@
           .append("line")
           .attr("class", "link")
           .style("stroke", function (d) {
-            if (d.target.child_type === "disease_type") {
+            if (d.target.child_type === "protein_type") {
 
               return colorMap[d.type];
             }
             else {
               return "gray";
+            }
+          })
+  .style("stroke-dasharray",function (d) {
+            if (d.target.child_type === "disease_type") {
+
+              return "2,2"
             }
           })
           .style("stroke-width", 2)
@@ -3152,7 +3158,7 @@
         //console.log(link)
         link
           .filter(function (d) {
-            if (d.target.child_type === "disease_type") {
+            if (d.target.child_type === "child_type") {
               return d
             }
           })
