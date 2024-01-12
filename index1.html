@@ -927,8 +927,15 @@
         </div>
 
         <div id="">
-          <h3>Clinical phase </h3>
+          <h3> Interaction </h3>
           <div id="legend-content">
+            <!-- Legend items will be populated dynamically -->
+          </div>
+        </div>
+
+        <div id="">
+          <h3> Interaction </h3>
+          <div id="legend-content_disease">
             <!-- Legend items will be populated dynamically -->
           </div>
         </div>
@@ -2430,7 +2437,7 @@
 
               // var interaction = interactions[row.Phase - 1].toLowerCase();
               var interaction = row.interaction ;
-              console.log(interaction, "  interatction")
+              var disease_interaction = row.Phase ; 
 
               var drugStatus = row.Drug_status; // Get the "Drug_status" value
               var drugType = row.drugtype; // Get the "Drug_status" value
@@ -2503,12 +2510,14 @@
                 source: drugName,
                 target: protein,
                 type: interaction,
+                 disease_type : "temp"
               });
 
               links.push({
                 source: drugName,
                 target: disease,
-                type: "interaction", // You can customize the type for disease links
+                type: "interaction",
+                 disease_type : disease_interaction // You can customize the type for disease links
               });
 
             });
@@ -2543,6 +2552,8 @@
             // Create the chart using D3.js
             createChart(links);
             createLegend();
+            
+            createLegend_disease();
             createLegend_status();
             createLegend_drugType();
             createProteinsLegend();
@@ -2666,8 +2677,10 @@
 
               return colorMap[d.type];
             }
-            else {
-              return "gray";
+            else if (d.target.child_type === "disease_type") {
+              console.log[d.disease_type , "hre"]
+              return Disease_colorMap_legend[d.disease_type];
+
             }
           })
   .style("stroke-dasharray",function (d) {
@@ -2989,6 +3002,12 @@
         carrier: "orange",
         unknown: "black",
       };
+      var Disease_colorMap_legend= {
+        Phase1: "green",
+        Phase2: "blue",
+        Phase3: "red",
+        Phase4: "orange"
+      };
       var hiddenInteractions = {
         target: false,
         enzyme: false,
@@ -3138,6 +3157,146 @@
           d3.selectAll(".selected-legend1").classed("selected-legend1", false);
         });
       }
+
+
+      // here we start the disease_interaction 
+
+      var disease_interaction =
+      [
+        "Phase1",
+        "Phase2",   
+        "Phase3",
+        "Phase4",
+    ]
+      function createLegend_disease() {
+        var legendContent = d3.select("#legend-content_disease");
+
+        var uniqueInteractions_disease = new Set();
+
+        links.forEach(function (link) {
+          var interaction = link.disease_type; // No need to convert to lowercase
+          console.log(interaction , "interaction")
+          if (
+            disease_interaction.includes( interaction
+              // interaction.charAt(0).toUpperCase() + interaction.slice(1)
+            ) &&
+            !uniqueInteractions_disease.has(interaction)
+          ) {
+            createLegendItem(interaction, Disease_colorMap_legend[interaction]);
+            uniqueInteractions_disease.add(interaction);
+          }
+        });
+        function createLegendItem(interaction, color) {
+          var legendItem = legendContent
+            .append("div")
+            .style("display", "flex")
+            .style("align-items", "center")
+            .style("margin-bottom", "5px")
+            .on("click", function () {
+              d3.select(this).classed("selected-legend1", true);
+            });
+
+          var dropdown = legendItem
+            .append("div")
+            .attr("class", "dropdown1")
+            .style("position", "relative")
+            .style("width", "20px")
+            .style("height", "5px") // Adjust the height to control the line thickness
+            .style("background-color", color)
+            // .on("click", function () {
+            //   var clickedText = d3.select(this.parentNode).select("span");
+            //   if (!clickedText.classed("text-through")) {
+            //     var menu = d3.select(this).select(".dropdown-menu1");
+            //     if (menu.style("display") === "none") {
+            //       menu.style("display", "flex");
+            //     } else {
+            //       menu.style("display", "none");
+            //     }
+            //   }
+            // });
+
+          var dropdownMenu = dropdown
+            .append("div")
+            .attr("class", "dropdown-menu1")
+            .style("display", "none")
+            .style("position", "absolute")
+            .style("left", "25px")
+            .style("height", "20px")
+            .style("flex-direction", "row");
+
+          for (var i = 0; i < disease_interaction.length; i++) {
+            // var color = getColor(interactions[i]);
+            dropdownMenu
+              .append("div")
+              .style("width", "20px")
+              .style("height", "20px")
+              .style("background-color", "red")
+              // .on(
+              //   "click",
+              //   (function (selectedInteraction) {
+              //     return function () {
+              //       var selectedColor = getColor(selectedInteraction);
+              //       var selectedLegendItem = d3.select(".selected-legend1");
+              //       console.log(selectedLegendItem, "selectedLegendItem");
+              //       colorMap[interaction.toLowerCase()] = selectedColor;
+              //       dropdown.style("background-color", selectedColor);
+              //       if (selectedLegendItem.node()) {
+              //         // Check if the selection is not empty
+              //         selectedLegendItem
+              //           .select(".dropdown-menu1")
+              //           .style("display", "none");
+              //       }
+              //       d3.selectAll(".selected-legend1").classed(
+              //         "selected-legend1",
+              //         false
+              //       );
+              //       redrawLinks();
+              //     };
+              //   })(interactions[i])
+              // );
+          }
+
+          var legendText = legendItem
+            .append("span")
+            .style("margin-left", "10px")
+            .text(interaction);
+
+          // Event listener for the legend item text
+          // Assuming that you have already defined the "nodes" and "links" arrays
+          // and the "hiddenInteractions" object to track the visibility of interactions.
+          legendText.on("click", function () {
+            var clickedText = d3.select(this);
+            var interaction = clickedText.text().toLowerCase();
+
+            if (clickedText.classed("text-through")) {
+              clickedText.classed("text-through", false);
+              hiddenInteractions[interaction] = false;
+            } else {
+              clickedText.classed("text-through", true);
+              hiddenInteractions[interaction] = true;
+            }
+
+            updateAllFilters();
+          });
+        }
+
+        document.addEventListener("click", function (event) {
+          var dropdownMenus = d3.selectAll(".dropdown-menu1");
+          dropdownMenus.each(function () {
+            var menu = d3.select(this);
+            if (
+              menu.style("display") === "flex" &&
+              !menu.empty() &&
+              !d3.select(event.target).classed("selected-legend1") &&
+              !d3.select(event.target.parentNode).classed("selected-legend1")
+            ) {
+              menu.style("display", "none");
+            }
+          });
+          d3.selectAll(".selected-legend1").classed("selected-legend1", false);
+        });
+      }
+
 
       function drawLinks() {
         svg
