@@ -926,7 +926,7 @@
           </div>
         </div>
 
-  
+
         <div id="">
           <h3> Clinical trial </h3>
           <div id="legend-content_disease">
@@ -941,8 +941,8 @@
           </div>
 
 
-     
-  
+
+
           <!-- here is the disease legend started -->
           <div id="legend_disease_status">
             <h3>Disease family</h3>
@@ -3065,7 +3065,7 @@
             uniqueInteractions.add(interaction);
           }
         });
-        function createLegendItem(interaction, color ,container ) {
+        function createLegendItem(interaction, color, container) {
           var legendItem = container
             .append("div")
             .style("display", "flex")
@@ -3075,25 +3075,40 @@
               d3.select(this).classed("selected-legend1", true);
             });
 
+          var phases = ["phase1", "phase2", "phase3", "phase4"];
           var dropdown = legendItem
             .append("div")
             .attr("class", "dropdown1")
             .style("position", "relative")
             .style("width", "20px")
-            .style("height", "5px")
+            .style("height", "3px")
             // Adjust the height to control the line thickness
-            .style("background-color", color)
-            .on("click", function () {
-              var clickedText = d3.select(this.parentNode).select("span");
-              if (!clickedText.classed("text-through")) {
-                var menu = d3.select(this).select(".dropdown-menu1");
-                if (menu.style("display") === "none") {
-                  menu.style("display", "flex");
-                } else {
-                  menu.style("display", "none");
+            .style("background-color", function () {
+                if (!phases.includes(interaction)) {
+                  return  color
                 }
-              }
-            });
+              } )
+            .style(
+              "border",
+              function () {
+                if (phases.includes(interaction)) {
+                  return "2px dotted " + color
+                }
+                else{
+                  return color ;
+                }
+              })
+                .on("click", function () {
+                  var clickedText = d3.select(this.parentNode).select("span");
+                  if (!clickedText.classed("text-through")) {
+                    var menu = d3.select(this).select(".dropdown-menu1");
+                    if (menu.style("display") === "none") {
+                      menu.style("display", "flex");
+                    } else {
+                      menu.style("display", "none");
+                    }
+                  }
+                });
 
           var dropdownMenu = dropdown
             .append("div")
@@ -3119,7 +3134,16 @@
                     var selectedLegendItem = d3.select(".selected-legend1");
                     console.log(selectedLegendItem, "selectedLegendItem");
                     colorMap[interaction.toLowerCase()] = selectedColor;
-                    dropdown.style("background-color", selectedColor);
+
+                    if(phases.includes(interaction)){
+
+                      dropdown.style("border",  `2px dotted ${selectedColor}`);
+
+                    }else if(!phases.includes(interaction)){
+
+                      dropdown.style("background-color",  selectedColor);
+
+                    }
                     if (selectedLegendItem.node()) {
                       // Check if the selection is not empty
                       selectedLegendItem
@@ -3180,13 +3204,6 @@
 
       // here we start the disease_interaction 
 
-      var disease_interaction =
-        [
-          "Phase1",
-          "Phase2",
-          "Phase3",
-          "Phase4",
-        ]
       // function createLegend_disease() {
       //   var legendContent = d3.select("#legend-content_disease");
 
