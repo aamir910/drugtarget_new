@@ -919,6 +919,14 @@
             <!-- Legend items will be populated dynamically -->
           </div>
         </div>
+
+        <div id="legend">
+          <h3> Interaction </h3>
+          <div id="legend-content">
+            <!-- Legend items will be populated dynamically -->
+          </div>
+        </div>
+
         <div id="legend_drug_type">
           <h3>Product type</h3>
           <div id="legend_drug_type-content">
@@ -927,12 +935,7 @@
         </div>
 
 
-        <div id="">
-          <h3> Clinical trial </h3>
-          <div id="legend-content_disease">
-            <!-- Legend items will be populated dynamically -->
-          </div>
-        </div>
+        
 
         <div id="legend_protein_status">
           <h3>Protein super family</h3>
@@ -949,12 +952,13 @@
             <div id="legend_disease_status-content">
               <!-- Legend items will be populated dynamically -->
             </div>
-            <div id="">
-              <h3> Interaction </h3>
-              <div id="legend-content">
+            <div id="legend">
+              <h3> Clinical trial </h3>
+              <div id="legend-content_disease">
                 <!-- Legend items will be populated dynamically -->
               </div>
             </div>
+         
             <!-- endedd  -->
 
 
@@ -2440,8 +2444,8 @@
 
               // var interaction = interactions[row.Phase - 1].toLowerCase();
               var interaction = row.interaction;
-              var disease_interaction = row.Phase;
-
+              var disease_interaction = "phase"+row.Phase;
+console.log(disease_interaction ,"phasesare")
               var drugStatus = row.Drug_status; // Get the "Drug_status" value
               var drugType = row.drugtype; // Get the "Drug_status" value
               var proteinClass = row.Protein_Class;
@@ -3089,7 +3093,7 @@
                 }
               } )
             .style(
-              "border",
+              "border-top",
               function () {
                 if (phases.includes(interaction)) {
                   return "2px dotted " + color
@@ -3137,7 +3141,7 @@
 
                     if(phases.includes(interaction)){
 
-                      dropdown.style("border",  `2px dotted ${selectedColor}`);
+                      dropdown.style("border-top",  `2px dotted ${selectedColor}`);
 
                     }else if(!phases.includes(interaction)){
 
