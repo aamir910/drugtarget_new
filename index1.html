@@ -2516,7 +2516,7 @@
               links.push({
                 source: drugName,
                 target: disease,
-                type: "interaction",
+                type: disease_interaction,
                  disease_type : disease_interaction // You can customize the type for disease links
               });
 
@@ -2678,7 +2678,6 @@
               return colorMap[d.type];
             }
             else if (d.target.child_type === "disease_type") {
-              console.log[d.disease_type , "hre"]
               return Disease_colorMap_legend[d.disease_type];
 
             }
@@ -3177,7 +3176,7 @@
           var interaction = link.disease_type; // No need to convert to lowercase
           console.log(interaction , "interaction")
           if (
-            disease_interaction.includes( interaction
+            disease_interaction.includes(interaction
               // interaction.charAt(0).toUpperCase() + interaction.slice(1)
             ) &&
             !uniqueInteractions_disease.has(interaction)
@@ -3187,7 +3186,7 @@
           }
         });
         function createLegendItem(interaction, color) {
-          var legendItem = legendContent
+          var legendItem1 = legendContent
             .append("div")
             .style("display", "flex")
             .style("align-items", "center")
@@ -3196,7 +3195,7 @@
               d3.select(this).classed("selected-legend1", true);
             });
 
-          var dropdown = legendItem
+          var dropdown1 = legendItem1
             .append("div")
             .attr("class", "dropdown1")
             .style("position", "relative")
@@ -3215,9 +3214,9 @@
             //   }
             // });
 
-          var dropdownMenu = dropdown
+          var dropdownMenu1 = dropdown1
             .append("div")
-            .attr("class", "dropdown-menu1")
+            .attr("class", "dropdown-menu5")
             .style("display", "none")
             .style("position", "absolute")
             .style("left", "25px")
@@ -3226,7 +3225,7 @@
 
           for (var i = 0; i < disease_interaction.length; i++) {
             // var color = getColor(interactions[i]);
-            dropdownMenu
+            dropdownMenu1
               .append("div")
               .style("width", "20px")
               .style("height", "20px")
@@ -3256,7 +3255,7 @@
               // );
           }
 
-          var legendText = legendItem
+          var legendText = legendItem1
             .append("span")
             .style("margin-left", "10px")
             .text(interaction);
@@ -3281,7 +3280,7 @@
         }
 
         document.addEventListener("click", function (event) {
-          var dropdownMenus = d3.selectAll(".dropdown-menu1");
+          var dropdownMenus = d3.selectAll(".dropdown-menu5");
           dropdownMenus.each(function () {
             var menu = d3.select(this);
             if (
@@ -3317,7 +3316,7 @@
         //console.log(link)
         link
           .filter(function (d) {
-            if (d.target.child_type === "child_type") {
+            if (d.target.child_type === "protein_type") {
               return d
             }
           })
