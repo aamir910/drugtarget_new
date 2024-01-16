@@ -935,7 +935,7 @@
         </div>
 
 
-        
+
 
         <div id="legend_protein_status">
           <h3>Protein super family</h3>
@@ -958,7 +958,7 @@
                 <!-- Legend items will be populated dynamically -->
               </div>
             </div>
-         
+
             <!-- endedd  -->
 
 
@@ -985,6 +985,15 @@
         Redraw
       </button>
     </div>
+
+
+
+
+    <!-- <script src="drug_network.js"></script> -->
+
+
+
+
 
     <script>
       //Pass jsonFiles Here
@@ -2299,6 +2308,12 @@
         }
       }
     </script>
+
+
+
+
+
+
     <script>
       var width = 400;
       var height = 300;
@@ -2444,14 +2459,25 @@
 
               // var interaction = interactions[row.Phase - 1].toLowerCase();
               var interaction = row.interaction;
-              var disease_interaction = "phase"+row.Phase;
-console.log(disease_interaction ,"phasesare")
+              // change1 
+              var disease_interaction;
+
+
+              if (row.Phase !== 1) {
+                disease_interaction = "phase" + row.Phase;
+              }
+              else {
+                disease_interaction = "temp"
+              }
+
+
+              disease_phase = row.Phase;
               var drugStatus = row.Drug_status; // Get the "Drug_status" value
               var drugType = row.drugtype; // Get the "Drug_status" value
               var proteinClass = row.Protein_Class;
               var disease = row.Disease_name; // getting the new disease
               var Disease_class = row.Disease_class
-              var disease_phase = row.Phase;
+
               if (
                 !nodes.find(function (node) {
                   return node.id === drugName;
@@ -2735,8 +2761,17 @@ console.log(disease_interaction ,"phasesare")
           })
           .append("circle")
           .attr("r", function (d) {
-            var parentCount = childNodeMap[d.id] || 1;
-            return 5 + (parentCount - 1) + 1; // Increase the size by 3px for each connected parent node
+            var linkCount = 0;
+            // console.log(d , "here is the value of the d") ;
+            link.filter(function (templink) {
+              if (templink.target.id === d.id) {
+                linkCount = 1 + linkCount;
+
+              }
+            })
+            console.log(linkCount, "here are the parentcount ")
+
+            return 3 + (linkCount); // Increase the size by 3px for each connected parent node
           })
           .style("fill", function (d) {
             return proteinColorMap[d.Protein_Class] || "steelblue";
@@ -2747,17 +2782,19 @@ console.log(disease_interaction ,"phasesare")
           });
 
         node.filter(function (d) {
-          return d.child_type === 'disease_type' && !d.isParent;
+          // change2 
+          return d.child_type === 'disease_type' && !d.isParent && d.disease_phase !== 1;
         })
           .append("path")
           .attr("d", "M 0 0 L 8 16 L -8 16 Z") // Path data for a triangle
           .style("fill", function (d) {
+            console.log(d, "disease");
             return DiseaseColorMap[d.DiseaseClass] || "black";
           })
           .on("click", function (event, d) {
             window.open(`https://www.triangle.com/${d.id}`, "_blank");
-
           });
+
 
 
         node
@@ -2797,10 +2834,11 @@ console.log(disease_interaction ,"phasesare")
         node.append("title").text(function (d) {
           return d.id;
         });
-
+   
         node
           .filter(function (d) {
-            return !d.isParent;
+            // change3 
+            return !d.isParent && d.disease_phase !== 1;
           })
           .append("text")
           .attr("dx", 10)
@@ -3044,7 +3082,6 @@ console.log(disease_interaction ,"phasesare")
         "Phase2",
         "Phase3",
         "Phase4",
-
       ];
       function createLegend() {
         var legendContent = d3.select("#legend-content");
@@ -3088,31 +3125,31 @@ console.log(disease_interaction ,"phasesare")
             .style("height", "3px")
             // Adjust the height to control the line thickness
             .style("background-color", function () {
-                if (!phases.includes(interaction)) {
-                  return  color
-                }
-              } )
+              if (!phases.includes(interaction)) {
+                return color
+              }
+            })
             .style(
               "border-top",
               function () {
                 if (phases.includes(interaction)) {
                   return "2px dotted " + color
                 }
-                else{
-                  return color ;
+                else {
+                  return color;
                 }
               })
-                .on("click", function () {
-                  var clickedText = d3.select(this.parentNode).select("span");
-                  if (!clickedText.classed("text-through")) {
-                    var menu = d3.select(this).select(".dropdown-menu1");
-                    if (menu.style("display") === "none") {
-                      menu.style("display", "flex");
-                    } else {
-                      menu.style("display", "none");
-                    }
-                  }
-                });
+            .on("click", function () {
+              var clickedText = d3.select(this.parentNode).select("span");
+              if (!clickedText.classed("text-through")) {
+                var menu = d3.select(this).select(".dropdown-menu1");
+                if (menu.style("display") === "none") {
+                  menu.style("display", "flex");
+                } else {
+                  menu.style("display", "none");
+                }
+              }
+            });
 
           var dropdownMenu = dropdown
             .append("div")
@@ -3139,13 +3176,13 @@ console.log(disease_interaction ,"phasesare")
                     console.log(selectedLegendItem, "selectedLegendItem");
                     colorMap[interaction.toLowerCase()] = selectedColor;
 
-                    if(phases.includes(interaction)){
+                    if (phases.includes(interaction)) {
 
-                      dropdown.style("border-top",  `2px dotted ${selectedColor}`);
+                      dropdown.style("border-top", `2px dotted ${selectedColor}`);
 
-                    }else if(!phases.includes(interaction)){
+                    } else if (!phases.includes(interaction)) {
 
-                      dropdown.style("background-color",  selectedColor);
+                      dropdown.style("background-color", selectedColor);
 
                     }
                     if (selectedLegendItem.node()) {
