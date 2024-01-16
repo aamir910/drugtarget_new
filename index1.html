@@ -2686,7 +2686,9 @@
               })
               .distance(distanceBetweenNodes)
           )
-          .force("charge", d3.forceManyBody().strength(chargeStrength))
+          // .force("charge", d3.forceManyBody().strength(chargeStrength))
+
+          .force("charge", d3.forceManyBody().strength(-300))
           // Adding centering forces for X and Y coordinates
           .force("x", d3.forceX(containerWidth / 2).strength(0.1))
           .force("y", d3.forceY(containerHeight / 2).strength(0.1))
@@ -2761,17 +2763,23 @@
           })
           .append("circle")
           .attr("r", function (d) {
-            var linkCount = 0;
-            // console.log(d , "here is the value of the d") ;
+            // change4 
+            var uniqueSources = new Set(); 
+            
+
             link.filter(function (templink) {
               if (templink.target.id === d.id) {
-                linkCount = 1 + linkCount;
-
+                console.log(templink.target.id, ' target');
+                uniqueSources.add(templink.source.id); 
+              
               }
-            })
-            console.log(linkCount, "here are the parentcount ")
+            });
 
-            return 3 + (linkCount); // Increase the size by 3px for each connected parent node
+            console.log('Unique Sources:', Array.from(uniqueSources)); 
+            var child_size =  Array.from(uniqueSources).length ; 
+
+            return 5 + (child_size); 
+            
           })
           .style("fill", function (d) {
             return proteinColorMap[d.Protein_Class] || "steelblue";
@@ -2834,7 +2842,7 @@
         node.append("title").text(function (d) {
           return d.id;
         });
-   
+
         node
           .filter(function (d) {
             // change3 
