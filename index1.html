@@ -3104,7 +3104,7 @@
         var legendContent3 = d3.select("#trial_to_hide");
 
         var uniqueInteractions = [];
-      
+
         links.forEach(function (link) {
           var interaction = link.type; // No need to convert to lowercase
           if (
@@ -3224,21 +3224,18 @@
             .append("span")
             .style("margin-left", "10px")
             .text(interaction);
-
-          if (!uniqueInteractions.includes(phases)) {
-
-console.log(uniqueInteractions , ' here are unique interaction ')
-            console.log("check")
+    //  change6 
+          if (phases.every(phase => uniqueInteractions.includes(phase))) {
+            console.log(uniqueInteractions, ' here are unique interactions');
+            console.log("check");
             legendContent3.style("display", "none");
-          }
-           else {
-            // Set display to "block" or any other desired value
+          } else {
             legendContent3.style("display", "block");
+            // Set display to "block" or any other desired value
           }
+        
+          
 
-          // Event listener for the legend item text
-          // Assuming that you have already defined the "nodes" and "links" arrays
-          // and the "hiddenInteractions" object to track the visibility of interactions.
           legendText.on("click", function () {
             var clickedText = d3.select(this);
             var interaction = clickedText.text().toLowerCase();
