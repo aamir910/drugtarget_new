@@ -953,7 +953,7 @@
               <!-- Legend items will be populated dynamically -->
             </div>
             <div id="legend">
-              <h3> Clinical trial </h3>
+              <h3 id="trial_to_hide"> Clinical trial </h3>
               <div id="legend-content_disease">
                 <!-- Legend items will be populated dynamically -->
               </div>
@@ -2652,10 +2652,10 @@
         var noOfTotalNodes11 = links.length;
 
         console.log("HHHHHHHH" + noOfTotalNodes11);
-
+        // change5
         if (noOfTotalNodes11 < 100) {
-          chargeStrength = -500;
-          var distanceBetweenNodes = 100;
+          chargeStrength = -650;
+          var distanceBetweenNodes = 200;
         } else if (noOfTotalNodes11 > 99 && noOfTotalNodes11 < 200) {
           chargeStrength = -150;
           var distanceBetweenNodes = 100;
@@ -2686,9 +2686,9 @@
               })
               .distance(distanceBetweenNodes)
           )
-          // .force("charge", d3.forceManyBody().strength(chargeStrength))
+          .force("charge", d3.forceManyBody().strength(chargeStrength))
 
-          .force("charge", d3.forceManyBody().strength(-300))
+          // .force("charge", d3.forceManyBody().strength(-300))
           // Adding centering forces for X and Y coordinates
           .force("x", d3.forceX(containerWidth / 2).strength(0.1))
           .force("y", d3.forceY(containerHeight / 2).strength(0.1))
@@ -2764,22 +2764,27 @@
           .append("circle")
           .attr("r", function (d) {
             // change4 
-            var uniqueSources = new Set(); 
-            
+            var uniqueSources = new Set();
+
 
             link.filter(function (templink) {
               if (templink.target.id === d.id) {
                 console.log(templink.target.id, ' target');
-                uniqueSources.add(templink.source.id); 
-              
+                uniqueSources.add(templink.source.id);
+
               }
             });
 
-            console.log('Unique Sources:', Array.from(uniqueSources)); 
-            var child_size =  Array.from(uniqueSources).length ; 
+            var child_size = Array.from(uniqueSources).length;
+            console.log('Unique Sources:', Array.from(uniqueSources), child_size);
+            if (child_size > 25) {
+              return 30
+            }
+            else {
 
-            return 5 + (child_size); 
-            
+              return 5 + (child_size);
+            }
+
           })
           .style("fill", function (d) {
             return proteinColorMap[d.Protein_Class] || "steelblue";
@@ -3096,24 +3101,29 @@
 
         var legendContent2 = d3.select("#legend-content_disease");
 
-        var uniqueInteractions = new Set();
+        var legendContent3 = d3.select("#trial_to_hide");
 
+        var uniqueInteractions = [];
+      
         links.forEach(function (link) {
           var interaction = link.type; // No need to convert to lowercase
           if (
             interactions.includes(
               interaction.charAt(0).toUpperCase() + interaction.slice(1)
             ) &&
-            !uniqueInteractions.has(interaction)
+            !uniqueInteractions.includes(interaction)
           ) {
             if (["phase1", "phase2", "phase3", "phase4"].includes(interaction)) {
               createLegendItem(interaction, getColor(interaction), legendContent2);
             } else {
               createLegendItem(interaction, getColor(interaction), legendContent);
             }
-            uniqueInteractions.add(interaction);
+            uniqueInteractions.push(interaction);
           }
         });
+        // change6
+
+
         function createLegendItem(interaction, color, container) {
           var legendItem = container
             .append("div")
@@ -3207,12 +3217,24 @@
                   };
                 })(interactions[i])
               );
+
           }
 
           var legendText = legendItem
             .append("span")
             .style("margin-left", "10px")
             .text(interaction);
+
+          if (!uniqueInteractions.includes(phases)) {
+
+console.log(uniqueInteractions , ' here are unique interaction ')
+            console.log("check")
+            legendContent3.style("display", "none");
+          }
+           else {
+            // Set display to "block" or any other desired value
+            legendContent3.style("display", "block");
+          }
 
           // Event listener for the legend item text
           // Assuming that you have already defined the "nodes" and "links" arrays
