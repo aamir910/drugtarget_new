@@ -948,7 +948,7 @@
 
           <!-- here is the disease legend started -->
           <div id="legend_disease_status">
-            <h3>Disease family</h3>
+            <h3 id="Disease_to_hide">Disease family</h3>
             <div id="legend_disease_status-content">
               <!-- Legend items will be populated dynamically -->
             </div>
@@ -3121,7 +3121,6 @@
             uniqueInteractions.push(interaction);
           }
         });
-        // change6
 
 
         function createLegendItem(interaction, color, container) {
@@ -3242,6 +3241,9 @@
                 // Set display to "block" or any other desired value
               }
             
+
+
+
 
           // Event listener for the legend item text
           // Assuming that you have already defined the "nodes" and "links" arrays
@@ -3636,35 +3638,35 @@
 
       // tag5 
       // funtion to the disease in the legend 
+      var diseases = [
+        "Congenital and Neonatal",
+        "Respiratory Tract",
+        "Cardiovascular",
+        "Nutritional and Metabolic",
+        "Neoplasms",
+        "Mental Disorders",
+        "Eye",
+        "Behavior Mechanisms",
+        "Infections",
+        "Digestive System",
+        "Pathological Conditions",
+        "Skin and Connective Tissue",
+        "Hemic and Lymphatic",
+        "Female_Urogenital",
+        "Nervous System",
+        "Immune System",
+        "Chemically-Induced Disorders",
+        "Stomatognathic",
+        "Musculoskeletal",
+        "Wounds and Injuries",
+        "Otorhinolaryngologic",
+        "Endocrine System",
+        "Male Urogenital",
+        "Occupational Diseases",
+        "Genetic Inborn"
+      ];
       function createDiseaseLegend() {
         var hiddendisease = {}; // Change this to 
-        var diseases = [
-          "Congenital and Neonatal",
-          "Respiratory Tract",
-          "Cardiovascular",
-          "Nutritional and Metabolic",
-          "Neoplasms",
-          "Mental Disorders",
-          "Eye",
-          "Behavior Mechanisms",
-          "Infections",
-          "Digestive System",
-          "Pathological Conditions",
-          "Skin and Connective Tissue",
-          "Hemic and Lymphatic",
-          "Female_Urogenital",
-          "Nervous System",
-          "Immune System",
-          "Chemically-Induced Disorders",
-          "Stomatognathic",
-          "Musculoskeletal",
-          "Wounds and Injuries",
-          "Otorhinolaryngologic",
-          "Endocrine System",
-          "Male Urogenital",
-          "Occupational Diseases",
-          "Genetic Inborn"
-        ];
 
 
         var legendContent = d3.select("#legend_disease_status-content");
@@ -3770,13 +3772,25 @@
           });
 
         }
+        
 
-
+        // change7 
+        
+        var legendContent4 = d3.select("#Disease_to_hide");
+    
+        
+        if (Array.from(uniqueDisease).every(value => diseases.includes(value))) {
+  
+                console.log(uniqueDisease , ' here are unique interaction ')
+                console.log("check")
+                legendContent4.style("display", "block");
+              }
+              else {
+                 legendContent4.style("display", "none");
+                // Set display to "block" or any other desired value
+              }
       }
-
-
-
-
+      
       // Call the function to create the legend
       function createLegend_status() {
         var legendContent = d3.select("#legend_drug_status-content");
