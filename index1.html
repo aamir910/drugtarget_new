@@ -3104,7 +3104,7 @@
         var legendContent3 = d3.select("#trial_to_hide");
 
         var uniqueInteractions = [];
-      
+
         links.forEach(function (link) {
           var interaction = link.type; // No need to convert to lowercase
           if (
@@ -3223,24 +3223,24 @@
             .append("span")
             .style("margin-left", "10px")
             .text(interaction);
-            // change6 
+          // change6 
 
-              if (
-             uniqueInteractions.includes("phase1") ||
-              uniqueInteractions.includes("phase2") ||
-              uniqueInteractions.includes("phase3")||
-              uniqueInteractions.includes("phase4")
-              )  {
-    
-                console.log(uniqueInteractions , ' here are unique interaction ')
-                console.log("check")
-                legendContent3.style("display", "block");
-              }
-              else {
-                 legendContent3.style("display", "none");
-                // Set display to "block" or any other desired value
-              }
-            
+          if (
+            uniqueInteractions.includes("phase1") ||
+            uniqueInteractions.includes("phase2") ||
+            uniqueInteractions.includes("phase3") ||
+            uniqueInteractions.includes("phase4")
+          ) {
+
+            console.log(uniqueInteractions, ' here are unique interaction ')
+            console.log("check")
+            legendContent3.style("display", "block");
+          }
+          else {
+            legendContent3.style("display", "none");
+            // Set display to "block" or any other desired value
+          }
+
 
 
 
@@ -3772,25 +3772,23 @@
           });
 
         }
-        
+
 
         // change7 
-        
+
         var legendContent4 = d3.select("#Disease_to_hide");
-    
-        
-        if (Array.from(uniqueDisease).every(value => diseases.includes(value))) {
-  
-                console.log(uniqueDisease , ' here are unique interaction ')
-                console.log("check")
-                legendContent4.style("display", "block");
-              }
-              else {
-                 legendContent4.style("display", "none");
-                // Set display to "block" or any other desired value
-              }
+
+
+        if (diseases.some(disease => uniqueDisease.has(disease))) {
+          console.log(uniqueDisease, ' here are unique interactions');
+          console.log("check");
+          legendContent4.style("display", "block");
+        } else {
+          legendContent4.style("display", "none");
+          // Set display to "block" or any other desired value
+        }
       }
-      
+
       // Call the function to create the legend
       function createLegend_status() {
         var legendContent = d3.select("#legend_drug_status-content");
