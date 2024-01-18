@@ -3638,63 +3638,41 @@
 
       // tag5 
       // funtion to the disease in the legend 
-      var diseases = [
-        "Congenital and Neonatal",
-        "Respiratory Tract",
-        "Cardiovascular",
-        "Nutritional and Metabolic",
-        "Neoplasms",
-        "Mental Disorders",
-        "Eye",
-        "Behavior Mechanisms",
-        "Infections",
-        "Digestive System",
-        "Pathological Conditions",
-        "Skin and Connective Tissue",
-        "Hemic and Lymphatic",
-        "Female_Urogenital",
-        "Nervous System",
-        "Immune System",
-        "Chemically-Induced Disorders",
-        "Stomatognathic",
-        "Musculoskeletal",
-        "Wounds and Injuries",
-        "Otorhinolaryngologic",
-        "Endocrine System",
-        "Male Urogenital",
-        "Occupational Diseases",
-        "Genetic Inborn"
-      ];
       function createDiseaseLegend() {
+        var diseases = [
+          "Congenital and Neonatal",
+          "Respiratory Tract",
+          "Cardiovascular",
+          "Nutritional and Metabolic",
+          "Neoplasms",
+          "Mental Disorders",
+          "Eye",
+          "Behavior Mechanisms",
+          "Infections",
+          "Digestive System",
+          "Pathological Conditions",
+          "Skin and Connective Tissue",
+          "Hemic and Lymphatic",
+          "Female_Urogenital",
+          "Nervous System",
+          "Immune System",
+          "Chemically-Induced Disorders",
+          "Stomatognathic",
+          "Musculoskeletal",
+          "Wounds and Injuries",
+          "Otorhinolaryngologic",
+          "Endocrine System",
+          "Male Urogenital",
+          "Occupational Diseases",
+          "Genetic Inborn"
+        ];
         var hiddendisease = {}; // Change this to 
 
 
         var legendContent = d3.select("#legend_disease_status-content");
 
 
-        // links.forEach(function (link) {
-        //   for(let i=0 ; i<diseases.length ; i++){
-        //     if(link.target.DiseaseClass === diseases[i])
-        //     {
-        //       console.log(link.target.DiseaseClass , "Disease_class");
-
-        //     }
-
-        //   }
-        // })
-
-        // links.forEach(function (link) {
-        //   var diceaseClass11 = link.target.Protein_Class; // No need to convert to lowercase
-        //   //console.log(proteinClass11);
-        // for(let i=0 ; i<diseases.length ; i++){
-
-        //   if (true) {
-
-        //     createLegendItem(diseases[i], diseaseColors[i]);   
-
-        //   }
-
-        // }
+       
         var uniqueDisease = new Set();
 
         links.forEach(function (link) {

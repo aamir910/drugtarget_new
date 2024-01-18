@@ -8,8 +8,8 @@
         "Drug_status": "Approved",
         "Protein_Class": "GPCR",
         "Disease_name": "Endometriosis",
-        "Disease_class": "Female_Urogenital",
-        "Phase": 2
+        "Disease_class": "",
+        "Phase":1 
     },
     {
         "drugbank_id": "DB00014",
@@ -20,8 +20,8 @@
         "Drug_status": "Approved",
         "Protein_Class": "GPCR",
         "Disease_name": "Endometriosis",
-        "Disease_class": "Female_Urogenital",
-        "Phase": 1
+        "Disease_class": "",
+        "Phase":1 
     },
     {
         "drugbank_id": "DB15327",
@@ -32,8 +32,8 @@
         "Drug_status": "Investigational",
         "Protein_Class": "Kinase",
         "Disease_name": "Bronchioloalveolar Adenocarcinoma",
-        "Disease_class": "Neoplasms",
-        "Phase": 1
+        "Disease_class": "",
+        "Phase":1 
     },
     {
         "drugbank_id": "DB15327",
@@ -44,7 +44,7 @@
         "Drug_status": "Investigational",
         "Protein_Class": "Kinase",
         "Disease_name": "Lymphoma, Follicular",
-        "Disease_class": "Neoplasms",
+        "Disease_class": "",
         "Phase":1
     },
     {
@@ -56,7 +56,7 @@
         "Drug_status": "Investigational",
         "Protein_Class": "Kinase",
         "Disease_name": "Severe Acute Respiratory Syndrome",
-        "Disease_class": "Infections",
+        "Disease_class": "",
         "Phase":1
     },
     {
@@ -68,7 +68,7 @@
         "Drug_status": "Investigational",
         "Protein_Class": "Kinase",
         "Disease_name": "Bronchioloalveolar Adenocarcinoma",
-        "Disease_class": "Neoplasms",
+        "Disease_class": "",
         "Phase":1
     },
     {
@@ -80,7 +80,7 @@
         "Drug_status": "Investigational",
         "Protein_Class": "Kinase",
         "Disease_name": "Lymphoma, Follicular",
-        "Disease_class": "Neoplasms",
+        "Disease_class": "",
         "Phase":1
     },
     {
@@ -92,7 +92,7 @@
         "Drug_status": "Investigational",
         "Protein_Class": "Kinase",
         "Disease_name": "Severe Acute Respiratory Syndrome",
-        "Disease_class": "Infections",
+        "Disease_class": "",
         "Phase":1
     },
     {
@@ -104,7 +104,7 @@
         "Drug_status": "Investigational",
         "Protein_Class": "Kinase",
         "Disease_name": "Malignant Neoplasm of Breast",
-        "Disease_class": "Neoplasms",
+        "Disease_class": "",
         "Phase":1
     },
     {
@@ -116,7 +116,7 @@
         "Drug_status": "Investigational",
         "Protein_Class": "Kinase",
         "Disease_name": "Neoplasms",
-        "Disease_class": "Neoplasms",
+        "Disease_class": "",
         "Phase":1
     }
    
