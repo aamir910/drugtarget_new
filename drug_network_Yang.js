@@ -7,9 +7,7 @@ $(function () {
 
 
 // var json_GeneralFile = "json/json_GeneralFile.json";
-// var json_GeneralFile = "json/json4.json";
 var json_GeneralFile = "json/json3.json";
-
 var json_drugData = "json/json_drugData.json";
 var json_proteinData = "json/json_proteinData.json";
 var json_interactionData = "json/json_interactionData.json";
@@ -1751,14 +1749,20 @@ function createChart(links) {
         console.log("check6")
         chargeStrength = -100;
         var distanceBetweenNodes = 60;
-      } else if (noOfTotalNodes11 > 399 && noOfTotalNodes11 < 4999 ) {
+      } else if (noOfTotalNodes11 > 399 && noOfTotalNodes11 < 999 ) {
         
-        console.log("check7" , noOfTotalNodes11)
+        console.log("check8" , noOfTotalNodes11)
+        chargeStrength = -700;
+        var distanceBetweenNodes = 100;
+      }else if (noOfTotalNodes11 > 1000 && noOfTotalNodes11 < 2999 ) {
+        
+        console.log("check9" , noOfTotalNodes11)
         chargeStrength = -600;
         var distanceBetweenNodes = 100;
-      } else if (noOfTotalNodes11 > 5000) {
+      }
+       else if (noOfTotalNodes11 > 3000) {
         
-        console.log("check7" , noOfTotalNodes11)
+        console.log("check10" , noOfTotalNodes11)
         chargeStrength = -300;
         var distanceBetweenNodes = 60;
       }
