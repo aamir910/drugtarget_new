@@ -1722,28 +1722,28 @@ function createChart(links) {
 
     if (noOfTotalNodes11 < 100) {
         chargeStrength = -650;
-        console.log("check1")
+      
         var distanceBetweenNodes = 200;
       } else if (noOfTotalNodes11 > 99 && noOfTotalNodes11 < 200) {
         
-        console.log("check2")
         chargeStrength = -150;
         var distanceBetweenNodes = 100;
       } else if (noOfTotalNodes11 > 199 && noOfTotalNodes11 < 250) {
         
-        console.log("check3")
+       
         chargeStrength = -150;
         var distanceBetweenNodes = 100;
       } else if (noOfTotalNodes11 > 249 && noOfTotalNodes11 < 300) {
         
-        console.log("check4")
+      
         chargeStrength = -100;
         var distanceBetweenNodes = 80;
       } else if (noOfTotalNodes11 > 299 && noOfTotalNodes11 < 350) {
         
-        console.log("check5")
+       
         chargeStrength = -100;
         var distanceBetweenNodes = 80;
+        // change2 
       } else if (noOfTotalNodes11 > 349 && noOfTotalNodes11 < 400) {
         
         console.log("check6")
@@ -1752,7 +1752,7 @@ function createChart(links) {
       } else if (noOfTotalNodes11 > 399 && noOfTotalNodes11 < 999 ) {
         
         console.log("check8" , noOfTotalNodes11)
-        chargeStrength = -700;
+        chargeStrength = -550;
         var distanceBetweenNodes = 100;
       }else if (noOfTotalNodes11 > 1000 && noOfTotalNodes11 < 2999 ) {
         
@@ -1876,7 +1876,7 @@ function createChart(links) {
         });
 
     node.filter(function (d) {
-        
+        // change1
         return d.child_type === 'disease_type' && !d.isParent && d.disease_phase !== 1 && d.DiseaseClass;
     })
         .append("path")
@@ -2209,12 +2209,11 @@ function createLegend() {
 
     var legendContent2 = d3.select("#legend-content_disease");
 
-    // change4 copy this line 
     var legendContent3 = d3.select("#trial_to_hide");
     //console.log("interaction legend",legendContent);
     //console.log("disease legend",legendContent2);
 
-    // change1 
+    
 
     var uniqueInteractions = [];
 
@@ -2224,7 +2223,6 @@ function createLegend() {
         interactions.includes(
           interaction.charAt(0).toUpperCase() + interaction.slice(1)
         ) &&
-        // change2 has to includes  
         !uniqueInteractions.includes(interaction)
       ) {
         if (["phase1", "phase2", "phase3", "phase4"].includes(interaction)) {
@@ -2232,7 +2230,6 @@ function createLegend() {
         } else {
           createLegendItem(interaction, getColor(interaction), legendContent);
         }
-        // change3 add to includes 
         uniqueInteractions.push(interaction);
       }
     });
