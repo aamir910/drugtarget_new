@@ -7,12 +7,21 @@ $(function () {
 
 
 // var json_GeneralFile = "json/json_GeneralFile.json";
-var json_GeneralFile = "json/json2.json";
+var json_GeneralFile = "json/json4.json";
 var json_drugData = "json/json_drugData.json";
 var json_proteinData = "json/json_proteinData.json";
 var json_interactionData = "json/json_interactionData.json";
 
 $("#loading").show();
+
+
+
+  document.getElementById("clicked").addEventListener("click", function () {
+      processData();
+      createChart(links)
+    
+  });
+
 let drug_xlsxData;
 let protein_xlsxData;
 let interaction_xlsxData;
@@ -1664,7 +1673,7 @@ var simulation = null
 
 // Create the Forced Directed Network Chart
 function createChart(links) {
-    d3.select("#chart").selectAll("*").remove();
+    // d3.select("#chart").selectAll("*").remove();
     //console.log("Latest Edit CreateCHart_13_jan_2024_A");
     var container = d3.select("#chart");
     //debugger

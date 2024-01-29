@@ -58,6 +58,11 @@
     }
   }
 
+  // Set the default tab to show the image when the page loads
+  window.onload = function () {
+    showTab(1);
+  };
+
   // Function to create a simple D3.js force-directed graph
   function createD3Graph() {
     var svg = d3.select("#tab2").append("svg")
@@ -138,11 +143,6 @@
       d.fy = null;
     }
   }
-
-  // Set the default tab to show the image when the page loads
-  window.onload = function () {
-    showTab(1);
-  };
 </script>
 
 </body>
