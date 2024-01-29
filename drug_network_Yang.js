@@ -7,35 +7,12 @@ $(function () {
 
 
 // var json_GeneralFile = "json/json_GeneralFile.json";
-var json_GeneralFile = "json/json3.json";
+var json_GeneralFile = "json/json2.json";
 var json_drugData = "json/json_drugData.json";
 var json_proteinData = "json/json_proteinData.json";
 var json_interactionData = "json/json_interactionData.json";
 
-
-// var json_GeneralFile = "/static/json-sample/json_GeneralFile.json";
-// var json_drugData = "/static/json-sample/json_drugData.json";
-// var json_proteinData = "/static/json-sample/json_proteinData.json";
-// var json_interactionData = "/static/json-sample/json_interactionData.json"
-
-
-
-// if (drug_bank_ids) {
-//     json_GeneralFile = "/drugs-network/general-data?drug_bank_ids=" + drug_bank_ids.join(',');
-//     json_drugData = "/drugs-network/drug-data?drug_bank_ids=" + drug_bank_ids.join(',');
-//     json_proteinData = "/drugs-network/protein-data?drug_bank_ids=" + drug_bank_ids.join(',');
-//     json_interactionData = "/drugs-network/interaction-data?drug_bank_ids=" + drug_bank_ids.join(',');
-// }
-
-// if (drug_bank_id) {
-//     json_GeneralFile = "/drug_network/" + drug_bank_id + "/general_data";
-//     json_drugData = "/drug_network/" + drug_bank_id + "/drug_data";
-//     json_proteinData = "/drug_network/" + drug_bank_id + "/protein_data";
-//     json_interactionData = "/drug_network/" + drug_bank_id + "/interaction_data";
-// }
-
 $("#loading").show();
-
 let drug_xlsxData;
 let protein_xlsxData;
 let interaction_xlsxData;
@@ -1521,12 +1498,12 @@ function processData() {
                 var drugID = row.drugbank_id;
                 var protein = row.protein;
                 var genename = row.gene_name;
-                var interaction = row.interaction_type;
+                var interaction = row.interaction_type.charAt(0).toUpperCase() + row.interaction_type.slice(1);;
                 // var interaction = row.interaction;
                 
                 var disease_interaction;
                 if (row.Phase !== 1) {
-                  disease_interaction = "phase" + row.Phase;
+                  disease_interaction = "Phase" + row.Phase;
                 }
                 else {
                   disease_interaction = "temp";
@@ -1691,8 +1668,8 @@ function createChart(links) {
     //console.log("Latest Edit CreateCHart_13_jan_2024_A");
     var container = d3.select("#chart");
     //debugger
-    var containerWidth = [container.node().getBoundingClientRect().width] - 10;
-    var containerHeight = [container.node().getBoundingClientRect().height] - 10;
+    var svgWidth = [container.node().getBoundingClientRect().width] - 100;
+    var svgHeight = [container.node().getBoundingClientRect().height] - 100;
     //var containerWidth = 500;
     //var containerHeight = 500;
     //console.log("Width : "+containerWidth+"  ----  Height : "+containerHeight);
@@ -1707,8 +1684,9 @@ function createChart(links) {
 
     // SVG creation with zoom behavior
     svg = container.append("svg")
-        .attr("width", containerWidth)
-        .attr("height", containerHeight)
+        .attr("width",  svgWidth)
+        .attr("height", svgHeight)
+        // .style("background-color" , "red")
         .call(zoom)
         .append("g"); // Append group element to SVG
 
@@ -1783,8 +1761,8 @@ function createChart(links) {
         )
         .force("charge", d3.forceManyBody().strength(chargeStrength))
         // Adding centering forces for X and Y coordinates
-        .force("x", d3.forceX(containerWidth / 2).strength(0.1))
-        .force("y", d3.forceY(containerHeight / 2).strength(0.1))
+        .force("x", d3.forceX(svgWidth / 2).strength(0.1))
+        .force("y", d3.forceY(svgHeight / 2).strength(0.1))
 
         .on("end", function () {
             nodes.forEach(function (node) {
@@ -1800,8 +1778,7 @@ function createChart(links) {
         .append("line")
         .attr("class", "link")
         .style("stroke", function (d) {
-
-            return colorMap[d.type];
+            return colorMap[(d.type).toLowerCase()]; 
 
 
         })
@@ -1942,29 +1919,28 @@ function createChart(links) {
         })
         .attr("class", "node-label");
     // tag4
+
     simulation.on("tick", function () {
         link
             .attr("x1", function (d) {
-                return d.source.x;
+                return Math.max(0, Math.min(svgWidth, d.source.x));
             })
             .attr("y1", function (d) {
-                return d.source.y;
+                return Math.max(0, Math.min(svgHeight, d.source.y));
             })
             .attr("x2", function (d) {
-                return d.target.x;
+                return Math.max(0, Math.min(svgWidth, d.target.x));
             })
             .attr("y2", function (d) {
                 if (d.target.child_type === "disease_type") {
-                    return d.target.y + 8;
-
+                    return Math.max(0, Math.min(svgHeight, d.target.y)) + 8;
                 } else {
-
-                    return d.target.y
+                    return Math.max(0, Math.min(svgHeight, d.target.y));
                 }
             });
-
+    
         node.attr("transform", function (d) {
-            return "translate(" + d.x + "," + d.y + ")";
+            return `translate(${Math.max(0, Math.min(svgWidth, d.x))},${Math.max(0, Math.min(svgHeight, d.y))})`;
         });
     });
 
@@ -2225,7 +2201,7 @@ function createLegend() {
         ) &&
         !uniqueInteractions.includes(interaction)
       ) {
-        if (["phase1", "phase2", "phase3", "phase4"].includes(interaction)) {
+        if (["Phase1", "Phase2", "Phase3", "Phase4"].includes(interaction)) {
           createLegendItem(interaction, getColor(interaction), legendContent2);
         } else {
           createLegendItem(interaction, getColor(interaction), legendContent);
@@ -2246,7 +2222,7 @@ function createLegend() {
           d3.select(this).classed("selected-legend1", true);
         });
         //console.log("legendItem", legendItem);
-      var phases = ["phase1", "phase2", "phase3", "phase4"];
+      var phases = ["Phase1", "Phase2", "Phase3", "Phase4"];
       var dropdown = legendItem
         .append("div")
         .attr("class", "dropdown1")
@@ -2304,7 +2280,7 @@ function createLegend() {
                 var selectedColor = getColor(selectedInteraction);
                 var selectedLegendItem = d3.select(".selected-legend1");
                 //console.log(selectedLegendItem, "selectedLegendItem");
-                colorMap[interaction.toLowerCase()] = selectedColor;
+                colorMap[interaction] = selectedColor;
 
                 if(phases.includes(interaction)){
 
@@ -2337,10 +2313,10 @@ function createLegend() {
         .text(interaction);
 
     if (
-        uniqueInteractions.includes("phase1") ||
-        uniqueInteractions.includes("phase2") ||
-        uniqueInteractions.includes("phase3") ||
-        uniqueInteractions.includes("phase4")
+        uniqueInteractions.includes("Phase1") ||
+        uniqueInteractions.includes("Phase2") ||
+        uniqueInteractions.includes("Phase3") ||
+        uniqueInteractions.includes("Phase4")
         ) {
 
     
@@ -2356,7 +2332,7 @@ function createLegend() {
       // and the "hiddenInteractions" object to track the visibility of interactions.
       legendText.on("click", function () {
         var clickedText = d3.select(this);
-        var interaction = clickedText.text().toLowerCase();
+        var interaction = clickedText.text();
 
         if (clickedText.classed("text-through")) {
           clickedText.classed("text-through", false);

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <style>
+    /* Style for the tabs and content */
+    .tab-content {
+      display: none;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Tab buttons -->
+<button onclick="showTab(1)">Show Image</button>
+<button onclick="showTab(2)">Show Network Graph</button>
+<button onclick="showTab(3)">Show Image Again</button>
+
+<!-- Tab content -->
+<div id="tab1" class="tab-content">
+  <img src="https://via.placeholder.com/300" alt="Placeholder Image">
+</div>
+
+<div id="tab2" class="tab-content">
+  <!-- D3.js force-directed graph will be appended here -->
+</div>
+
+<div id="tab3" class="tab-content">
+  <img src="https://via.placeholder.com/300" alt="Placeholder Image">
+</div>
+
+<script>
+  // Function to show the selected tab content
+  function showTab(tabIndex) {
+    // Hide all tab content
+    var tabs = document.getElementsByClassName('tab-content');
+    for (var i = 0; i < tabs.length; i++) {
+      tabs[i].style.display = 'none';
+    }
+
+    // Show the selected tab content
+    var selectedTab = document.getElementById('tab' + tabIndex);
+    if (selectedTab) {
+      selectedTab.style.display = 'block';
+
+      // If the selected tab is the one with D3.js graph (index 2)
+      if (tabIndex === 2) {
+        // Call a function to create and append your D3.js graph
+        createD3Graph();
+      }
+    }
+  }
+
+  // Function to create a simple D3.js force-directed graph
+  function createD3Graph() {
+    var svg = d3.select("#tab2").append("svg")
+      .attr("width", 400)
+      .attr("height", 300);
+
+    // Sample data for nodes and links
+    var nodes = [
+      { id: 1, name: "Node 1" },
+      { id: 2, name: "Node 2" },
+      { id: 3, name: "Node 3" },
+      { id: 4, name: "Node 4" }
+    ];
+
+    var links = [
+      { source: 1, target: 2 },
+      { source: 2, target: 3 },
+      { source: 3, target: 1 },
+      { source: 1, target: 4 }
+    ];
+
+    // Creating the force simulation
+    var simulation = d3.forceSimulation()
+      .force("link", d3.forceLink().links(links).distance(100))
+      .force("charge", d3.forceManyBody().strength(-200))
+      .force("center", d3.forceCenter(200, 150));
+
+    // Drawing links
+    var link = svg.selectAll("line")
+      .data(links)
+      .enter().append("line")
+      .attr("stroke", "black")
+      .attr("stroke-width", 2);
+
+    // Drawing nodes
+    var node = svg.selectAll("circle")
+      .data(nodes)
+      .enter().append("circle")
+      .attr("r", 20)
+      .attr("fill", "steelblue");
+
+    // Adding drag behavior to nodes
+    node.call(d3.drag()
+      .on("start", dragstarted)
+      .on("drag", dragged)
+      .on("end", dragended));
+
+    // Adding tick function for simulation
+    simulation.nodes(nodes).on("tick", ticked);
+    simulation.force("link").links(links);
+
+    // Function to update node and link positions
+    function ticked() {
+      link.attr("x1", function (d) { return d.source.x; })
+        .attr("y1", function (d) { return d.source.y; })
+        .attr("x2", function (d) { return d.target.x; })
+        .attr("y2", function (d) { return d.target.y; });
+
+      node.attr("cx", function (d) { return d.x; })
+        .attr("cy", function (d) { return d.y; });
+    }
+
+    // Drag functions
+    function dragstarted(d) {
+      if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+      d.fx = d.x;
+      d.fy = d.y;
+    }
+
+    function dragged(d) {
+      d.fx = d3.event.x;
+      d.fy = d3.event.y;
+    }
+
+    function dragended(d) {
+      if (!d3.event.active) simulation.alphaTarget(0);
+      d.fx = null;
+      d.fy = null;
+    }
+  }
+
+  // Set the default tab to show the image when the page loads
+  window.onload = function () {
+    showTab(1);
+  };
+</script>
+
+</body>
+</html>
