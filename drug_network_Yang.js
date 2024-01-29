@@ -7,20 +7,38 @@ $(function () {
 
 
 // var json_GeneralFile = "json/json_GeneralFile.json";
-var json_GeneralFile = "json/json4.json";
-var json_drugData = "json/json_drugData.json";
-var json_proteinData = "json/json_proteinData.json";
-var json_interactionData = "json/json_interactionData.json";
+// var json_GeneralFile = "json/json3.json";
+// var json_drugData = "json/json_drugData.json";
+// var json_proteinData = "json/json_proteinData.json";
+// var json_interactionData = "json/json_interactionData.json";
+
+
+
+
+var json_GeneralFile = "/static/json-sample/json_GeneralFile.json";
+var json_drugData = "/static/json-sample/json_drugData.json";
+var json_proteinData = "/static/json-sample/json_proteinData.json";
+var json_interactionData = "/static/json-sample/json_interactionData.json"
+
+
+
+if (drug_bank_ids) {
+    json_GeneralFile = "/drugs-network/general-data?drug_bank_ids=" + drug_bank_ids.join(',');
+    json_drugData = "/drugs-network/drug-data?drug_bank_ids=" + drug_bank_ids.join(',');
+    json_proteinData = "/drugs-network/protein-data?drug_bank_ids=" + drug_bank_ids.join(',');
+    json_interactionData = "/drugs-network/interaction-data?drug_bank_ids=" + drug_bank_ids.join(',');
+}
+
+if (drug_bank_id) {
+    json_GeneralFile = "/drug_network/" + drug_bank_id + "/general_data";
+    json_drugData = "/drug_network/" + drug_bank_id + "/drug_data";
+    json_proteinData = "/drug_network/" + drug_bank_id + "/protein_data";
+    json_interactionData = "/drug_network/" + drug_bank_id + "/interaction_data";
+}
+
 
 $("#loading").show();
 
-
-
-  document.getElementById("clicked").addEventListener("click", function () {
-      processData();
-      createChart(links)
-    
-  });
 
 let drug_xlsxData;
 let protein_xlsxData;
@@ -101,8 +119,8 @@ function readInteractionJSON() {
 
 
 window.onload = function () {
-    // readDrugJSON();
-    processData();
+    readDrugJSON();
+    // processData();
     //getDrugJsonData(drugBankId);
 };
 
@@ -1559,6 +1577,7 @@ function processData() {
                         id: protein,
                         isParent: false,
                         radius: 5,
+                        genename :genename ,
                         Protein_Class: proteinClass,
                         child_type: "protein_type",
                     }); // Include the "Protein_Class" value in the node object
@@ -1673,7 +1692,7 @@ var simulation = null
 
 // Create the Forced Directed Network Chart
 function createChart(links) {
-    // d3.select("#chart").selectAll("*").remove();
+    d3.select("#chart").selectAll("*").remove();
     //console.log("Latest Edit CreateCHart_13_jan_2024_A");
     var container = d3.select("#chart");
     //debugger
@@ -1924,7 +1943,7 @@ function createChart(links) {
         .attr("dx", 10)
         .attr("dy", ".25em")
         .text(function (d) {
-            return d.id;
+            return d.genename;
         })
         .attr("class", "node-label");
     // tag4

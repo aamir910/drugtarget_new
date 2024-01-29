@@ -49,7 +49,7 @@
         --charge-strength: -45;
       }
       .tab-content {
-      display: none;
+      visibility: hidden;
     }
 
     img {
@@ -864,7 +864,6 @@
 
 
 
-    <body>
         <div id="loading">
           <div class="spinner"></div>
         </div>
@@ -1026,12 +1025,7 @@
           </div>
       
           <script src="drug_network_Yang.js"></script>
-      
-
-      </body>
-
-
-
+      </div>
 </div>
 
 <div id="tab3" class="tab-content">
@@ -1044,13 +1038,13 @@
     // Hide all tab content
     var tabs = document.getElementsByClassName('tab-content');
     for (var i = 0; i < tabs.length; i++) {
-      tabs[i].style.display = 'none';
+      tabs[i].style.visibilty = 'hidden';
     }
 
     // Show the selected tab content
     var selectedTab = document.getElementById('tab' + tabIndex);
     if (selectedTab) {
-      selectedTab.style.display = 'block';
+      selectedTab.style.visibilty = 'visible';
     }
   }
     
