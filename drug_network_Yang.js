@@ -7,39 +7,12 @@ $(function () {
 
 
 // var json_GeneralFile = "json/json_GeneralFile.json";
-// var json_GeneralFile = "json/json3.json";
-// var json_drugData = "json/json_drugData.json";
-// var json_proteinData = "json/json_proteinData.json";
-// var json_interactionData = "json/json_interactionData.json";
-
-
-
-
-var json_GeneralFile = "/static/json-sample/json_GeneralFile.json";
-var json_drugData = "/static/json-sample/json_drugData.json";
-var json_proteinData = "/static/json-sample/json_proteinData.json";
-var json_interactionData = "/static/json-sample/json_interactionData.json"
-
-
-
-if (drug_bank_ids) {
-    json_GeneralFile = "/drugs-network/general-data?drug_bank_ids=" + drug_bank_ids.join(',');
-    json_drugData = "/drugs-network/drug-data?drug_bank_ids=" + drug_bank_ids.join(',');
-    json_proteinData = "/drugs-network/protein-data?drug_bank_ids=" + drug_bank_ids.join(',');
-    json_interactionData = "/drugs-network/interaction-data?drug_bank_ids=" + drug_bank_ids.join(',');
-}
-
-if (drug_bank_id) {
-    json_GeneralFile = "/drug_network/" + drug_bank_id + "/general_data";
-    json_drugData = "/drug_network/" + drug_bank_id + "/drug_data";
-    json_proteinData = "/drug_network/" + drug_bank_id + "/protein_data";
-    json_interactionData = "/drug_network/" + drug_bank_id + "/interaction_data";
-}
-
+var json_GeneralFile = "json/json4.json";
+var json_drugData = "json/json_drugData.json";
+var json_proteinData = "json/json_proteinData.json";
+var json_interactionData = "json/json_interactionData.json";
 
 $("#loading").show();
-
-
 let drug_xlsxData;
 let protein_xlsxData;
 let interaction_xlsxData;
@@ -47,6 +20,10 @@ var drugStatusNameForDialog = ""
 var selectedDrugName1 = "";
 
 // Function to read the Drugs JSON data file
+
+let drugDataLoaded = false;
+
+
 function readDrugJSON() {
     const jsonFilePath = json_drugData;
     fetch(jsonFilePath)
@@ -74,10 +51,7 @@ function readDrugJSON() {
             } else {
                 drug_xlsxData = jsonData;
             }
-
-
-
-
+            
             readProteinJSON();
         })
         .catch((error) => {
@@ -118,11 +92,28 @@ function readInteractionJSON() {
 }
 
 
+
+var flag1 = true;
+
+document.getElementById("clicked").addEventListener("click" , function(){
+    if(flag1){
+
+        svg.style("display", "block");
+        // processData();
+
+        flag1 = false
+    }
+    });
+
+
+
+
 window.onload = function () {
-    readDrugJSON();
-    // processData();
+    // readDrugJSON();
+    processData();
     //getDrugJsonData(drugBankId);
 };
+
 
 function getDrugJsonData(drugBankId) {
     // Call to Server to get the data
@@ -1687,7 +1678,25 @@ var node;
 var svg, chart;
 var simulation = null
 
-
+function showTab(tabIndex) {
+    // Hide all tab content
+    var tabs = document.getElementsByClassName('tab-content');
+    for (var i = 0; i < tabs.length; i++) {
+      tabs[i].style.visibility = 'hidden';
+    }
+  
+    // Show the selected tab content
+    var selectedTab = document.getElementById('tab' + tabIndex);
+    if (selectedTab) {
+      selectedTab.style.visibility = 'visible';
+    }
+  }
+  
+//   svg.style("display", "none");
+//   setTimeout(function() {
+//       // Show the SVG element after 5 seconds
+//       svg.style("display", "block");
+//   }, 5000);
 
 
 // Create the Forced Directed Network Chart
@@ -1721,6 +1730,13 @@ function createChart(links) {
     chart = svg.append("g") // Assign the group element to the 'chart' variable
         .attr("class", "chart");
 
+
+
+  svg.style("display", "none");
+        
+
+        // Set a timeout to show the SVG element after 5 seconds
+    
     var chargeStrength = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--charge-strength'));
     var distanceBetweenNodes = 60;
     var noOfTotalNodes11 = links.length;
@@ -1789,9 +1805,10 @@ function createChart(links) {
         )
         .force("charge", d3.forceManyBody().strength(chargeStrength))
         // Adding centering forces for X and Y coordinates
-        .force("x", d3.forceX(svgWidth / 2).strength(0.1))
-        .force("y", d3.forceY(svgHeight / 2).strength(0.1))
-
+        // .force("x", d3.forceX(svgWidth / 2).strength(0.1))
+        // .force("y", d3.forceY(svgHeight / 2).strength(0.1))
+            .force("x", d3.forceX(700).strength(0.1))
+        .force("y", d3.forceY(288).strength(0.1))
         .on("end", function () {
             nodes.forEach(function (node) {
                 node.fx = node.x;
@@ -1799,6 +1816,7 @@ function createChart(links) {
             });
         });
 
+        console.log( svgHeight , "hieght" , svgWidth , "width ")
     link = svg
         .selectAll(".link")
         .data(links)

@@ -852,8 +852,8 @@
 
 <!-- Tab buttons -->
 <button onclick="showTab(1)">Show Image</button>
-<button onclick="showTab(2)" >Show Details</button>
-<button onclick="showTab(3)" id="clicked">Show Image Again</button>
+<button onclick="showTab(2)"id="clicked" >Show Details</button>
+<button onclick="showTab(3)" >Show Image Again</button>
 
 <!-- Tab content -->
 <div id="tab1" class="tab-content">
@@ -1032,27 +1032,11 @@
   <img src="https://via.placeholder.com/300" alt="Placeholder Image">
 </div>
 
-<script>
+<!-- <script>
   // Function to show the selected tab content
-  function showTab(tabIndex) {
-    // Hide all tab content
-    var tabs = document.getElementsByClassName('tab-content');
-    for (var i = 0; i < tabs.length; i++) {
-      tabs[i].style.visibilty = 'hidden';
-    }
-
-    // Show the selected tab content
-    var selectedTab = document.getElementById('tab' + tabIndex);
-    if (selectedTab) {
-      selectedTab.style.visibilty = 'visible';
-    }
-  }
-    
 
 
-
-
-</script>
+</script> -->
 
 </body>
 </html>
