@@ -49,7 +49,7 @@
         --charge-strength: -45;
       }
       .tab-content {
-      visibility: hidden;
+      display: none;
     }
 
     img {
@@ -1024,19 +1024,41 @@
             </button>
           </div>
       
-          <script src="drug_network_Yang.js"></script>
       </div>
 </div>
 
 <div id="tab3" class="tab-content">
   <img src="https://via.placeholder.com/300" alt="Placeholder Image">
 </div>
+<script src="drug_network_Yang.js"></script>
 
-<!-- <script>
+<script>
+  
   // Function to show the selected tab content
+function showTab(tabIndex) {
+    // Hide all tab content
+    var tabs = document.getElementsByClassName('tab-content');
+    for (var i = 0; i < tabs.length; i++) {
+      tabs[i].style.display = 'none';
+    }
+  
+    // Show the selected tab content
+    var selectedTab = document.getElementById('tab' + tabIndex);
+    if (selectedTab) {
+      selectedTab.style.display = 'block';
+    }
+    if(tabIndex === 2  && !flag_tabclicked ){
+      flag_tabclicked = true ; 
+       if(flag_processData ){
+        createChart(links);
+        
+       }
+      
+    }
+  }
+  
 
-
-</script> -->
+</script> 
 
 </body>
 </html>
