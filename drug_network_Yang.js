@@ -6,7 +6,7 @@ $(function () {
 //Pass jsonFiles Here
 
 // var json_GeneralFile = "json/json_GeneralFile.json";
-var json_GeneralFile = "json/json2.json";
+var json_GeneralFile = "json/json4.json";
 var json_drugData = "json/json_drugData.json";
 var json_proteinData = "json/json_proteinData.json";
 var json_interactionData = "json/json_interactionData.json";
@@ -1568,9 +1568,7 @@ function processData() {
       const filteredData = data.filter(row => row.Phase !== "1" && row.Phase !== "2");
 
       filteredData.forEach(function (row) {
-        //  console.log("ProcessData");
-        // console.log("ProcessData: ", row);
-        // console.log("ProcessData: " + JSON.stringify(row));
+      
         var drugName = row.drug_name;
         var drugID = row.drugbank_id;
         var protein = row.protein;
@@ -1578,38 +1576,20 @@ function processData() {
         var interaction =
           row.interaction_type.charAt(0).toUpperCase() +
           row.interaction_type.slice(1);
-        // var interaction = row.interaction;
+        // var interaction = row.interaction
 
         var disease_interaction;
         var disease_phase ; 
         disease_interaction = "Phase" + row.Phase;
         disease_phase = row.Phase;
-        // if ( 
-        //   row.Phase !== "1" && row.Phase !== "2"
-        //   ) {
+     
 
-
-
-
-        //   console.log(disease_interaction , "disease interaction") ;
-        // } 
-        // else {
-        //   disease_interaction = "temp";
-        //   disease_phase = "temp";
-
-        // }
-
-
-        //console.log("row.interaction = " + row.interaction_type);
-        //var drugStatus = row.Drug_status; // Get the "Drug_status" value
         var drugStatus = clinicalStatusMap[row.Drug_status];
-        var drugType = row.drugtype; // Get the "Drug_status" value
+        var drugType = row.drugtype;
         var proteinClass = row.Protein_Class;
 
         var disease = row.Disease_name; // getting the new disease
         var Disease_class = row.Disease_class;
-        
-
         
         if (
           !nodes.find(function (node) {
@@ -1850,7 +1830,6 @@ function createChart(links) {
       });
     });
 // newchange2 
-  console.log(svgHeight, "hieght", svgWidth, "width ");
   link = svg
     .selectAll(".link")
     .data(links)
@@ -2785,15 +2764,19 @@ function createDiseaseLegend() {
       updateAllFilters();
     });
   }
+
+  // disable the change  
   var legendContent4 = d3.select("#Disease_to_hide");
 
   if (diseases.some((disease) => uniqueDisease.has(disease))) {
     legendContent4.style("display", "block");
   } else {
     legendContent4.style("display", "none");
+    console.log("check1");
     // Set display to "block" or any other desired value
   }
 }
+
 
 // var legendContent4 = d3.select("#Disease_to_hide");
 
