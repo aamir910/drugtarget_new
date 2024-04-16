@@ -2243,10 +2243,15 @@ function getColor(type) {
 // Create the legend for interactions
 function createLegend() {
     var legendContent = d3.select("#legend-content");
+   
+    legendContent.selectAll('div').remove() ; 
 
     var legendContent2 = d3.select("#legend-content_disease");
-
+       legendContent2.selectAll('div').remove() ; 
+    
     var legendContent3 = d3.select("#trial_to_hide");
+    legendContent3.selectAll('div').remove() ; 
+    
     //console.log("interaction legend",legendContent);
     //console.log("disease legend",legendContent2);
 
@@ -2263,17 +2268,21 @@ function createLegend() {
         !uniqueInteractions.includes(interaction)
       ) {
         if (["Phase1", "Phase2", "Phase3", "Phase4"].includes(interaction)) {
+            
           createLegendItem(interaction, getColor(interaction), legendContent2);
         } else {
           createLegendItem(interaction, getColor(interaction), legendContent);
         }
         uniqueInteractions.push(interaction);
+     
       }
     });
     //console.log("unique Interactions", uniqueInteractions);
     function createLegendItem(interaction, color, container) {
         //console.log("CreateLegendItem", interaction +"\n"+color);
         //console.log("CreateLegendItem COntainer", container);
+
+
       var legendItem = container
         .append("div")
         .style("display", "flex")
@@ -2465,6 +2474,7 @@ function createProteinsLegend() {
     var hiddenProteins = {}; // Change this to hiddenProteinClasses
     var proteins = ["Enzyme", "Epigenetic regulator", "GPCR", "Ion channel", "Kinase", "Nuclear receptor", "Transporter", "Unknown"];
     var legendContent = d3.select("#legend_protein_status-content");
+    legendContent.selectAll('div').remove() ; 
     var uniqueProteins = new Set();
 
     links.forEach(function (link) {
@@ -2654,7 +2664,7 @@ let DiseaseColorMap = {
     ];
   
     var legendContent = d3.select("#legend_disease_status-content");
-  
+    legendContent.selectAll('div').remove() ; 
     // links.forEach(function (link) {
     //   for(let i=0 ; i<diseases.length ; i++){
     //     if(link.target.DiseaseClass === diseases[i])
@@ -2783,6 +2793,7 @@ let DiseaseColorMap = {
 // Call the function to create the legend
 function createLegend_status() {
     var legendContent = d3.select("#legend_drug_status-content");
+    legendContent.selectAll('div').remove() ; 
     var drugStatusArray = ["Nutraceutical", "Experimental", "Investigational", "Approved", "Vet-approved", "Illicit"];
     var uniqueDrugStatus = new Set();
 
@@ -2828,7 +2839,6 @@ function createLegend_status() {
                     }
                 }
             });
-
 
         var dropdownMenu = dropdown.append("div")
             .attr("class", "dropdown-menu")
@@ -2962,7 +2972,7 @@ function changeNodeImage(status, selectedColor) {
 
 function createLegend_drugType() {
     var legendContent = d3.select("#legend_drug_type-content");
-
+    legendContent.selectAll('div').remove() ; 
     var drugTypeArray = ["Biotech", "Small Molecule"];
     var uniqueDrugType = new Set();
 
@@ -2977,6 +2987,7 @@ function createLegend_drugType() {
 
 
     function createLegendItem(drugType, color) {
+        console.log(legendContent , 'legendContent')
         var legendItem = legendContent.append("div")
             .style("display", "flex")
             .style("align-items", "center")
@@ -3383,7 +3394,7 @@ function drag(simulation) {
 }
 
 d3.select("#GetmoreData").on("click", function () {
-    alert("heelo")
+    
     clearGraph(); 
     numberofnodes = numberofnodes +100 ; 
     processData(numberofnodes) ; 
@@ -3392,7 +3403,8 @@ d3.select("#GetmoreData").on("click", function () {
   function clearGraph() {
     const svg = d3.select("#chart");
     svg.selectAll("*").remove();
-
     nodes = [] ; 
     links = [] ;
+
+
   }
