@@ -6,7 +6,7 @@ $(function () {
 //Pass jsonFiles Here
 
 // var json_GeneralFile = "json/json_GeneralFile.json";
-var json_GeneralFile = "json/json4.json";
+var json_GeneralFile = "json/json3.json";
 var json_drugData = "json/json_drugData.json";
 var json_proteinData = "json/json_proteinData.json";
 var json_interactionData = "json/json_interactionData.json";

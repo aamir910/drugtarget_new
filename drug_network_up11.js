@@ -2664,7 +2664,7 @@ let DiseaseColorMap = {
     ];
   
     var legendContent = d3.select("#legend_disease_status-content");
-    legendContent.selectAll('div').remove() ; 
+   legendContent.selectAll('div').remove() ; 
     // links.forEach(function (link) {
     //   for(let i=0 ; i<diseases.length ; i++){
     //     if(link.target.DiseaseClass === diseases[i])
