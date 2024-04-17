@@ -2350,7 +2350,12 @@ function createLegend() {
                 var selectedColor = getColor(selectedInteraction);
                 var selectedLegendItem = d3.select(".selected-legend1");
                 //console.log(selectedLegendItem, "selectedLegendItem");
-                colorMap[interaction] = selectedColor;
+
+                console.log(selectedColor , colorMap , "here are both") ; 
+    
+                colorMap[interaction.toLowerCase()] = selectedColor;
+    
+                console.log(selectedColor , colorMap , "here are both") ; 
 
                 if(phases.includes(interaction)){
 
@@ -2371,7 +2376,7 @@ function createLegend() {
                   "selected-legend1",
                   false
                 );
-                redrawLinks();
+                redrawLinks();   
               };
             })(interactions[i])
           );
@@ -2447,8 +2452,8 @@ function redrawLinks() {
     // Update the 'stroke' style of the links using the updated colorMap
     //console.log(link)
     link.style("stroke", function (d) {
-        //console.log("Testinng Interaction :" + colorMap[d.type]);
-        return colorMap[d.type];
+        console.log( d ,d.type , colorMap, "Testinng Interaction :" + colorMap[d.type] );
+        return colorMap[d.type.toLowerCase()];
     });
 }
 
