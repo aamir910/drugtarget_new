@@ -1541,7 +1541,8 @@ let flag_processData  = false;
 
 
 
-let numberofnodes =100 ; 
+let numberofnodes =1 ; 
+
 function processData(numberofnodes) {
     
     const jsonFilePath = json_GeneralFile; // JSON file path
@@ -1550,13 +1551,19 @@ function processData(numberofnodes) {
     fetch(jsonFilePath)
       .then((response) => response.json())
       .then((data) => {
-data  = data.slice(0, numberofnodes);
+        
+        console.log(data, "here is the json file ");
+        
 
-        console.log(data , "here is the json file ")
+        
+
+const uniqueProteinClasses = [...new Set(data.map(d => d.protein_name))];
+console.log(uniqueProteinClasses, "here are the unique protein classes");
+
         // Extract nodes and links from the JSON data
         // console.log("inside processData: ", data);
         chartDataJ = data;
-  
+        
         const filteredData = data.filter(row => row.Phase !== "1" && row.Phase !== "2");
   
         filteredData.forEach(function (row) {
@@ -1678,15 +1685,23 @@ data  = data.slice(0, numberofnodes);
           .forEach(function (node) {
             node.degree = childNodeMap[node.id] || 0;
           });
-  
+       
         // Set the maximum value of the threshold slider
-        thresholdSlider.max = nodes.filter(function (node) {
+       let thredhold_value  = nodes.filter(function (node) {
           return node.isParent;
         }).length;
-  
-        // Set the default value of the threshold slider to the maximum
+         thresholdSlider.max  = numberofnodes
+        if ( thredhold_value <= numberofnodes  ) {
+            thresholdSlider.max = numberofnodes;
+            document.getElementById('GetmoreData').style.visibility = 'hidden';
+
+        }
         thresholdSlider.value = 50;
-        thresholdValueLabel.textContent = thresholdSlider.value;
+        thresholdValueLabel.textContent = numberofnodes;
+        
+
+        // Set the default value of the threshold slider to the maximum
+        
         // tag5
         // Create the chart using D3.js
   
@@ -1917,7 +1932,7 @@ function createChart(links) {
             return DiseaseColorMap[d.DiseaseClass] || "black";
         })
         .on("click", function (event, d) {
-            window.open(`https://www.triangle.com/${d.id}`, "_blank");
+            window.open(`https://clinicaltrials.gov/search?cond=${d.id}`, "_blank");
 
         });
 
@@ -2053,6 +2068,7 @@ function updateChartVisibility() {
     var visibleParents = nodes.filter(function (node) {
         return node.isParent;
     }).slice(0, threshold);
+
 
     nodes.forEach(function (node) {
         if (node.isParent) {
@@ -2461,15 +2477,22 @@ function redrawLinks() {
 
 //Protein Class Color Map
 var proteinColorMap = {
+    "Adhesion": "#ff7f0e",
+    "Secreted protein": "#17becf",
     "Enzyme": "#1f77b4",
-    "Epigenetic regulator": "black",
     "GPCR": "#2ca02c",
-    "Ion channel": "#d62728",
+    "Membrane receptor": "#9467bd",
     "Kinase": "#9467bd",
-    "Nuclear receptor": "#ff7f0e",
     "Transporter": "#7f7f7f",
-    "Unknown": "#8c564b"
+    "Unknown": "#8c564b",
+    "Epigenetic regulator": "black",
+    "Structural protein": "#d62728",
+    "Surface antigen": "#bcbd22",
+    "Ion channel": "#d62728",
+    "Transcription factor": "#2ca02c",
+    "Nuclear receptor": "#ff7f0e"
 };
+
 function updateChildNodeColors() {
     d3.selectAll(".node circle")
         .style("fill", function (d) { return proteinColorMap[d.Protein_Class] || "steelblue"; });
@@ -2477,7 +2500,7 @@ function updateChildNodeColors() {
 
 function createProteinsLegend() {
     var hiddenProteins = {}; // Change this to hiddenProteinClasses
-    var proteins = ["Enzyme", "Epigenetic regulator", "GPCR", "Ion channel", "Kinase", "Nuclear receptor", "Transporter", "Unknown"];
+    var proteins = ["Adhesion", "Secreted protein", "Enzyme", "GPCR", "Membrane receptor", "Kinase", "Transporter", "Unknown", "Epigenetic regulator", "Structural protein", "Surface antigen", "Ion channel", "Transcription factor", "Nuclear receptor"];
     var legendContent = d3.select("#legend_protein_status-content");
     legendContent.selectAll('div').remove() ; 
     var uniqueProteins = new Set();
@@ -3394,7 +3417,7 @@ function drag(simulation) {
 d3.select("#GetmoreData").on("click", function () {
     
     clearGraph(); 
-    numberofnodes = numberofnodes +100 ; 
+    numberofnodes = numberofnodes +1 ; 
     processData(numberofnodes) ; 
   });
 
