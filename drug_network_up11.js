@@ -1766,54 +1766,62 @@ function createChart(links) {
     var chargeStrength = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--charge-strength'));
     var distanceBetweenNodes = 60;
     var noOfTotalNodes11 = links.length;
+console.log(links.length ,'link length')
+
+
+
+
 
 
     if (noOfTotalNodes11 < 100) {
-        chargeStrength = -650;
+        chargeStrength = -250;
       
         var distanceBetweenNodes = 200;
       } else if (noOfTotalNodes11 > 99 && noOfTotalNodes11 < 200) {
         
-        chargeStrength = -150;
-        var distanceBetweenNodes = 100;
+        chargeStrength = -250;
+        var distanceBetweenNodes = 200;
       } else if (noOfTotalNodes11 > 199 && noOfTotalNodes11 < 250) {
         
        
-        chargeStrength = -150;
-        var distanceBetweenNodes = 100;
+        chargeStrength = -250;
+        var distanceBetweenNodes = 200;
       } else if (noOfTotalNodes11 > 249 && noOfTotalNodes11 < 300) {
         
       
-        chargeStrength = -100;
-        var distanceBetweenNodes = 80;
+        chargeStrength = -250;
+        var distanceBetweenNodes = 200;
       } else if (noOfTotalNodes11 > 299 && noOfTotalNodes11 < 350) {
         
        
-        chargeStrength = -100;
-        var distanceBetweenNodes = 80;
+        chargeStrength = -250;
+        var distanceBetweenNodes = 200;
         // change2 
       } else if (noOfTotalNodes11 > 349 && noOfTotalNodes11 < 400) {
         
         console.log("check6")
         chargeStrength = -100;
-        var distanceBetweenNodes = 60;
+        var distanceBetweenNodes = 200;
       } else if (noOfTotalNodes11 > 399 && noOfTotalNodes11 < 999 ) {
         
         console.log("check8" , noOfTotalNodes11)
-        chargeStrength = -550;
-        var distanceBetweenNodes = 100;
+        chargeStrength = -250;
+        var distanceBetweenNodes = 200;
       }else if (noOfTotalNodes11 > 1000 && noOfTotalNodes11 < 2999 ) {
         
         console.log("check9" , noOfTotalNodes11)
-        chargeStrength = -600;
+        chargeStrength = -250;
         var distanceBetweenNodes = 100;
       }
        else if (noOfTotalNodes11 > 3000) {
         
         console.log("check10" , noOfTotalNodes11)
-        chargeStrength = -300;
+        chargeStrength = -250;
         var distanceBetweenNodes = 60;
       }
+
+
+
 
 
 
