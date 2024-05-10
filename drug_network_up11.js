@@ -1426,7 +1426,7 @@ let drugTypeIndices = {};
 var currentFilters;
 var interaction_source = "";
 var interaction_target = "";
-
+let thredhold_value =0;   
 // var imagePaths11 = {
 //     Nutraceutical: "/static/d3/images/capsules/left0.png",
 //     Experimental: "/static/d3/images/capsules/left1.png",
@@ -1558,7 +1558,6 @@ function processData(numberofnodes) {
         
 
 const uniqueProteinClasses = [...new Set(data.map(d => d.protein_name))];
-console.log(uniqueProteinClasses, "here are the unique protein classes");
 
         // Extract nodes and links from the JSON data
         // console.log("inside processData: ", data);
@@ -1687,10 +1686,11 @@ console.log(uniqueProteinClasses, "here are the unique protein classes");
           });
        
         // Set the maximum value of the threshold slider
-       let thredhold_value  = nodes.filter(function (node) {
-          return node.isParent;
+        thredhold_value  = nodes.filter(function (node) {
+          return !node.isParent;
         }).length;
          thresholdSlider.max  = numberofnodes
+         console.log(numberofnodes , 'here are the number of nodes')
         if ( thredhold_value <= numberofnodes  ) {
             thresholdSlider.max = numberofnodes;
             document.getElementById('GetmoreData').style.visibility = 'hidden';
@@ -3425,11 +3425,43 @@ function drag(simulation) {
 d3.select("#GetmoreData").on("click", function () {
     
     clearGraph(); 
-    numberofnodes = numberofnodes +1 ; 
+    console.log(thredhold_value , 'thresholdSlider.max')
+
+    if(thredhold_value < 7){
+        numberofnodes = numberofnodes +1 ; 
+
+    }
+    else if(thredhold_value >7 && thredhold_value  < 14 )
+        {
+            
+        numberofnodes = numberofnodes + 2 ; 
+        } else if(thredhold_value >14 && thredhold_value  < 50 )
+                {
+                    
+                numberofnodes = numberofnodes + 6; 
+                } else if(thredhold_value >50 && thredhold_value  < 150 )
+                    {
+                        
+                    numberofnodes = numberofnodes + 20 ; 
+                    } else if(thredhold_value >150 && thredhold_value  < 300 )
+                        {
+                            
+                        numberofnodes = numberofnodes + 50 ; 
+                        } else if(thredhold_value >300 && thredhold_value  < 600 )
+                            {
+                                
+                            numberofnodes = numberofnodes + 100 ; 
+                            }
+                            else if(thredhold_value >600  )
+                                {
+                                    
+                                numberofnodes = numberofnodes + 200 ; 
+                                }
+
     processData(numberofnodes) ; 
   });
 
-  function clearGraph() {
+  function clearGraph() { 
     const svg = d3.select("#chart");
     svg.selectAll("*").remove();
     nodes = [] ; 
