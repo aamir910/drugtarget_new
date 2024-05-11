@@ -7,7 +7,7 @@ $(function () {
 
 
 var json_GeneralFile = "json/json_GeneralFile.json";
-var json_GeneralFile = "json/json5.json";
+var json_GeneralFile = "json/json2.json";
 var json_drugData = "json/json_drugData.json";
 var json_proteinData = "json/json_proteinData.json";
 var json_interactionData = "json/json_interactionData.json";
@@ -1687,7 +1687,7 @@ const uniqueProteinClasses = [...new Set(data.map(d => d.protein_name))];
        
         // Set the maximum value of the threshold slider
         thredhold_value  = nodes.filter(function (node) {
-          return !node.isParent;
+          return node.isParent;
         }).length;
          thresholdSlider.max  = numberofnodes
          console.log(numberofnodes , 'here are the number of nodes')
