@@ -7,7 +7,7 @@ $(function () {
 
 
 var json_GeneralFile = "json/json_GeneralFile.json";
-var json_GeneralFile = "json/json5.json";
+var json_GeneralFile = "json/data.json";
 var json_drugData = "json/json_drugData.json";
 var json_proteinData = "json/json_proteinData.json";
 var json_interactionData = "json/json_interactionData.json";
@@ -1569,7 +1569,7 @@ const uniqueProteinClasses = [...new Set(data.map(d => d.protein_name))];
         
         let filteredData = data.filter(row => row.Phase !== "1" && row.Phase !== "2");
   
-        if(thredhold_value <5 && child_nodes>600  || true){
+        if(thredhold_value <5 && child_nodes>180){
 
             filteredData = filteredData.slice( 0, slicedata) ; 
         }
@@ -3455,11 +3455,7 @@ d3.select("#GetmoreData").on("click", function () {
 
 
 
-    let ratio = 100 / 30000;
-
-
-
-if(thredhold_value <5 && child_nodes>10 ){
+if(thredhold_value <5 && child_nodes>180 ){
 console.log('RAJHFDAJKL;SH')
     slicedata = slicedata +200
 
