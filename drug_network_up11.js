@@ -1714,8 +1714,14 @@ const uniqueProteinClasses = [...new Set(data.map(d => d.protein_name))];
 
         }
 
-        thresholdSlider.value = 50;
-        thresholdValueLabel.textContent = numberofnodes;
+        if(slicedata > filteredData.length ){
+
+            thresholdSlider.value = 50;
+            thresholdValueLabel.textContent = thredhold_value;
+        }else{
+            thresholdSlider.value = 50;
+            thresholdValueLabel.textContent = numberofnodes;
+        }
         
 
         // Set the default value of the threshold slider to the maximum
