@@ -7,7 +7,7 @@ $(function () {
 
 
 var json_GeneralFile = "json/json_GeneralFile.json";
-var json_GeneralFile = "json/json2.json";
+var json_GeneralFile = "json/json5.json";
 var json_drugData = "json/json_drugData.json";
 var json_proteinData = "json/json_proteinData.json";
 var json_interactionData = "json/json_interactionData.json";
@@ -137,7 +137,7 @@ function readInteractionJSON() {
             interaction_xlsxData = jsonData;
             // console.log("InteractionData",interaction_xlsxData);
             // console.log("End of Logs ");
-            processData(numberofnodes);
+            processData(numberofnodes ,slicedata );
         })
         .catch((error) => {
             console.error("Error reading the file:", error);
@@ -147,8 +147,9 @@ function readInteractionJSON() {
 
 window.onload = function () {
     // readDrugJSON();
-    processData(numberofnodes);
+    processData(numberofnodes ,slicedata );
     // getDrugJsonData(drugBankId);
+    
 };
 
 function getDrugJsonData(drugBankId) {
@@ -1427,6 +1428,7 @@ var currentFilters;
 var interaction_source = "";
 var interaction_target = "";
 let thredhold_value =0;   
+let child_nodes = 0 ;
 // var imagePaths11 = {
 //     Nutraceutical: "/static/d3/images/capsules/left0.png",
 //     Experimental: "/static/d3/images/capsules/left1.png",
@@ -1542,8 +1544,10 @@ let flag_processData  = false;
 
 
 let numberofnodes =1 ; 
+let slicedata = 200 ; 
 
-function processData(numberofnodes) {
+console.log(slicedata ,'slicedata')
+function processData(numberofnodes , slicedata ) {
     
     const jsonFilePath = json_GeneralFile; // JSON file path
     
@@ -1563,8 +1567,15 @@ const uniqueProteinClasses = [...new Set(data.map(d => d.protein_name))];
         // console.log("inside processData: ", data);
         chartDataJ = data;
         
-        const filteredData = data.filter(row => row.Phase !== "1" && row.Phase !== "2");
+        let filteredData = data.filter(row => row.Phase !== "1" && row.Phase !== "2");
   
+        if(thredhold_value <5 && child_nodes>600  || true){
+
+            filteredData = filteredData.slice( 0, slicedata) ; 
+        }
+        
+        console.log(filteredData , "filternodes" )
+        
         filteredData.forEach(function (row) {
         
           var drugName = row.drug_name;
@@ -1689,13 +1700,20 @@ const uniqueProteinClasses = [...new Set(data.map(d => d.protein_name))];
         thredhold_value  = nodes.filter(function (node) {
           return node.isParent;
         }).length;
+
+        child_nodes= nodes.filter(function (node) {
+            return !node.isParent;
+          }).length;
+
          thresholdSlider.max  = numberofnodes
          console.log(numberofnodes , 'here are the number of nodes')
-        if ( thredhold_value <= numberofnodes  ) {
-            thresholdSlider.max = numberofnodes;
+        if ( thredhold_value <= numberofnodes || slicedata > filteredData.length  ) {
+             
+            thresholdSlider.max = thredhold_value;
             document.getElementById('GetmoreData').style.visibility = 'hidden';
 
         }
+
         thresholdSlider.value = 50;
         thresholdValueLabel.textContent = numberofnodes;
         
@@ -3425,10 +3443,25 @@ function drag(simulation) {
 d3.select("#GetmoreData").on("click", function () {
     
     clearGraph(); 
-    console.log(thredhold_value , 'thresholdSlider.max')
+    console.log(thredhold_value , 'parent node ')
+ 
+    console.log(child_nodes , 'child node ')
 
-    if(thredhold_value < 7){
-        numberofnodes = numberofnodes +1 ; 
+
+
+    let ratio = 100 / 30000;
+
+
+
+if(thredhold_value <5 && child_nodes>10 ){
+console.log('RAJHFDAJKL;SH')
+    slicedata = slicedata +200
+
+}
+
+else{   
+    if(thredhold_value < 7){    
+        numberofnodes = numberofnodes +1 ;  
 
     }
     else if(thredhold_value >7 && thredhold_value  < 14 )
@@ -3458,7 +3491,13 @@ d3.select("#GetmoreData").on("click", function () {
                                 numberofnodes = numberofnodes + 200 ; 
                                 }
 
-    processData(numberofnodes) ; 
+}
+
+
+  
+
+
+    processData(numberofnodes , slicedata ) ; 
   });
 
   function clearGraph() { 
