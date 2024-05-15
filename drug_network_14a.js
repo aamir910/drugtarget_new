@@ -1,9 +1,9 @@
 $(function () {
     $("#all-legends").draggable({
-        containment: "window"
+        containment: document.getElementById('chart')
     });
-
 });
+
 
 //Pass jsonFiles Here
 
@@ -1756,8 +1756,8 @@ var link;
 var node;
 var svg, chart;
 var simulation = null
-var svgHeight = 300;
-// document.getElementById('chart').style.height = svgHeight ;
+var svgHeight = 500;
+document.getElementById('chart').style.height = svgHeight ;
 
 
 

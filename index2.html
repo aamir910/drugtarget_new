@@ -59,8 +59,8 @@
   
       #threshold-slider-container {
         line-height: 0;
-        padding-top: 5px;
-        padding-bottom: 1px;
+        /* padding-top: 5px; */
+        /* padding-bottom: 1px; */
         overflow: visible;
         width: 100%;
         bottom: 0;
@@ -72,7 +72,7 @@
         display: inline-block;
         vertical-align: top;
         width: 85%;
-        /* height: 200px; */
+        height: 800px;
         margin-top: 10px;
         margin-left: 10px;
         padding: 0px;
@@ -87,7 +87,7 @@
           display: inline-block;
           vertical-align: top;
           width: 85%;
-          /* height: 800px; */
+          height: 800px;
           margin-top: 10px;
           margin-left: 10px;
           padding: 0px;
@@ -121,7 +121,7 @@
           display: inline-block;
           vertical-align: top;
           width: 85%;
-          /* height: 650px; */
+          height: 650px;
           margin-top: 10px;
           margin-left: 10px;
           padding: 0px;
@@ -157,7 +157,7 @@
           display: inline-block;
           vertical-align: top;
           width: 85%;
-          /* height: 600px; */
+          height: 600px;
           margin-top: 10px;
           margin-left: 10px;
           padding: 0px;
@@ -189,7 +189,7 @@
           display: inline-block;
           vertical-align: top;
           width: 85%;
-          /* height: 500px; */
+          height: 500px;
           margin-top: 10px;
           margin-left: 10px;
           padding: 0px;
@@ -221,7 +221,7 @@
           display: inline-block;
           vertical-align: top;
           width: 85%;
-          /* height: 400px; */
+          height: 400px;
           margin-top: 10px;
           margin-left: 10px;
           padding: 0px;
@@ -955,7 +955,7 @@
         </div>
       
         <div id="screenshot">
-          <div id="chart"></div>
+          <div id="chart" style=" background-color: #3498db;"></div>
           <div id="legendsMainDiv" class="center-vertical-container">
             <div id="all-legends">
               <!-- Interaction legend (Hidden)-->
@@ -992,7 +992,7 @@
       
       
       
-              <div id="legend_protein_status">
+              <!-- <div id="legend_protein_status"> -->
                 <h3>Protein super family</h3>
                 <div id="legend_protein_status-content">
                   <!-- Legend items will be populated dynamically -->
@@ -1022,7 +1022,7 @@
             </div>
           </div>
           <!--Screennshot div closing-->
-          <div class="d-flex justify-content-center btmbar" id="threshold-slider-container">
+          <!-- <div class=" justify-content-center btmbar" id="threshold-slider-container"> -->
             <button type="button" class="btn btn-light d-flex btmbar zoom-in-btn">
               <i class="fas fa-search-plus zoom-in-icon"></i>&nbsp;Zoom In
             </button>
@@ -1056,7 +1056,7 @@
 <script src="drug_network_14a.js"></script> 
 <script>
   var aamir = 1000
-  console.log(svgHeight ,'asjklfhsakljfhsjkla')
+
   showTab(2);
   // Function to show the selected tab content
 function showTab(tabIndex) {
