@@ -2,12 +2,14 @@ $(function () {
     $("#all-legends").draggable({
         containment: "window"
     });
+
 });
+
 //Pass jsonFiles Here
 
 
 var json_GeneralFile = "json/json_GeneralFile.json";
-var json_GeneralFile = "json/json5.json";
+var json_GeneralFile = "json/json4.json";
 var json_drugData = "json/json_drugData.json";
 var json_proteinData = "json/json_proteinData.json";
 var json_interactionData = "json/json_interactionData.json";
@@ -1710,7 +1712,9 @@ const uniqueProteinClasses = [...new Set(data.map(d => d.protein_name))];
         if ( thredhold_value <= numberofnodes || slicedata > filteredData.length  ) {
              
             thresholdSlider.max = thredhold_value;
-            document.getElementById('GetmoreData').style.visibility = 'hidden';
+            document.getElementById('GetmoreData').disabled = true;
+            document.getElementById('GetmoreData').innerHTML = 'Maximum data reached';
+
 
         }
 
@@ -1752,7 +1756,8 @@ var link;
 var node;
 var svg, chart;
 var simulation = null
-
+var svgHeight = 300;
+// document.getElementById('chart').style.height = svgHeight ;
 
 
 
@@ -1762,11 +1767,11 @@ function createChart(links) {
     //console.log("Latest Edit CreateCHart_13_jan_2024_A");
     var container = d3.select("#chart");
     //debugger
-    var svgWidth = [container.node().getBoundingClientRect().width] - 100;
-    var svgHeight = [container.node().getBoundingClientRect().height] - 100;
+    var svgWidth =800;
+    //  svgHeight = 250 ;
     //var containerWidth = 500;
     //var containerHeight = 500;
-    //console.log("Width : "+containerWidth+"  ----  Height : "+containerHeight);
+    console.log("Width : "+svgWidth+"  ----  Height : "+svgHeight);
 
     var zoom = d3.zoom()
         .scaleExtent([0.1, 10])
@@ -1780,7 +1785,7 @@ function createChart(links) {
     svg = container.append("svg")
         .attr("width",  svgWidth)
         .attr("height", svgHeight)
-        // .style("background-color" , "red")
+        .style("background-color" , "red")
         .call(zoom)
         .append("g"); // Append group element to SVG
 
@@ -1971,10 +1976,9 @@ node.on("click", function (event, d) {
 
 
     let r = event.target.__data__;
-console.log(r ,'here is the r ')
     tooltip2.transition()
       .style("opacity", 0.9);
-    tooltip2.html("<strong>Link Value:</strong> " + r.id)
+    tooltip2.html("<strong></strong> " + r.id)
       .style("left", d.pageX + "px")
       .style("top", d.pageY + "px");
   })
@@ -2026,9 +2030,9 @@ var tooltip2 = d3.select("body").append("div")
         })
         .attr("class", "node-label");
 
-    node.append("title").text(function (d) {
-        return d.id;
-    });
+    // node.append("title").text(function (d) {
+    //     return d.id;
+    // });
 
     node
         .filter(function (d) {
@@ -2848,6 +2852,13 @@ let DiseaseColorMap = {
       console.log("check1");
       // Set display to "block" or any other desired value
     }
+    $(function () {
+    
+        // Log the height of the element to the console
+        var height = $("#all-legends").height();
+        console.log("Height of #all-legends:", height);
+    });
+    
   }
   
 

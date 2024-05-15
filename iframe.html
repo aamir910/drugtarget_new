@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Document</title>
+    <style>
+        iframe {
+            width: 70%;
+            /* height: 395px; */
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body style="height: 100px;">
+    <h1>Embedding an Iframe</h1>
+    <iframe id="myIframe" src="index2.html" title="Iframe Example"></iframe>
+
+    <script>
+   
+
+        function getVariableFromIframe() {
+            var iframe = document.getElementById('myIframe');
+            var iframeWindow = iframe.contentWindow;
+            var iframeVariable = iframeWindow.svgHeight*2; // Access the variable
+            iframe.style.height = iframeVariable+'px'
+            console.log('Variable from iframe:', iframeVariable);
+        }
+
+        document.getElementById('myIframe').onload = function() {
+           
+            getVariableFromIframe(); // Call function to get the variable
+        };
+    </script>
+</body>
+</html>
