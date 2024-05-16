@@ -22,15 +22,34 @@
         function getVariableFromIframe() {
             var iframe = document.getElementById('myIframe');
             var iframeWindow = iframe.contentWindow;
-            var iframeVariable = iframeWindow.svgHeight*2; // Access the variable
-            iframe.style.height = iframeVariable+'px'
-            console.log('Variable from iframe:', iframeVariable);
+            var iframeVariable = iframeWindow.jsonfile // Access the variable
+            // iframe.style.height = iframeVariable+'px'
+
         }
+
 
         document.getElementById('myIframe').onload = function() {
            
             getVariableFromIframe(); // Call function to get the variable
         };
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+        // Retrieve data from localStorage
+        const storedData = localStorage.getItem('jsonData');
+        
+        if (storedData) {
+            const data = JSON.parse(storedData);
+            console.log( data,'Data retrieved from localStorage:' );
+            
+            var iframe = document.getElementById('myIframe');
+            iframe.style.height = data+100+'px'
+
+            // Process your data here
+        } else {
+            console.error('No data found in localStorage');
+        }
+    });
+
     </script>
 </body>
 </html>

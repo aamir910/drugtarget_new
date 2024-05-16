@@ -59,8 +59,8 @@
   
       #threshold-slider-container {
         line-height: 0;
-        /* padding-top: 5px; */
-        /* padding-bottom: 1px; */
+        padding-top: 5px;
+        padding-bottom: 1px;
         overflow: visible;
         width: 100%;
         bottom: 0;
@@ -955,7 +955,7 @@
         </div>
       
         <div id="screenshot">
-          <div id="chart" style=" background-color: #3498db;"></div>
+          <div id="chart" ></div>
           <div id="legendsMainDiv" class="center-vertical-container">
             <div id="all-legends">
               <!-- Interaction legend (Hidden)-->
@@ -992,7 +992,7 @@
       
       
       
-              <!-- <div id="legend_protein_status"> -->
+              <div id="legend_protein_status">
                 <h3>Protein super family</h3>
                 <div id="legend_protein_status-content">
                   <!-- Legend items will be populated dynamically -->
@@ -1022,7 +1022,7 @@
             </div>
           </div>
           <!--Screennshot div closing-->
-          <!-- <div class=" justify-content-center btmbar" id="threshold-slider-container"> -->
+          <div class="d-flex justify-content-center btmbar" id="threshold-slider-container">
             <button type="button" class="btn btn-light d-flex btmbar zoom-in-btn">
               <i class="fas fa-search-plus zoom-in-icon"></i>&nbsp;Zoom In
             </button>
@@ -1055,7 +1055,6 @@
 
 <script src="drug_network_14a.js"></script> 
 <script>
-  var aamir = 1000
 
   showTab(2);
   // Function to show the selected tab content

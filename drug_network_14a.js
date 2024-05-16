@@ -1,10 +1,8 @@
 $(function () {
     $("#all-legends").draggable({
-        containment: document.getElementById('chart')
+        containment: "window"
     });
 });
-
-
 //Pass jsonFiles Here
 
 
@@ -1549,6 +1547,9 @@ let numberofnodes =1 ;
 let slicedata = 200 ; 
 
 console.log(slicedata ,'slicedata')
+
+window.parent.postMessage({ data: slicedata }, "*");
+        
 function processData(numberofnodes , slicedata ) {
     
     const jsonFilePath = json_GeneralFile; // JSON file path
@@ -1557,11 +1558,11 @@ function processData(numberofnodes , slicedata ) {
     fetch(jsonFilePath)
       .then((response) => response.json())
       .then((data) => {
-        
-        console.log(data, "here is the json file ");
+
+
+      
         
 
-        
 
 const uniqueProteinClasses = [...new Set(data.map(d => d.protein_name))];
 
@@ -1577,6 +1578,8 @@ const uniqueProteinClasses = [...new Set(data.map(d => d.protein_name))];
         }
         
         console.log(filteredData , "filternodes" )
+
+
         
         filteredData.forEach(function (row) {
         
@@ -1756,8 +1759,7 @@ var link;
 var node;
 var svg, chart;
 var simulation = null
-var svgHeight = 500;
-document.getElementById('chart').style.height = svgHeight ;
+
 
 
 
@@ -1767,11 +1769,11 @@ function createChart(links) {
     //console.log("Latest Edit CreateCHart_13_jan_2024_A");
     var container = d3.select("#chart");
     //debugger
-    var svgWidth =800;
-    //  svgHeight = 250 ;
+    var svgWidth = [container.node().getBoundingClientRect().width] - 100;
+    var svgHeight = [container.node().getBoundingClientRect().height] - 100;
     //var containerWidth = 500;
     //var containerHeight = 500;
-    console.log("Width : "+svgWidth+"  ----  Height : "+svgHeight);
+    //console.log("Width : "+containerWidth+"  ----  Height : "+containerHeight);
 
     var zoom = d3.zoom()
         .scaleExtent([0.1, 10])
@@ -1785,7 +1787,7 @@ function createChart(links) {
     svg = container.append("svg")
         .attr("width",  svgWidth)
         .attr("height", svgHeight)
-        .style("background-color" , "red")
+        // .style("background-color" , "red")
         .call(zoom)
         .append("g"); // Append group element to SVG
 
@@ -1978,7 +1980,7 @@ node.on("click", function (event, d) {
     let r = event.target.__data__;
     tooltip2.transition()
       .style("opacity", 0.9);
-    tooltip2.html("<strong></strong> " + r.id)
+    tooltip2.html("<strong>Id:</strong> " + r.id)
       .style("left", d.pageX + "px")
       .style("top", d.pageY + "px");
   })
@@ -2112,6 +2114,18 @@ var tooltip2 = d3.select("body").append("div")
     //$("#loading").hide();
     updateChartVisibility();
     createLegend();
+
+
+    $(function () {
+        
+        // Get the height of the #all-legends element
+        var height = $("#all-legends").height();
+        console.log( height ,svgHeight, "Height of #all-legends: " + height + "px");
+    
+        localStorage.setItem('jsonData', height);
+    });
+
+    
     createLegend_status();
     createLegend_drugType();
     createProteinsLegend();
@@ -2456,6 +2470,8 @@ function createLegend() {
           );
       }
 
+
+   
       var legendText = legendItem
         .append("span")
         .style("margin-left", "10px")
@@ -2852,13 +2868,6 @@ let DiseaseColorMap = {
       console.log("check1");
       // Set display to "block" or any other desired value
     }
-    $(function () {
-    
-        // Log the height of the element to the console
-        var height = $("#all-legends").height();
-        console.log("Height of #all-legends:", height);
-    });
-    
   }
   
 
@@ -3017,7 +3026,15 @@ function updateVisibility_legends() {
             // If the link is neither hidden by interaction type, drug status, nor protein class
             return 'visible';
         });
+
+
+
+
+      
 }
+
+
+
 
 
 
