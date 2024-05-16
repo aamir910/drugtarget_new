@@ -7,7 +7,7 @@ $(function () {
 
 
 var json_GeneralFile = "json/json_GeneralFile.json";
-var json_GeneralFile = "json/json4.json";
+var json_GeneralFile = "json/json5.json";
 var json_drugData = "json/json_drugData.json";
 var json_proteinData = "json/json_proteinData.json";
 var json_interactionData = "json/json_interactionData.json";
@@ -1980,7 +1980,7 @@ node.on("click", function (event, d) {
     let r = event.target.__data__;
     tooltip2.transition()
       .style("opacity", 0.9);
-    tooltip2.html("<strong>Id:</strong> " + r.id)
+    tooltip2.html( r.id)
       .style("left", d.pageX + "px")
       .style("top", d.pageY + "px");
   })
@@ -2115,17 +2115,17 @@ var tooltip2 = d3.select("body").append("div")
     updateChartVisibility();
     createLegend();
 
+    // here is the logic to add the height  of the  iframe there 
 
     $(function () {
         
         // Get the height of the #all-legends element
-        var height = $("#all-legends").height();
+        var height = $("#all-legends").height()+180;
         console.log( height ,svgHeight, "Height of #all-legends: " + height + "px");
     
         localStorage.setItem('jsonData', height);
     });
 
-    
     createLegend_status();
     createLegend_drugType();
     createProteinsLegend();

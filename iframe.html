@@ -6,34 +6,32 @@
     <title>Main Document</title>
     <style>
         iframe {
+            margin-left: 30%;
             width: 70%;
-            height: 395px;
+            /* height: 395px; */
             border: 1px solid #ccc;
         }
     </style>
 </head>
 <body style="height: 100px;">
     <h1>Embedding an Iframe</h1>
+    <h1>Embedding an Iframe</h1>
+    <h1>Embedding an Iframe</h1>
+    <h1>Embedding an Iframe</h1>
+    <h1>Embedding an Iframe</h1>
+    <h1>Embedding an Iframe</h1>
+    <h1>Embedding an Iframe</h1>
+    <h1>Embedding an Iframe</h1>
+    <h1>Embedding an Iframe</h1>
+    <h1>Embedding an Iframe</h1>
+    <h1>Embedding an Iframe</h1>
+    <h1>Embedding an Iframe</h1>
+    <h1>Embedding an Iframe</h1>
+    <h1>Embedding an Iframe</h1>
     <iframe id="myIframe" src="index2.html" title="Iframe Example"></iframe>
 
     <script>
-   
-
-        function getVariableFromIframe() {
-            var iframe = document.getElementById('myIframe');
-            var iframeWindow = iframe.contentWindow;
-            var iframeVariable = iframeWindow.jsonfile // Access the variable
-            // iframe.style.height = iframeVariable+'px'
-
-        }
-
-
-        document.getElementById('myIframe').onload = function() {
-           
-            getVariableFromIframe(); // Call function to get the variable
-        };
-
-        document.addEventListener('DOMContentLoaded', (event) => {
+  document.addEventListener('DOMContentLoaded', (event) => {
         // Retrieve data from localStorage
         const storedData = localStorage.getItem('jsonData');
         
@@ -42,9 +40,9 @@
             console.log( data,'Data retrieved from localStorage:' );
             
             var iframe = document.getElementById('myIframe');
-            iframe.style.height = data+100+'px'
+            iframe.style.height = data+'px'
 
-            // Process your data here
+            // Process your data heres
         } else {
             console.error('No data found in localStorage');
         }
