@@ -6,34 +6,34 @@ $(function () {
 //Pass jsonFiles Here
 
 
-var json_GeneralFile = "json/json_GeneralFile.json";
-var json_GeneralFile = "json/json5.json";
-var json_drugData = "json/json_drugData.json";
-var json_proteinData = "json/json_proteinData.json";
-var json_interactionData = "json/json_interactionData.json";
+// var json_GeneralFile = "json/json_GeneralFile.json";
+// var json_GeneralFile = "json/json6.json";
+// var json_drugData = "json/json_drugData.json";
+// var json_proteinData = "json/json_proteinData.json";
+// var json_interactionData = "json/json_interactionData.json";
 
 
 
-// var json_GeneralFile = "/static/json-sample/json_GeneralFile.json";
-// var json_drugData = "/static/json-sample/json_drugData.json";
-// var json_proteinData = "/static/json-sample/json_proteinData.json";
-// var json_interactionData = "/static/json-sample/json_interactionData.json"
+var json_GeneralFile = "/static/json-sample/json_GeneralFile.json";
+var json_drugData = "/static/json-sample/json_drugData.json";
+var json_proteinData = "/static/json-sample/json_proteinData.json";
+var json_interactionData = "/static/json-sample/json_interactionData.json"
 
 
 
-// if (drug_bank_ids) {
-//     json_GeneralFile = "/drugs_network/general_data?drug_bank_ids=" + drug_bank_ids.join(',');
-//     json_drugData = "/drugs_network/drug_data?drug_bank_ids=" + drug_bank_ids.join(',');
-//     json_proteinData = "/drugs_network/protein_data?drug_bank_ids=" + drug_bank_ids.join(',');
-//     json_interactionData = "/drugs_network/interaction_data?drug_bank_ids=" + drug_bank_ids.join(',');
-// }
+if (drug_bank_ids) {
+    json_GeneralFile = "/drugs_network/general_data?drug_bank_ids=" + drug_bank_ids.join(',');
+    json_drugData = "/drugs_network/drug_data?drug_bank_ids=" + drug_bank_ids.join(',');
+    json_proteinData = "/drugs_network/protein_data?drug_bank_ids=" + drug_bank_ids.join(',');
+    json_interactionData = "/drugs_network/interaction_data?drug_bank_ids=" + drug_bank_ids.join(',');
+}
 
-// if (drug_bank_id) {
-//     json_GeneralFile = "/drug_network/" + drug_bank_id + "/general_data";
-//     json_drugData = "/drug_network/" + drug_bank_id + "/drug_data";
-//     json_proteinData = "/drug_network/" + drug_bank_id + "/protein_data";
-//     json_interactionData = "/drug_network/" + drug_bank_id + "/interaction_data";
-// }
+if (drug_bank_id) {
+    json_GeneralFile = "/drug_network/" + drug_bank_id + "/general_data";
+    json_drugData = "/drug_network/" + drug_bank_id + "/drug_data";
+    json_proteinData = "/drug_network/" + drug_bank_id + "/protein_data";
+    json_interactionData = "/drug_network/" + drug_bank_id + "/interaction_data";
+}
 
 
 // code to get the li of the network visualization 
@@ -146,8 +146,8 @@ function readInteractionJSON() {
 
 
 window.onload = function () {
-    // readDrugJSON();
-    processData(numberofnodes ,slicedata );
+    readDrugJSON();
+    // processData(numberofnodes ,slicedata );
     // getDrugJsonData(drugBankId);
     
 };
@@ -1562,7 +1562,7 @@ function processData(numberofnodes , slicedata ) {
 
       
         
-
+console.log(data ,'here is the data ')
 
 const uniqueProteinClasses = [...new Set(data.map(d => d.protein_name))];
 
@@ -3505,39 +3505,39 @@ d3.select("#GetmoreData").on("click", function () {
 
 
 
-if(thredhold_value <5 && child_nodes>180 ){
+if(thredhold_value < 5 && child_nodes>180 ){
 console.log('RAJHFDAJKL;SH')
     slicedata = slicedata +200
 
 }
 
 else{   
-    if(thredhold_value < 7){    
+    if(thredhold_value <= 7){    
         numberofnodes = numberofnodes +1 ;  
-
+console.log('incease the number of nodes')
     }
-    else if(thredhold_value >7 && thredhold_value  < 14 )
+    else if(thredhold_value >7 && thredhold_value  <= 14 )
         {
             
         numberofnodes = numberofnodes + 2 ; 
-        } else if(thredhold_value >14 && thredhold_value  < 50 )
+        } else if(thredhold_value >14 && thredhold_value  <=50 )
                 {
                     
                 numberofnodes = numberofnodes + 6; 
-                } else if(thredhold_value >50 && thredhold_value  < 150 )
+                } else if(thredhold_value >50 && thredhold_value  <= 150 )
                     {
                         
                     numberofnodes = numberofnodes + 20 ; 
-                    } else if(thredhold_value >150 && thredhold_value  < 300 )
+                    } else if(thredhold_value >150 && thredhold_value  <= 300 )
                         {
                             
                         numberofnodes = numberofnodes + 50 ; 
-                        } else if(thredhold_value >300 && thredhold_value  < 600 )
+                        } else if(thredhold_value >300 && thredhold_value  <= 600 )
                             {
                                 
                             numberofnodes = numberofnodes + 100 ; 
                             }
-                            else if(thredhold_value >600  )
+                            else if(thredhold_value >=600  )
                                 {
                                     
                                 numberofnodes = numberofnodes + 200 ; 

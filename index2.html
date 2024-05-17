@@ -63,7 +63,7 @@
         padding-bottom: 1px;
         overflow: visible;
         width: 100%;
-        bottom: 0;
+        /* bottom: 0; */
         text-align: left;
         float: right;
       }
@@ -102,13 +102,13 @@
         }
   
         #threshold-slider-container {
-          position: fixed;
+          /* position: fixed; */
           line-height: 0;
           padding-top: 5px;
           padding-bottom: 1px;
           overflow: visible;
           width: 100%;
-          bottom: 0;
+          /* bottom: 0; */
           text-align: left;
           float: right;
         }
@@ -136,13 +136,13 @@
         }
   
         #threshold-slider-container {
-          position: fixed;
+          /* position: fixed; */
           line-height: 0;
           padding-top: 5px;
           padding-bottom: 1px;
           overflow: visible;
           width: 100%;
-          bottom: 0;
+          /* bottom: 0; */
           text-align: left;
           float: right;
         }
@@ -168,13 +168,13 @@
         }
   
         #threshold-slider-container {
-          position: fixed;
+          /* position: fixed; */
           line-height: 0;
           padding-top: 5px;
           padding-bottom: 1px;
           overflow: visible;
           width: 100%;
-          bottom: 0;
+          /* bottom: 0; */
           text-align: left;
           float: right;
         }
@@ -200,13 +200,13 @@
         }
   
         #threshold-slider-container {
-          position: fixed;
+          /* position: fixed; */
           line-height: 0;
           padding-top: 5px;
           padding-bottom: 1px;
           overflow: visible;
           width: 100%;
-          bottom: 0;
+          /* bottom: 0; */
           text-align: left;
           float: right;
         }
@@ -232,13 +232,13 @@
         }
   
         #threshold-slider-container {
-          position: fixed;
+          /* position: fixed; */
           line-height: 0;
           padding-top: 5px;
           padding-bottom: 1px;
           overflow: visible;
           width: 100%;
-          bottom: 0;
+          /* bottom: 0; */
           text-align: left;
           float: right;
         }
@@ -879,11 +879,10 @@
 
 <div id="tab2" class="tab-content">
 
-
-
         <div id="loading">
           <div class="spinner"></div>
         </div>
+
         <div id="overlay"></div>
       
         <div id="dialog" style="display: none">
@@ -955,7 +954,32 @@
         </div>
       
         <div id="screenshot">
-          <div id="chart" ></div>
+  <!--Screennshot div closing-->
+  <div class="d-flex justify-content-center btmbar" id="threshold-slider-container">
+    <button type="button" class="btn btn-light d-flex btmbar zoom-in-btn">
+      <i class="fas fa-search-plus zoom-in-icon"></i>&nbsp;Zoom In
+    </button>
+    <button type="button" class="btn btn-light d-flex btmbar col-xs-2 margin-left zoom-out-btn">
+      
+      <i class="fas fa-search-minus zoom-out-icon"></i>&nbsp;Zoom Out
+    </button>
+
+    <label class="d-flex btmbar" for="threshold-slider" style="display: none;">&nbsp;Threshold Value:</label>
+    <input class="d-flex btmbar" type="range" id="threshold-slider" min="1" max="" value="" step="1" style="display: none;">
+    <span class="d-flex btmbar" id="threshold-value" style="display: none;"></span>
+    <button type="button" id="exportButton" class="btn btn-light d-flex btmbar">Export</button>
+    <button type="button" id="redrawChart" class="btn btn-light d-flex btmbar">Redraw</button>
+    <button type="button" id="GetmoreData" class="btn btn-light d-flex btmbar">
+        Get more data
+     </button>
+    <!-- ened  -->
+  </div>
+
+
+          <div id="chart" >
+
+
+          </div>
           <div id="legendsMainDiv" class="center-vertical-container">
             <div id="all-legends">
               <!-- Interaction legend (Hidden)-->
@@ -1021,29 +1045,8 @@
               </div>
             </div>
           </div>
-          <!--Screennshot div closing-->
-          <div class="d-flex justify-content-center btmbar" id="threshold-slider-container">
-            <button type="button" class="btn btn-light d-flex btmbar zoom-in-btn">
-              <i class="fas fa-search-plus zoom-in-icon"></i>&nbsp;Zoom In
-            </button>
-            <button type="button" class="btn btn-light d-flex btmbar col-xs-2 margin-left zoom-out-btn">
-              <i class="fas fa-search-minus zoom-out-icon"></i>&nbsp;Zoom Out
-            </button>
-      
-            <label class="d-flex btmbar" for="threshold-slider">&nbsp;Threshold Value:</label>
-            <input class="d-flex btmbar" type="range" id="threshold-slider" min="1" max="" value="" step="1" />
-            <span class="d-flex btmbar" id="threshold-value"></span>
-            <button type="button" id="exportButton" class="btn btn-light d-flex btmbar">
-              Export
-            </button>
-            <button type="button" id="redrawChart" class="btn btn-light d-flex btmbar">
-              Redraw
-            </button>
-            <button type="button" id="GetmoreData" class="btn btn-light d-flex btmbar">
-              Get more data
-            </button>
-          </div>
-      
+          
+        
       </div>
 </div>
 
