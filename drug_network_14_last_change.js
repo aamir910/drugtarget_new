@@ -7,7 +7,7 @@ $(function () {
 
 
 var json_GeneralFile = "json/json_GeneralFile.json";
-var json_GeneralFile = "json/json6.json";
+var json_GeneralFile = "json/json4.json";
 var json_drugData = "json/json_drugData.json";
 var json_proteinData = "json/json_proteinData.json";
 var json_interactionData = "json/json_interactionData.json";
@@ -251,7 +251,7 @@ function handleExportOption(option) {
             break;
 
         case 'Download PNG':
-            console.log("PNG Export Clikced");
+            //console.log("PNG Export Clikced");
             downloadPNG();
 
             break;
@@ -279,30 +279,28 @@ function getFilteredSvgContent(svgElement) {
     var d3ClonedSvg = d3.select(clonedSvg);
 
     // Remove hidden links first
-        d3ClonedSvg.selectAll(".link")
-            .filter(function () {
-                return this.style.visibility === 'hidden' || this.style.display === 'none';
-            })
-            .remove();
+    d3ClonedSvg.selectAll(".link")
+        .filter(function () {
+            return this.style.visibility === 'hidden' || this.style.display === 'none';
+        })
+        .remove();
 
-        // Remove hidden parent nodes
-        d3ClonedSvg.selectAll(".node-parent")
-            .filter(function () {
-                return this.style.visibility === 'hidden' || this.style.display === 'none';
-            })
-            .remove();
+    // Remove hidden parent nodes
+    d3ClonedSvg.selectAll(".node-parent")
+        .filter(function () {
+            return this.style.visibility === 'hidden' || this.style.display === 'none';
+        })
+        .remove();
 
-        // Remove hidden child nodes. This checks if both the circle and text children are hidden.
-        d3ClonedSvg.selectAll(".node:not(.node-parent)")
-            .filter(function () {
+    // Remove hidden child nodes. This checks if both the circle and text children are hidden.
+    d3ClonedSvg.selectAll(".node:not(.node-parent)")
+        .filter(function () {
+            var circleVisibility = d3.select(this).select('circle').style('visibility');
+            var textVisibility = d3.select(this).select('text').style('visibility');
+            return circleVisibility === 'hidden' && textVisibility === 'hidden';
+        })
+        .remove();
 
-                // var circleVisibility = d3.select(this).select('circle').style('visibility');
-                // console.log( circleVisibility , 'circleVisibility')
-                var textVisibility = d3.select(this).select('text').style('visibility');
-                return textVisibility === 'hidden';
-            })
-            .remove();      
-            
     return new XMLSerializer().serializeToString(clonedSvg);
 }
 
@@ -322,15 +320,12 @@ function printChart() {
 // Download PNG
 // Download PNG
 function downloadPNG() {
-    console.log("working 1")
     var svgElement = document.querySelector("#chart svg");
-    
+
     // Reset transformations by cloning the SVG element and removing any transformations
     var clonedSvgElement = svgElement.cloneNode(true);
     clonedSvgElement.setAttribute("transform", "");
 
-    console.log("working 2")
-    console.log("working 3" )
     var svgData = getFilteredSvgContent(clonedSvgElement);
     svgData = addWhiteBackground(svgData);
 
@@ -386,7 +381,7 @@ function svgToCanvas(svgData, callback) {
 
         if (xlinkHref) {
             //imgObj.src = "http://localhost:8000/" + xlinkHref;
-            imgObj.src = "left3right1.png"
+            imgObj.src = "https://pharmacogenomics-database-5pltq.ondigitalocean.app" + xlinkHref;
 
         } else {
             loadedCount++;
@@ -609,11 +604,12 @@ function downloadXLS() {
     //console.log(filteredLinks)
     // Load the XLSX
     var req = new XMLHttpRequest();
-    req.open("GET", "/static/d3/data_export_file.xlsx", true);
+    req.open("GET", "data_export_file.xlsx", true);
     req.responseType = "arraybuffer";
-
+    
     req.onload = function (e) {
         var data = new Uint8Array(req.response);
+        console.log("working xlx" , data )
         var workbook = XLSX.read(data, { type: "array" });
 
         var firstSheetName = workbook.SheetNames[0];
@@ -1445,12 +1441,12 @@ let child_nodes = 0 ;
 
 
 var imagePaths11 = {
-    Nutraceutical: "left3right1.png",
-    Experimental: "left3right1.png",
-    Investigational: "left3right1.png",
-    Approved: "left3right1.png",
-    "Vet-approved": "left3right1.png",
-    Illicit: "left3right1.png",
+    Nutraceutical: "images/left0.png",
+    Experimental: "images/left1.png",
+    Investigational: "images/left2.png",
+    Approved: "images/left3.png",
+    "Vet-approved": "images/left4.png",
+    Illicit: "images/left5.png",
   };
 
 
@@ -1518,7 +1514,7 @@ var imagePaths = {};
 Object.keys(colorCodes).forEach((key, i) => {
     Object.keys(colorCodesDrugType).forEach((key2, j) => {
         var keyCombo = key + "|" + key2;
-        imagePaths[keyCombo] = `left3right1.png`;
+        imagePaths[keyCombo] = `/static/d3/images/capsules/left${i}right${j}.png`;
     });
 });
 
@@ -1567,7 +1563,7 @@ function processData(numberofnodes , slicedata ) {
 
       
         
-console.log(data ,'here is the data ')
+
 
 const uniqueProteinClasses = [...new Set(data.map(d => d.protein_name))];
 
@@ -1985,7 +1981,7 @@ node.on("click", function (event, d) {
     let r = event.target.__data__;
     tooltip2.transition()
       .style("opacity", 0.9);
-    tooltip2.html( r.id)
+    tooltip2.html("<strong>Id:</strong> " + r.id)
       .style("left", d.pageX + "px")
       .style("top", d.pageY + "px");
   })
@@ -3510,34 +3506,34 @@ d3.select("#GetmoreData").on("click", function () {
 
 
 
-if(thredhold_value < 5 && child_nodes>180 ){
+if(thredhold_value <5 && child_nodes>180 ){
 console.log('RAJHFDAJKL;SH')
     slicedata = slicedata +200
 
 }
 
 else{   
-    if(thredhold_value <= 7){    
+    if(thredhold_value < 7){    
         numberofnodes = numberofnodes +1 ;  
-console.log('incease the number of nodes')
+
     }
-    else if(thredhold_value >7 && thredhold_value  <= 14 )
+    else if(thredhold_value >7 && thredhold_value  < 14 )
         {
             
         numberofnodes = numberofnodes + 2 ; 
-        } else if(thredhold_value >14 && thredhold_value  <=50 )
+        } else if(thredhold_value >14 && thredhold_value  < 50 )
                 {
                     
                 numberofnodes = numberofnodes + 6; 
-                } else if(thredhold_value >50 && thredhold_value  <= 150 )
+                } else if(thredhold_value >50 && thredhold_value  < 150 )
                     {
                         
                     numberofnodes = numberofnodes + 20 ; 
-                    } else if(thredhold_value >150 && thredhold_value  <= 300 )
+                    } else if(thredhold_value >150 && thredhold_value  < 300 )
                         {
                             
                         numberofnodes = numberofnodes + 50 ; 
-                        } else if(thredhold_value >300 && thredhold_value  <= 600 )
+                        } else if(thredhold_value >300 && thredhold_value  < 600 )
                             {
                                 
                             numberofnodes = numberofnodes + 100 ; 
