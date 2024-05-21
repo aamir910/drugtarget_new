@@ -604,12 +604,11 @@ function downloadXLS() {
     //console.log(filteredLinks)
     // Load the XLSX
     var req = new XMLHttpRequest();
-    req.open("GET", "data_export_file.xlsx", true);
+    req.open("GET", "/static/d3/data_export_file.xlsx", true);
     req.responseType = "arraybuffer";
-    
+
     req.onload = function (e) {
         var data = new Uint8Array(req.response);
-        console.log("working xlx" , data )
         var workbook = XLSX.read(data, { type: "array" });
 
         var firstSheetName = workbook.SheetNames[0];
@@ -625,6 +624,7 @@ function downloadXLS() {
                 link.target.Protein_Class === row.Protein_Class
             )
         );
+        console.log(filteredRows , 'filteredRows')
 
         // Create a new worksheet with the filtered rows
         // console.log(filteredRows)

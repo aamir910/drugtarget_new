@@ -626,9 +626,12 @@ function downloadXLS() {
                 link.source.id === row.drug_name &&
                 link.source.Drug_type.toLowerCase() === row.drugtype.toLowerCase() &&
                 link.target.id === row.protein &&
-                link.target.Protein_Class === row.Protein_Class
+                link.target.Protein_Class === row.Protein_Class && 
+                // add the diseaseClass data 
+                link.target.DiseaseClass  === row.DiseaseClass
             )
         );
+        
 
         // Create a new worksheet with the filtered rows
         // console.log(filteredRows)
