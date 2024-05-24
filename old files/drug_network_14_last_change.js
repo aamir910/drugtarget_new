@@ -624,7 +624,6 @@ function downloadXLS() {
                 link.target.Protein_Class === row.Protein_Class
             )
         );
-        console.log(filteredRows , 'filteredRows')
 
         // Create a new worksheet with the filtered rows
         // console.log(filteredRows)

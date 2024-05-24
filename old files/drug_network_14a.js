@@ -631,7 +631,7 @@ function downloadXLS() {
                 link.target.DiseaseClass  === row.DiseaseClass
             )
         );
-        
+            
 
         // Create a new worksheet with the filtered rows
         // console.log(filteredRows)

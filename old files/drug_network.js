@@ -4,69 +4,24 @@ $(function () {
     });
 });
 //Pass jsonFiles Here
-
-
-var json_GeneralFile = "json/json_GeneralFile.json";
-var json_GeneralFile = "json/json6.json";
-var json_drugData = "json/json_drugData.json";
-var json_proteinData = "json/json_proteinData.json";
-var json_interactionData = "json/json_interactionData.json";
-
-
-
 // var json_GeneralFile = "/static/json-sample/json_GeneralFile.json";
 // var json_drugData = "/static/json-sample/json_drugData.json";
 // var json_proteinData = "/static/json-sample/json_proteinData.json";
 // var json_interactionData = "/static/json-sample/json_interactionData.json"
 
+var json_GeneralFile = "json/json_GeneralFile.json";
+var json_drugData = "";
+var json_proteinData = "";
+var json_interactionData = "";
 
 
-// if (drug_bank_ids) {
-//     json_GeneralFile = "/drugs_network/general_data?drug_bank_ids=" + drug_bank_ids.join(',');
-//     json_drugData = "/drugs_network/drug_data?drug_bank_ids=" + drug_bank_ids.join(',');
-//     json_proteinData = "/drugs_network/protein_data?drug_bank_ids=" + drug_bank_ids.join(',');
-//     json_interactionData = "/drugs_network/interaction_data?drug_bank_ids=" + drug_bank_ids.join(',');
-// }
-
-// if (drug_bank_id) {
-//     json_GeneralFile = "/drug_network/" + drug_bank_id + "/general_data";
-//     json_drugData = "/drug_network/" + drug_bank_id + "/drug_data";
-//     json_proteinData = "/drug_network/" + drug_bank_id + "/protein_data";
-//     json_interactionData = "/drug_network/" + drug_bank_id + "/interaction_data";
-// }
-
-
-// code to get the li of the network visualization 
-
-document.addEventListener("DOMContentLoaded", function () {
-    // Get all <li> elements within the <ul>
-    var listItems = document.querySelectorAll('.nav-tabs li');
-    console.log("we are here line 44");
-    // Loop through the <li> elements
-    listItems.forEach(function (li) {
-        // Check if the text content of the <a> element within the <li> matches "Network visualization"
-        if (li.textContent.trim() === 'Network visualization') {
-            // Add a click event listener to the <li>
-            li.addEventListener('click', function () {
-
-                console.log('Network visualization tab clicked!');
-                if(!flag_tabclicked ){
-                    flag_tabclicked = true ; 
-                     if(flag_processData ){
-                        
-                console.log('chart is created on clicked ');
-                      createChart(links);
-                     }
-                  }
-
-            });
-        }
-    });
-});
 
 $("#loading").show();
-
-
+console.log("json_GeneralFile ", json_GeneralFile);
+//***console.log("json_drugData "+json_drugData);
+//***console.log("json_proteinData "+json_proteinData);
+//***console.log("json_interactionData "+json_interactionData);
+//***console.log("Saad");
 let drug_xlsxData;
 let protein_xlsxData;
 let interaction_xlsxData;
@@ -93,7 +48,7 @@ function readDrugJSON() {
                         }
                         return item.fields;
                     });
-                    //console.log("Final Drug Data", drug_xlsxData);
+                    console.log("Final Drug Data", drug_xlsxData);
                 } catch (error) {
                     console.error("Error parsing JSON string:", error);
                     return;
@@ -119,7 +74,7 @@ function readProteinJSON() {
         .then((response) => response.json())
         .then((jsonData) => {
             protein_xlsxData = jsonData;
-            //console.log("ProteinData", protein_xlsxData);
+            console.log("ProteinData", protein_xlsxData);
 
             readInteractionJSON();
         })
@@ -137,7 +92,7 @@ function readInteractionJSON() {
             interaction_xlsxData = jsonData;
             // console.log("InteractionData",interaction_xlsxData);
             // console.log("End of Logs ");
-            processData(numberofnodes ,slicedata );
+            processData();
         })
         .catch((error) => {
             console.error("Error reading the file:", error);
@@ -146,10 +101,8 @@ function readInteractionJSON() {
 
 
 window.onload = function () {
-    // readDrugJSON();
-    processData(numberofnodes ,slicedata );
-    // getDrugJsonData(drugBankId);
-    
+    processData(); // readDrugJSON();
+    //getDrugJsonData(drugBankId);
 };
 
 function getDrugJsonData(drugBankId) {
@@ -157,16 +110,16 @@ function getDrugJsonData(drugBankId) {
     // 
     // protein_xlsxData
     // interaction_xlsxData
-    var url = '/get-drug-network'
-    $.ajax({
-        type: 'GET',
-        url: url + '?drugbank_id=' + drugBankId,
-    }, function (data) {
-        //console.log(data);
-    })
+    // var url = '/get-drug-network'
+    // $.ajax({
+    //     type: 'GET',
+    //     url: url + '?drugbank_id=' + drugBankId,
+    // }, function (data) {
+    //     //console.log(data);
+    // })
 
     // call process data
-    //processData(numberofnodes);
+    //processData();
 }
 
 var exportButton = document.getElementById('exportButton');
@@ -251,7 +204,7 @@ function handleExportOption(option) {
             break;
 
         case 'Download PNG':
-            //console.log("PNG Export Clikced");
+            console.log("PNG Export Clikced");
             downloadPNG();
 
             break;
@@ -294,13 +247,12 @@ function getFilteredSvgContent(svgElement) {
 
     // Remove hidden child nodes. This checks if both the circle and text children are hidden.
     d3ClonedSvg.selectAll(".node:not(.node-parent)")
-            .filter(function () {
-                // var circleVisibility = d3.select(this).select('circle').style('visibility');
-                // console.log( circleVisibility , 'circleVisibility')
-                var textVisibility = d3.select(this).select('text').style('visibility');
-                return textVisibility === 'hidden';
-            })
-            .remove();
+        .filter(function () {
+            var circleVisibility = d3.select(this).select('circle').style('visibility');
+            var textVisibility = d3.select(this).select('text').style('visibility');
+            return circleVisibility === 'hidden' && textVisibility === 'hidden';
+        })
+        .remove();
 
     return new XMLSerializer().serializeToString(clonedSvg);
 }
@@ -622,8 +574,7 @@ function downloadXLS() {
                 link.source.id === row.drug_name &&
                 link.source.Drug_type.toLowerCase() === row.drugtype.toLowerCase() &&
                 link.target.id === row.protein &&
-                link.target.Protein_Class === row.Protein_Class &&
-                link.target.DiseaseClass  === row.DiseaseClass
+                link.target.Protein_Class === row.Protein_Class
             )
         );
 
@@ -790,13 +741,13 @@ function showDialog(title, parentNodeName) {
         // var matchingRow = drug_xlsxData.find((row) => row.name === drugNameValue);
 
         const findObjectByName = (array, targetName) => {
-            //console.log("Array is ", array);
+            console.log("Array is ", array);
             return (array.find(item => item.name === targetName));
         };
-        //console.log("data Drug Type of", typeof drug_xlsxData);
+        console.log("data Drug Type of", typeof drug_xlsxData);
         //  var matchingRow = drug_xlsxData.find((row) => row.name === drugNameValue);
         const matchingRow = findObjectByName(drug_xlsxData, drugNameValue);
-        //console.log("Matching Row Drug ImageTab", matchingRow);
+        console.log("Matching Row Drug ImageTab", matchingRow);
 
         if (matchingRow) {
             var drugbank_id = matchingRow.pk;
@@ -843,7 +794,7 @@ function showDialog(title, parentNodeName) {
             return (array.find(item => item.name === targetName));
         };
         const matchingRow = findObjectByName(drug_xlsxData, selectedDrugName1);
-        //console.log("Matching Row Description", matchingRow);
+        console.log("Matching Row Description", matchingRow);
         if (matchingRow) {
             // Create a table to display the drug information
             var drugInfoTable = document.createElement("div");
@@ -944,7 +895,7 @@ function showDialog(title, parentNodeName) {
             return (array.find(item => item.name === targetName));
         };
         const matchingRow = findObjectByName(drug_xlsxData, selectedDrugName1);
-        //console.log("Matching Row Drug Structure", matchingRow);
+        console.log("Matching Row Drug Structure", matchingRow);
 
         if (matchingRow) {
             // Create a table to display the drug structure information
@@ -1174,7 +1125,7 @@ function showDialog_Child(title, childName) {
     }
 
     function showProteinStructureTab(proteinName11111) {
-        //console.log("dd: " + proteinName11111);
+        console.log("dd: " + proteinName11111);
         var tabContent = document.querySelector('.tab-content1');
         tabContent.innerHTML = ''; // Clear the existing content
 
@@ -1258,7 +1209,7 @@ function showDialog_Child(title, childName) {
 
 //Interaction Dialog
 function showDialog_Links(title, interactionTy) {
-    //console.log("title: " + title)
+    console.log("title: " + title)
     var dialog = document.getElementById("dialog2");
     var drugName = document.getElementById("drug-name2");
     var closeButton = document.getElementById("close-button2");
@@ -1333,7 +1284,7 @@ function showDialog_Links(title, interactionTy) {
 
         // Your code to fetch the row where columns "drug_bankID", "uniprot_ID", and "interaction_type" matches interaction_source, interaction_target, and selectedInteractionName1 respectively
         // Assuming you have the data in the global variable 'interaction_xlsxData'
-        var matchingRow = interaction_xlsxData.find((row) => row.drugbank_id === interaction_source && row.uniprot_ID_id === interaction_target && row.interaction_type.toLowerCase() === selectedInteractionName1.toLowerCase());
+        var matchingRow = interaction_xlsxData.find((row) => row.drugbank_id === interaction_source && row.uniprot_ID_id === interaction_target && row.interaction.toLowerCase() === selectedInteractionName1.toLowerCase());
 
         if (matchingRow) {
             // Create a table to display the interaction information
@@ -1429,27 +1380,15 @@ let drugTypeIndices = {};
 var currentFilters;
 var interaction_source = "";
 var interaction_target = "";
-let thredhold_value =0;   
-let child_nodes = 0 ;
-// var imagePaths11 = {
-//     Nutraceutical: "/static/d3/images/capsules/left0.png",
-//     Experimental: "/static/d3/images/capsules/left1.png",
-//     Investigational: "/static/d3/images/capsules/left2.png",
-//     Approved: "/static/d3/images/capsules/left3.png",
-//     'Vet-approved': "/static/d3/images/capsules/left4.png",
-//     Illicit: "/static/d3/images/capsules/left5.png"
-// };
-
 
 var imagePaths11 = {
-    Nutraceutical: "images/left0.png",
-    Experimental: "images/left1.png",
-    Investigational: "images/left2.png",
-    Approved: "images/left3.png",
-    "Vet-approved": "images/left4.png",
-    Illicit: "images/left5.png",
-  };
-
+    Nutraceutical: "/static/d3/images/capsules/left0.png",
+    Experimental: "/static/d3/images/capsules/left1.png",
+    Investigational: "/static/d3/images/capsules/left2.png",
+    Approved: "/static/d3/images/capsules/left3.png",
+    'Vet-approved': "/static/d3/images/capsules/left4.png",
+    Illicit: "/static/d3/images/capsules/left5.png"
+};
 
 var colorOptions = ["#e71f73", "#d5a100", "#0a5517", "#061755", "#941a4c", "#3d3d3d"];
 
@@ -1539,221 +1478,164 @@ function xlsxToJson(file, callback) {
         });
 }
 
-
-let flag_tabclicked = false;
-let flag_processData  = false;
-
-
-
-let numberofnodes =1 ; 
-let slicedata = 200 ; 
-
-console.log(slicedata ,'slicedata')
-
-window.parent.postMessage({ data: slicedata }, "*");
-        
-function processData(numberofnodes , slicedata ) {
-    
+function processData() {
+    console.log("Inside Process Data Function11");
     const jsonFilePath = json_GeneralFile; // JSON file path
-    
-    //console.log("Inside Process Data Function11");
     fetch(jsonFilePath)
-      .then((response) => response.json())
-      .then((data) => {
+        .then((response) => response.json())
+        .then((data) => {
+            // Extract nodes and links from the JSON data
+            // console.log("inside processData: ", data);
+            chartDataJ = data;
+            data.forEach(function (row) {
+                //  console.log("ProcessData");
+                // console.log("ProcessData: ", row);
+                // console.log("ProcessData: " + JSON.stringify(row));
+                var drugName = row.drug_name;
+                var drugID = row.drugbank_id;
+                var protein = row.protein;
+                var genename = row.gene_name;
+                var interaction = row.interaction;
+                //var drugStatus = row.Drug_status; // Get the "Drug_status" value
+                var drugStatus = clinicalStatusMap[row.Drug_status];
+                var drugType = row.drugtype; // Get the "Drug_status" value
+                var proteinClass = row.Protein_Class;
+
+                var disease_interaction = "phase" + row.Phase;
+                console.log("row.Phase = " + row.Phase +" disease_interaction "+ disease_interaction);
+                var disease = row.Disease_name; // getting the new disease
+                var Disease_class = row.Disease_class
+                var disease_phase = row.Phase;
+
+                console.log("printing disease_interaction :" + disease_interaction);
+                console.log("printing disease :" + disease);
+                console.log("printing Disease_class :" + Disease_class);
+
+                if (
+                    !nodes.find(function (node) {
+                        return node.id === drugName;
+                    })
+                ) {
+                    nodes.push({
+                        id: drugName,
+                        isParent: true,
+                        radius: 10,
+                        Drug_status: drugStatus,
+                        Drug_type: drugType,
+                        Drug_ID: drugID,
+                    }); // Include the "Drug_status" value in the node object
+                }
+
+                if (
+                    !nodes.find(function (node) {
+                        return node.id === protein;
+                    })
+                ) {
+                    nodes.push({
+                        id: protein,
+                        isParent: false,
+                        radius: 5,
+                        Protein_Class: proteinClass,
+                        child_type: "protein_type",
+                    }); // Include the "Protein_Class" value in the node object
+                }
+                // tag1
+                if (
+                    !nodes.find(function (node) {
+                        return node.id === disease;
+                    })
+                ) {
+                    nodes.push({
+                        id: disease,
+                        isParent: false,
+                        child_type: "disease_type",
+                        radius: 5,
+                        DiseaseClass: Disease_class,
+                        disease_phase: disease_phase
+                        // Protein_Class: proteinClass,
+                    }); // Include the "Protein_Class" value in the node object
+                }
+
+                if (
+                    !nodes.find(function (node) {
+                        return node.id === drugName;
+                    })
+                ) {
+                    nodes.push({ id: drugName, isParent: true, radius: 10 });
+                }
+
+                if (
+                    !nodes.find(function (node) {
+                        return node.id === protein;
+                    })
+                ) {
+                    nodes.push({ id: protein, isParent: false, radius: 5 });
+                }
+
+                links.push({
+                    source: drugName,
+                    target: protein,
+                    type: interaction,
+                    // disease_type: "temp"
+                });
+
+                links.push({
+                    source: drugName,
+                    target: disease,
+                    type: disease_interaction,
+                    // disease_type: disease_interaction // You can customize the type for disease links
+                });
+
+                console.log(links, "here are the type")
+            });
+            console.log("here are the links", links);
+            var childNodeMap = {};
+            links.forEach(function (link) {
+                if (!link.target.isParent) {
+                    var childNodeId = link.target.id;
+                    childNodeMap[childNodeId] =
+                        (childNodeMap[childNodeId] || 0) + 1;
+                }
+            });
+
+            // Assign the parent count to each child node
+            nodes
+                .filter(function (d) {
+                    return !d.isParent;
+                })
+                .forEach(function (node) {
+                    node.degree = childNodeMap[node.id] || 0;
+                });
 
 
-      
-        
-console.log(data ,'here is the data ')
 
-const uniqueProteinClasses = [...new Set(data.map(d => d.protein_name))];
+            // Set the maximum value of the threshold slider
+            thresholdSlider.max = nodes.filter(function (node) { return node.isParent; }).length;
 
-        // Extract nodes and links from the JSON data
-        // console.log("inside processData: ", data);
-        chartDataJ = data;
-        
-        let filteredData = data.filter(row => row.Phase !== "1" && row.Phase !== "2");
-  
-        if(thredhold_value <5 && child_nodes>180){
-
-            filteredData = filteredData.slice( 0, slicedata) ; 
-        }
-        
-        console.log(filteredData , "filternodes" )
-
-
-        
-        filteredData.forEach(function (row) {
-        
-          var drugName = row.drug_name;
-          var drugID = row.drugbank_id;
-          var protein = row.protein;
-          var genename = row.gene_name;
-          var interaction =
-            row.interaction_type.charAt(0).toUpperCase() +
-            row.interaction_type.slice(1);
-          // var interaction = row.interaction
-  
-          var disease_interaction;
-          var disease_phase ; 
-          disease_interaction = "Phase" + row.Phase;
-          disease_phase = row.Phase;
-       
-  
-          var drugStatus = clinicalStatusMap[row.Drug_status];
-          var drugType = row.drugtype;
-          var proteinClass = row.Protein_Class;
-  
-          var disease = row.Disease_name; // getting the new disease
-          var Disease_class = row.Disease_class;
-          
-          if (
-            !nodes.find(function (node) {
-              return node.id === drugName;
-            })
-          ) {
-            nodes.push({
-              id: drugName,
-              isParent: true,
-              radius: 10,
-              Drug_status: drugStatus,
-              Drug_type: drugType,
-              Drug_ID: drugID,
-            }); // Include the "Drug_status" value in the node object
-          }
-  
-          if (
-            !nodes.find(function (node) {
-              return node.id === protein;
-            })
-          ) {
-            nodes.push({
-              id: protein,
-              isParent: false,
-              radius: 5,
-              genename: genename,
-              Protein_Class: proteinClass,
-              child_type: "protein_type",
-            }); // Include the "Protein_Class" value in the node object
-          }
-          // tag1
-          if (
-            !nodes.find(function (node) {
-              return node.id === disease;
-            })
-          ) {
-            nodes.push({
-              id: disease,
-              isParent: false,
-              child_type: "disease_type",
-              radius: 5,
-              DiseaseClass: Disease_class,
-              disease_phase: disease_phase,
-              // Protein_Class: proteinClass,
-            }); // Include the "Protein_Class" value in the node object
-          }
-  
-          if (
-            !nodes.find(function (node) {
-              return node.id === drugName;
-            })
-          ) {
-            nodes.push({ id: drugName, isParent: true, radius: 10 });
-          }
-  
-          if (
-            !nodes.find(function (node) {
-              return node.id === protein;
-            })
-          ) {
-            nodes.push({ id: protein, isParent: false, radius: 5 });
-          }
-  
-          links.push({
-            source: drugName,
-            target: protein,
-            type: interaction,
-            // disease_type: "temp"
-          });
-  
-          links.push({
-            source: drugName,
-            target: disease,
-            type: disease_interaction,
-            // disease_type: disease_interaction // You can customize the type for disease links
-          });
-  
-          //console.log(links, "here are the type")
-        });
-        //console.log("here are the links", links);
-        var childNodeMap = {};
-        links.forEach(function (link) {
-          if (!link.target.isParent) {
-            var childNodeId = link.target.id;
-            childNodeMap[childNodeId] = (childNodeMap[childNodeId] || 0) + 1;
-          }
-        });
-  
-        // Assign the parent count to each child node
-        nodes
-          .filter(function (d) {
-            return !d.isParent;
-          })
-          .forEach(function (node) {
-            node.degree = childNodeMap[node.id] || 0;
-          });
-       
-        // Set the maximum value of the threshold slider
-        thredhold_value  = nodes.filter(function (node) {
-          return node.isParent;
-        }).length;
-
-        child_nodes= nodes.filter(function (node) {
-            return !node.isParent;
-          }).length;
-
-         thresholdSlider.max  = numberofnodes
-         console.log(numberofnodes , 'here are the number of nodes')
-        if ( thredhold_value <= numberofnodes || slicedata > filteredData.length  ) {
-             
-            thresholdSlider.max = thredhold_value;
-            document.getElementById('GetmoreData').disabled = true;
-            document.getElementById('GetmoreData').innerHTML = 'Maximum data reached';
-
-
-        }
-
-        if(slicedata > filteredData.length ){
-
+            // Set the default value of the threshold slider to the maximum
             thresholdSlider.value = 50;
-            thresholdValueLabel.textContent = thredhold_value;
-        }else{
-            thresholdSlider.value = 50;
-            thresholdValueLabel.textContent = numberofnodes;
-        }
-        
+            thresholdValueLabel.textContent = thresholdSlider.value;
 
-        // Set the default value of the threshold slider to the maximum
-        
-        // tag5
-        // Create the chart using D3.js
-  
-        createChart(links);
-       
-  
-        // Add an event listener to detect changes in the threshold slider value
-        thresholdSlider.addEventListener("input", function () {
-          thresholdValueLabel.textContent = thresholdSlider.value;
-          updateChartVisibility();
+            // Create the chart using D3.js
+            createChart(links);
+            createLegend();
+            createLegend_status();
+            createLegend_drugType();
+            createProteinsLegend();
+            createDiseaseLegend();
+
+            // Add an event listener to detect changes in the threshold slider value
+            thresholdSlider.addEventListener('input', function () {
+                thresholdValueLabel.textContent = thresholdSlider.value;
+                updateChartVisibility();
+            });
+        })
+        .catch((error) => {
+            console.error("Error reading the JSON file:", error);
         });
-      })
-      .catch((error) => {
-        console.error("Error reading the JSON file:", error);
-      });
-  
+
     // d3.select("#loading").style("height", "800px");
-  }
-  
+}
 
 // Read the data from the Excel file
 
@@ -1768,11 +1650,11 @@ var simulation = null
 // Create the Forced Directed Network Chart
 function createChart(links) {
     d3.select("#chart").selectAll("*").remove();
-    //console.log("Latest Edit CreateCHart_13_jan_2024_A");
+    console.log("Latest Edit CreateCHart_13_jan_2024_A");
     var container = d3.select("#chart");
     //debugger
-    var svgWidth = [container.node().getBoundingClientRect().width] - 100;
-    var svgHeight = [container.node().getBoundingClientRect().height] - 100;
+    var containerWidth = [container.node().getBoundingClientRect().width] - 10;
+    var containerHeight = [container.node().getBoundingClientRect().height] - 10;
     //var containerWidth = 500;
     //var containerHeight = 500;
     //console.log("Width : "+containerWidth+"  ----  Height : "+containerHeight);
@@ -1787,9 +1669,8 @@ function createChart(links) {
 
     // SVG creation with zoom behavior
     svg = container.append("svg")
-        .attr("width",  svgWidth)
-        .attr("height", svgHeight)
-        // .style("background-color" , "red")
+        .attr("width", containerWidth)
+        .attr("height", containerHeight)
         .call(zoom)
         .append("g"); // Append group element to SVG
 
@@ -1799,65 +1680,31 @@ function createChart(links) {
     var chargeStrength = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--charge-strength'));
     var distanceBetweenNodes = 60;
     var noOfTotalNodes11 = links.length;
-console.log(links.length ,'link length')
 
-
-
-
-
+    // console.log("HHHHHHHH" + noOfTotalNodes11);
 
     if (noOfTotalNodes11 < 100) {
-        chargeStrength = -250;
-      
-        var distanceBetweenNodes = 200;
-      } else if (noOfTotalNodes11 > 99 && noOfTotalNodes11 < 200) {
-        
-        chargeStrength = -250;
-        var distanceBetweenNodes = 200;
-      } else if (noOfTotalNodes11 > 199 && noOfTotalNodes11 < 250) {
-        
-       
-        chargeStrength = -250;
-        var distanceBetweenNodes = 200;
-      } else if (noOfTotalNodes11 > 249 && noOfTotalNodes11 < 300) {
-        
-      
-        chargeStrength = -250;
-        var distanceBetweenNodes = 200;
-      } else if (noOfTotalNodes11 > 299 && noOfTotalNodes11 < 350) {
-        
-       
-        chargeStrength = -250;
-        var distanceBetweenNodes = 200;
-        // change2 
-      } else if (noOfTotalNodes11 > 349 && noOfTotalNodes11 < 400) {
-        
-        console.log("check6")
-        chargeStrength = -100;
-        var distanceBetweenNodes = 200;
-      } else if (noOfTotalNodes11 > 399 && noOfTotalNodes11 < 999 ) {
-        
-        console.log("check8" , noOfTotalNodes11)
-        chargeStrength = -250;
-        var distanceBetweenNodes = 200;
-      }else if (noOfTotalNodes11 > 1000 && noOfTotalNodes11 < 2999 ) {
-        
-        console.log("check9" , noOfTotalNodes11)
-        chargeStrength = -250;
-        var distanceBetweenNodes = 100;
-      }
-       else if (noOfTotalNodes11 > 3000) {
-        
-        console.log("check10" , noOfTotalNodes11)
-        chargeStrength = -250;
+        chargeStrength = -100
         var distanceBetweenNodes = 60;
-      }
-
-
-
-
-
-
+    } else if (noOfTotalNodes11 > 99 && noOfTotalNodes11 < 200) {
+        chargeStrength = -100
+        var distanceBetweenNodes = 60;
+    } else if (noOfTotalNodes11 > 199 && noOfTotalNodes11 < 250) {
+        chargeStrength = -100
+        var distanceBetweenNodes = 60;
+    } else if (noOfTotalNodes11 > 249 && noOfTotalNodes11 < 300) {
+        chargeStrength = -100
+        var distanceBetweenNodes = 60;
+    } else if (noOfTotalNodes11 > 299 && noOfTotalNodes11 < 350) {
+        chargeStrength = -100
+        var distanceBetweenNodes = 60;
+    } else if (noOfTotalNodes11 > 349 && noOfTotalNodes11 < 400) {
+        chargeStrength = -100
+        var distanceBetweenNodes = 60;
+    } else if (noOfTotalNodes11 > 399) {
+        chargeStrength = -100
+        var distanceBetweenNodes = 60;
+    }
 
     simulation = d3
         .forceSimulation(nodes)
@@ -1872,8 +1719,8 @@ console.log(links.length ,'link length')
         )
         .force("charge", d3.forceManyBody().strength(chargeStrength))
         // Adding centering forces for X and Y coordinates
-        .force("x", d3.forceX(svgWidth / 2).strength(0.1))
-        .force("y", d3.forceY(svgHeight / 2).strength(0.1))
+        .force("x", d3.forceX(containerWidth / 2).strength(0.1))
+        .force("y", d3.forceY(containerHeight / 2).strength(0.1))
 
         .on("end", function () {
             nodes.forEach(function (node) {
@@ -1882,6 +1729,7 @@ console.log(links.length ,'link length')
             });
         });
 
+    //console.log("Creating nodes and links...");
     link = svg
         .selectAll(".link")
         .data(links)
@@ -1889,7 +1737,8 @@ console.log(links.length ,'link length')
         .append("line")
         .attr("class", "link")
         .style("stroke", function (d) {
-            return colorMap[(d.type).toLowerCase()]; 
+
+            return colorMap[d.type];
 
 
         })
@@ -1903,7 +1752,9 @@ console.log(links.length ,'link length')
         .on("click", function (event, d) {
             interaction_source = d.source.Drug_ID;
             interaction_target = d.target.id;
-       
+            // console.log(interaction_source);
+            // console.log(interaction_target);
+            console.log(d.type);
             showDialog_Links(d.type, d.type);
             //showDialog_Interaction(d.id, d.id);
         });
@@ -1941,62 +1792,29 @@ console.log(links.length ,'link length')
         })
         .append("circle")
         .attr("r", function (d) {
-            var uniqueSources = new Set();
-            link.filter(function (templink) {
-              if (templink.target.id === d.id) {
-                uniqueSources.add(templink.source.id);
-
-              }
-            });
-            var child_size = Array.from(uniqueSources).length;
-            if (child_size > 25) {
-              return 30
-            }
-            else {
-              return 5 + (child_size);
-            }
-          })
+            var parentCount = childNodeMap[d.id] || 1;
+            return 5 + (parentCount - 1) + 1; // Increase the size by 3px for each connected parent node
+        })
         .style("fill", function (d) {
             return proteinColorMap[d.Protein_Class] || "steelblue";
         })
         .on("click", function (event, d) {
+            console.log(d.id);
             showDialog_Child(d.id, d.id);
         });
 
     node.filter(function (d) {
-        // change1
-        return d.child_type === 'disease_type' && !d.isParent && d.disease_phase !== 1 && d.DiseaseClass;
+        return d.child_type === 'disease_type' && !d.isParent;
     })
         .append("path")
         .attr("d", "M 0 0 L 8 16 L -8 16 Z") // Path data for a triangle
         .style("fill", function (d) {
             return DiseaseColorMap[d.DiseaseClass] || "black";
         })
-       
-node.on("click", function (event, d) {
-    window.open(`https://clinicaltrials.gov/search?cond=${d.id}`, "_blank");
+        .on("click", function (event, d) {
+            window.open(`https://www.triangle.com/${d.id}`, "_blank");
 
-}).on("mouseover", function(d) {
-
-
-    let r = event.target.__data__;
-    tooltip2.transition()
-      .style("opacity", 0.9);
-    tooltip2.html( r.id)
-      .style("left", d.pageX + "px")
-      .style("top", d.pageY + "px");
-  })
-  .on("mouseout", function(d) {
-    tooltip2.transition()
-    //   .duration(500) 
-      .style("opacity", 0);
-  });
-
-
-    // Define a tooltip div with class "tooltip2"
-var tooltip2 = d3.select("body").append("div")
-.attr("class", "tooltip2")
-.style("opacity", 0);
+        });
 
 
     node
@@ -2017,14 +1835,13 @@ var tooltip2 = d3.select("body").append("div")
         .attr("width", 30)
         .attr("height", 30)
         .on("click", function (event, d) {
-       
+            console.log(d.id);
             showDialog(d.id, d.id);
         });
 
     node
         .filter(function (d) {
             return d.isParent;
-            
         })
         .append("text")
         .attr("dx", 14)
@@ -2038,46 +1855,47 @@ var tooltip2 = d3.select("body").append("div")
     //     return d.id;
     // });
 
-    node
-        .filter(function (d) {
-            //return !d.isParent;
-            return !d.isParent && d.disease_phase !== 1;
-        })
-        .append("text")
-        .attr("dx", 10)
-        .attr("dy", ".25em")
-        .text(function (d) {
-            return d.genename;
-        })
-        .attr("class", "node-label");
+    // node
+    //     .filter(function (d) {
+    //         return !d.isParent ;
+    //     })
+    //     .append("text")
+    //     .attr("dx", 10)
+    //     .attr("dy", ".25em")
+    //     .text(function (d) {
+    //         return d.id;
+    //     })
+    //     .attr("class", "node-label");
     // tag4
-
     simulation.on("tick", function () {
         link
             .attr("x1", function (d) {
-                return Math.max(0, Math.min(svgWidth, d.source.x));
+                return d.source.x;
             })
             .attr("y1", function (d) {
-                return Math.max(0, Math.min(svgHeight, d.source.y));
+                return d.source.y;
             })
             .attr("x2", function (d) {
-                return Math.max(0, Math.min(svgWidth, d.target.x));
+                return d.target.x;
             })
             .attr("y2", function (d) {
                 if (d.target.child_type === "disease_type") {
-                    return Math.max(0, Math.min(svgHeight, d.target.y)) + 8;
+                    return d.target.y + 8;
+
                 } else {
-                    return Math.max(0, Math.min(svgHeight, d.target.y));
+
+                    return d.target.y
                 }
             });
-    
+
         node.attr("transform", function (d) {
-            return `translate(${Math.max(0, Math.min(svgWidth, d.x))},${Math.max(0, Math.min(svgHeight, d.y))})`;
+            return "translate(" + d.x + "," + d.y + ")";
         });
     });
 
     // Enable drag behavior for nodes
     function drag(simulation) {
+        // console.log("Setting up drag behavior..."); 
         function dragStarted(event, d) {
             if (!event.active) simulation.alphaTarget(0.3).restart();
             d.fx = d.x;
@@ -2102,37 +1920,20 @@ var tooltip2 = d3.select("body").append("div")
 
     // Button click handlers
     d3.select(".zoom-in-btn").on("click", function () {
+        console.log("Zoom in called");
         zoom.scaleBy(svg.transition().duration(750), 1.1);  // scale up by 10%
     });
 
     d3.select(".zoom-out-btn").on("click", function () {
-        //console.log("Zoom out called");
+        console.log("Zoom out called");
         zoom.scaleBy(svg.transition().duration(750), 0.9);  // scale down by 10%
     });
 
-    //console.log("Chart created.");
+    console.log("Chart created.");
     // Finish updating chart
     $("#loading").hide();
     //$("#loading").hide();
     updateChartVisibility();
-    createLegend();
-
-    // here is the logic to add the height  of the  iframe there 
-
-    $(function () {
-        
-        // Get the height of the #all-legends element
-        var height = $("#all-legends").height()+180;
-        console.log( height ,svgHeight, "Height of #all-legends: " + height + "px");
-    
-        localStorage.setItem('jsonData', height);
-    });
-
-    createLegend_status();
-    createLegend_drugType();
-    createProteinsLegend();
-    createDiseaseLegend();
-
 }
 
 // Update the chart visibility based on the threshold value
@@ -2142,7 +1943,6 @@ function updateChartVisibility() {
     var visibleParents = nodes.filter(function (node) {
         return node.isParent;
     }).slice(0, threshold);
-
 
     nodes.forEach(function (node) {
         if (node.isParent) {
@@ -2197,22 +1997,22 @@ d3.select("#redrawChart").on("click", function () {
 
 function redrawChart1(originalLinks) {
     if (simulation) {
-        //console.log("Simulation before restart: ", simulation);
+        console.log("Simulation before restart: ", simulation);
 
         // Add nodes and links to the simulation and restart
         simulation.nodes(nodes).force("link").links(links);
 
         simulation.alpha(1).restart();
 
-        //console.log("Simulation after restart: ", simulation);
+        console.log("Simulation after restart: ", simulation);
     } else {
-        //console.log("Simulation is not defined");
+        console.log("Simulation is not defined");
     }
 }
 
 function redrawChart(originalLinks) {
     if (simulation) {
-        //console.log("Simulation before restart: ", simulation);
+        console.log("Simulation before restart: ", simulation);
 
         // Unfix the node positions
         nodes.forEach(function (node) {
@@ -2233,7 +2033,7 @@ function redrawChart(originalLinks) {
             });
         });
 
-        //console.log("Simulation after restart: ", simulation);
+        console.log("Simulation after restart: ", simulation);
     } else {
         console.log("Simulation is not defined");
     }
@@ -2311,18 +2111,6 @@ function getColor(type) {
   //Legends Dragable end code
 
   // Create the legend for interactions
-  var interactions = [
-    "Target",
-    "Enzyme",
-    "Transporter",
-    "Carrier",
-    "unknown",
-    "Phase1",
-    "Phase2",
-    "Phase3",
-    "Phase4",
-
-  ];
 
 //Legends Dragable code below
 // Assuming you've imported D3 as d3
@@ -2333,46 +2121,29 @@ function getColor(type) {
 // Create the legend for interactions
 function createLegend() {
     var legendContent = d3.select("#legend-content");
-   
-    legendContent.selectAll('div').remove() ; 
 
     var legendContent2 = d3.select("#legend-content_disease");
-       legendContent2.selectAll('div').remove() ; 
-    
-    var legendContent3 = d3.select("#trial_to_hide");
-    legendContent3.selectAll('div').remove() ; 
-    
-    //console.log("interaction legend",legendContent);
-    //console.log("disease legend",legendContent2);
 
-    
-
-    var uniqueInteractions = [];
+    var uniqueInteractions = new Set();
 
     links.forEach(function (link) {
       var interaction = link.type; // No need to convert to lowercase
+      console.log(interaction , "comment1");
       if (
         interactions.includes(
           interaction.charAt(0).toUpperCase() + interaction.slice(1)
         ) &&
-        !uniqueInteractions.includes(interaction)
+        !uniqueInteractions.has(interaction)
       ) {
-        if (["Phase1", "Phase2", "Phase3", "Phase4"].includes(interaction)) {
-            
+        if (["phase1", "phase2", "phase3", "phase4"].includes(interaction)) {
           createLegendItem(interaction, getColor(interaction), legendContent2);
         } else {
           createLegendItem(interaction, getColor(interaction), legendContent);
         }
-        uniqueInteractions.push(interaction);
-     
+        uniqueInteractions.add(interaction);
       }
     });
-    //console.log("unique Interactions", uniqueInteractions);
     function createLegendItem(interaction, color, container) {
-        //console.log("CreateLegendItem", interaction +"\n"+color);
-        //console.log("CreateLegendItem COntainer", container);
-
-
       var legendItem = container
         .append("div")
         .style("display", "flex")
@@ -2381,8 +2152,8 @@ function createLegend() {
         .on("click", function () {
           d3.select(this).classed("selected-legend1", true);
         });
-        //console.log("legendItem", legendItem);
-      var phases = ["Phase1", "Phase2", "Phase3", "Phase4"];
+
+      var phases = ["phase1", "phase2", "phase3", "phase4"];
       var dropdown = legendItem
         .append("div")
         .attr("class", "dropdown1")
@@ -2399,7 +2170,7 @@ function createLegend() {
           "border-top",
           function () {
             if (phases.includes(interaction)) {
-              return "3px dotted " + color
+              return "2px dotted " + color
             }
             else{
               return color ;
@@ -2439,17 +2210,12 @@ function createLegend() {
               return function () {
                 var selectedColor = getColor(selectedInteraction);
                 var selectedLegendItem = d3.select(".selected-legend1");
-                //console.log(selectedLegendItem, "selectedLegendItem");
-
-                console.log(selectedColor , colorMap , "here are both") ; 
-    
+                console.log(selectedLegendItem, "selectedLegendItem");
                 colorMap[interaction.toLowerCase()] = selectedColor;
-    
-                console.log(selectedColor , colorMap , "here are both") ; 
 
                 if(phases.includes(interaction)){
 
-                  dropdown.style("border-top",  `3px dotted ${selectedColor}`);
+                  dropdown.style("border-top",  `2px dotted ${selectedColor}`);
 
                 }else if(!phases.includes(interaction)){
 
@@ -2466,40 +2232,23 @@ function createLegend() {
                   "selected-legend1",
                   false
                 );
-                redrawLinks();   
+                redrawLinks();
               };
             })(interactions[i])
           );
       }
 
-
-   
       var legendText = legendItem
         .append("span")
         .style("margin-left", "10px")
         .text(interaction);
-
-    if (
-        uniqueInteractions.includes("Phase1") ||
-        uniqueInteractions.includes("Phase2") ||
-        uniqueInteractions.includes("Phase3") ||
-        uniqueInteractions.includes("Phase4")
-        ) {
-
-    
-        legendContent3.style("display", "block");
-        }
-        else {
-        legendContent3.style("display", "none");
-        // Set display to "block" or any other desired value
-        }
 
       // Event listener for the legend item text
       // Assuming that you have already defined the "nodes" and "links" arrays
       // and the "hiddenInteractions" object to track the visibility of interactions.
       legendText.on("click", function () {
         var clickedText = d3.select(this);
-        var interaction = clickedText.text();
+        var interaction = clickedText.text().toLowerCase();
 
         if (clickedText.classed("text-through")) {
           clickedText.classed("text-through", false);
@@ -2530,6 +2279,7 @@ function createLegend() {
     });
   }
 
+
 function drawLinks() {
     svg.selectAll(".link")
         .data(links)
@@ -2544,8 +2294,8 @@ function redrawLinks() {
     // Update the 'stroke' style of the links using the updated colorMap
     //console.log(link)
     link.style("stroke", function (d) {
-        console.log( d ,d.type , colorMap, "Testinng Interaction :" + colorMap[d.type] );
-        return colorMap[d.type.toLowerCase()];
+        console.log("Testinng Interaction :" + colorMap[d.type]);
+        return colorMap[d.type];
     });
 }
 
@@ -2553,22 +2303,15 @@ function redrawLinks() {
 
 //Protein Class Color Map
 var proteinColorMap = {
-    "Adhesion": "#ff7f0e",
-    "Secreted protein": "#17becf",
     "Enzyme": "#1f77b4",
-    "GPCR": "#2ca02c",
-    "Membrane receptor": "#9467bd",
-    "Kinase": "#9467bd",
-    "Transporter": "#7f7f7f",
-    "Unknown": "#8c564b",
     "Epigenetic regulator": "black",
-    "Structural protein": "#d62728",
-    "Surface antigen": "#bcbd22",
+    "GPCR": "#2ca02c",
     "Ion channel": "#d62728",
-    "Transcription factor": "#2ca02c",
-    "Nuclear receptor": "#ff7f0e"
+    "Kinase": "#9467bd",
+    "Nuclear receptor": "#ff7f0e",
+    "Transporter": "#7f7f7f",
+    "Unknown": "#8c564b"
 };
-
 function updateChildNodeColors() {
     d3.selectAll(".node circle")
         .style("fill", function (d) { return proteinColorMap[d.Protein_Class] || "steelblue"; });
@@ -2576,9 +2319,8 @@ function updateChildNodeColors() {
 
 function createProteinsLegend() {
     var hiddenProteins = {}; // Change this to hiddenProteinClasses
-    var proteins = ["Adhesion", "Secreted protein", "Enzyme", "GPCR", "Membrane receptor", "Kinase", "Transporter", "Unknown", "Epigenetic regulator", "Structural protein", "Surface antigen", "Ion channel", "Transcription factor", "Nuclear receptor"];
+    var proteins = ["Enzyme", "Epigenetic regulator", "GPCR", "Ion channel", "Kinase", "Nuclear receptor", "Transporter", "Unknown"];
     var legendContent = d3.select("#legend_protein_status-content");
-    legendContent.selectAll('div').remove() ; 
     var uniqueProteins = new Set();
 
     links.forEach(function (link) {
@@ -2672,10 +2414,17 @@ function createProteinsLegend() {
                 clickedText.classed("text-through", true);
                 hiddenProteinClasses[proteinClass] = true;
             }
-            
+
+
             updateAllFilters();
 
         });
+
+
+
+
+
+
 
     }
 
@@ -2731,7 +2480,7 @@ let DiseaseColorMap = {
   // tag5 
   // funtion to the disease in the legend 
   function createDiseaseLegend() {
-    var hiddendisease = {}; // Change this to
+    var hiddendisease = {}; // Change this to 
     var diseases = [
       "Congenital and Neonatal",
       "Respiratory Tract",
@@ -2757,61 +2506,63 @@ let DiseaseColorMap = {
       "Endocrine System",
       "Male Urogenital",
       "Occupational Diseases",
-      "Genetic Inborn",
+      "Genetic Inborn"
     ];
-  
+
+
     var legendContent = d3.select("#legend_disease_status-content");
-   legendContent.selectAll('div').remove() ; 
+
+
     // links.forEach(function (link) {
     //   for(let i=0 ; i<diseases.length ; i++){
     //     if(link.target.DiseaseClass === diseases[i])
     //     {
     //       console.log(link.target.DiseaseClass , "Disease_class");
-  
+
     //     }
-  
+
     //   }
     // })
-  
+
     // links.forEach(function (link) {
     //   var diceaseClass11 = link.target.Protein_Class; // No need to convert to lowercase
     //   //console.log(proteinClass11);
     // for(let i=0 ; i<diseases.length ; i++){
-  
+
     //   if (true) {
-  
-    //     createLegendItem(diseases[i], diseaseColors[i]);
-  
+
+    //     createLegendItem(diseases[i], diseaseColors[i]);   
+
     //   }
-  
+
     // }
     var uniqueDisease = new Set();
-  
+
     links.forEach(function (link) {
       var diseaseClass11 = link.target.DiseaseClass; // No need to convert to lowercase
       //console.log(proteinClass11);
-  
+
+
       if (
         diseases.includes(diseaseClass11) &&
         !uniqueDisease.has(diseaseClass11)
       ) {
-        //console.log(link.target.DiseaseClass);
-        createLegendItem(
-          diseaseClass11,
-          DiseaseColorMap[diseaseClass11],
-          diseaseClass11
-        );
+        console.log(link.target.DiseaseClass);
+        createLegendItem(diseaseClass11, DiseaseColorMap[diseaseClass11], diseaseClass11);
         uniqueDisease.add(diseaseClass11);
       }
     });
-  
+
+
+
+
     function createLegendItem(disease, color, diseasetemp) {
       var legendItem = legendContent
         .append("div")
         .style("display", "flex")
         .style("align-items", "center")
         .style("margin-bottom", "5px");
-  
+
       var dropdown = legendItem
         .append("div")
         .attr("class", "triangle")
@@ -2821,8 +2572,8 @@ let DiseaseColorMap = {
         .style("border-left", "10px solid transparent")
         .style("border-right", "10px solid transparent")
         .style("border-bottom", "17px solid " + color)
-        .style("border-radius", "0");
-  
+        .style("border-radius", "0")
+
       var dropdownMenu = dropdown
         .append("div")
         .attr("class", "dropdown-menu2")
@@ -2831,7 +2582,7 @@ let DiseaseColorMap = {
         .style("left", "25px")
         .style("height", "20px")
         .style("flex-direction", "row");
-  
+
       for (let i = 0; i < diseases.length; i++) {
         dropdownMenu
           .append("div")
@@ -2843,11 +2594,13 @@ let DiseaseColorMap = {
         .append("span")
         .style("margin-left", "10px")
         .text(disease);
-  
+
+
       legendText.on("click", function () {
+
         var clickedText = d3.select(this);
         var diseaseClass = clickedText.text();
-  
+
         if (clickedText.classed("text-through")) {
           clickedText.classed("text-through", false);
           hiddenDiseaseClasses[diseaseClass] = false;
@@ -2855,42 +2608,18 @@ let DiseaseColorMap = {
           clickedText.classed("text-through", true);
           hiddenDiseaseClasses[diseaseClass] = true;
         }
-  
+
         updateAllFilters();
+
       });
-    }
-  
-    // disable the change  
-    var legendContent4 = d3.select("#Disease_to_hide");
-  
-    if (diseases.some((disease) => uniqueDisease.has(disease))) {
-      legendContent4.style("display", "block");
-    } else {
-      legendContent4.style("display", "none");
-      console.log("check1");
-      // Set display to "block" or any other desired value
+
     }
   }
-  
-
-// var legendContent4 = d3.select("#Disease_to_hide");
-
-
-//         if (diseases.some(disease => uniqueDisease.has(disease))) {
-//           console.log(uniqueDisease, ' here are unique interactions');
-//           console.log("check");
-//           legendContent4.style("display", "block");
-//         } else {
-//           legendContent4.style("display", "none");
-//           // Set display to "block" or any other desired value
-//         }
-
 
 
 // Call the function to create the legend
 function createLegend_status() {
     var legendContent = d3.select("#legend_drug_status-content");
-    legendContent.selectAll('div').remove() ; 
     var drugStatusArray = ["Nutraceutical", "Experimental", "Investigational", "Approved", "Vet-approved", "Illicit"];
     var uniqueDrugStatus = new Set();
 
@@ -2937,6 +2666,7 @@ function createLegend_status() {
                 }
             });
 
+
         var dropdownMenu = dropdown.append("div")
             .attr("class", "dropdown-menu")
             .style("display", "none")  // make sure the dropdown menu is hidden by default
@@ -2967,7 +2697,6 @@ function createLegend_status() {
             .style("margin-left", "10px") // reduce left margin from 30px to 10px
             .text(status);
 
-        
         // Event listener for the legend item text
         legendText.on("click", function () {
             var clickedText = d3.select(this);
@@ -2980,7 +2709,9 @@ function createLegend_status() {
                 clickedText.classed("text-through", true);
                 hiddenDrugStatuses[drugStatus] = true;
             }
+
             updateAllFilters();
+
         });
 
     }
@@ -3028,15 +2759,7 @@ function updateVisibility_legends() {
             // If the link is neither hidden by interaction type, drug status, nor protein class
             return 'visible';
         });
-
-
-
-
-      
 }
-
-
-
 
 
 
@@ -3061,7 +2784,7 @@ function changeNodeImage(status, selectedColor) {
             let drugTypeIndex = currentImagePath.match(/right(\d+)/)[1];
 
             const correctImagePath = `/static/d3/images/capsules/left${drugStatusIndex}right${drugTypeIndex}.png`;
-            //console.log(correctImagePath);
+            console.log(correctImagePath);
             nodeImages[node.id] = correctImagePath;
             d3.select(this)
                 .select("image")
@@ -3077,7 +2800,7 @@ function changeNodeImage(status, selectedColor) {
 
 function createLegend_drugType() {
     var legendContent = d3.select("#legend_drug_type-content");
-    legendContent.selectAll('div').remove() ; 
+
     var drugTypeArray = ["Biotech", "Small Molecule"];
     var uniqueDrugType = new Set();
 
@@ -3092,7 +2815,6 @@ function createLegend_drugType() {
 
 
     function createLegendItem(drugType, color) {
-        console.log(legendContent , 'legendContent')
         var legendItem = legendContent.append("div")
             .style("display", "flex")
             .style("align-items", "center")
@@ -3186,12 +2908,12 @@ function changeNodeImageForDrugType(drugType, selectedColor) {
         .each(function (node) {
             // Fetch the current image path of the node
             let currentImagePath = d3.select(this).select('image').attr('xlink:href');
-            //console.log(currentImagePath)
+            console.log(currentImagePath)
             // Extract drugStatusIndex from the current image path
             let drugStatusIndex = currentImagePath.match(/left(\d+)/)[1];
 
             const correctImagePath = `/static/d3/images/capsules/left${drugStatusIndex}right${drugTypeIndex}.png`;
-            //console.log(correctImagePath);
+            console.log(correctImagePath);
             nodeImages[node.id] = correctImagePath;
             d3.select(this)
                 .select("image")
@@ -3497,68 +3219,3 @@ function drag(simulation) {
         .on("drag", dragged)
         .on("end", dragended);
 }
-
-d3.select("#GetmoreData").on("click", function () {
-    
-    clearGraph(); 
-    console.log(thredhold_value , 'parent node ')
- 
-    console.log(child_nodes , 'child node ')
-
-
-
-if(thredhold_value < 5 && child_nodes>180 ){
-console.log('RAJHFDAJKL;SH')
-    slicedata = slicedata +200
-
-}
-
-else{   
-    if(thredhold_value <= 7){    
-        numberofnodes = numberofnodes +1 ;  
-console.log('incease the number of nodes')
-    }
-    else if(thredhold_value >7 && thredhold_value  <= 14 )
-        {
-            
-        numberofnodes = numberofnodes + 2 ; 
-        } else if(thredhold_value >14 && thredhold_value  <=50 )
-                {
-                    
-                numberofnodes = numberofnodes + 6; 
-                } else if(thredhold_value >50 && thredhold_value  <= 150 )
-                    {
-                        
-                    numberofnodes = numberofnodes + 20 ; 
-                    } else if(thredhold_value >150 && thredhold_value  <= 300 )
-                        {
-                            
-                        numberofnodes = numberofnodes + 50 ; 
-                        } else if(thredhold_value >300 && thredhold_value  <= 600 )
-                            {
-                                
-                            numberofnodes = numberofnodes + 100 ; 
-                            }
-                            else if(thredhold_value >=600  )
-                                {
-                                    
-                                numberofnodes = numberofnodes + 200 ; 
-                                }
-
-}
-
-
-  
-
-
-    processData(numberofnodes , slicedata ) ; 
-  });
-
-  function clearGraph() { 
-    const svg = d3.select("#chart");
-    svg.selectAll("*").remove();
-    nodes = [] ; 
-    links = [] ;
-
-
-  }
