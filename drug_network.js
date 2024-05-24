@@ -1973,26 +1973,33 @@ console.log(links.length ,'link length')
             return DiseaseColorMap[d.DiseaseClass] || "black";
         })
        
-node.on("click", function (event, d) {
-    window.open(`https://clinicaltrials.gov/search?cond=${d.id}`, "_blank");
+        node.on("click", function(event, d) {
+            window.open(`https://clinicaltrials.gov/search?cond=${d.id}`, "_blank");
+        })
+        // Attach cursor style change on mouseover to all nodes
+        .on("mouseover", function() {
+            d3.select(this).style("cursor", "pointer");
+        });
+    
+        node.filter(d => d.child_type === 'disease_type')
+        .on("mouseover", function(event, d) {
+            
+        d3.select(this).style("cursor", "pointer");
+            tooltip2.transition()
+                .style("opacity", 0.9);
+            tooltip2.html(d.id)
+                .style("left", event.pageX + "px")
+                .style("top", event.pageY + "px");
 
-}).on("mouseover", function(d) {
-
-
-    let r = event.target.__data__;
-    tooltip2.transition()
-      .style("opacity", 0.9);
-    tooltip2.html( r.id)
-      .style("left", d.pageX + "px")
-      .style("top", d.pageY + "px");
-  })
-  .on("mouseout", function(d) {
-    tooltip2.transition()
-    //   .duration(500) 
-      .style("opacity", 0);
-  });
-
-
+                
+        })
+        .on("mouseout", function() {
+            tooltip2.transition()
+                .style("opacity", 0);
+        });
+    
+    // Attach click event to all nodes
+  
     // Define a tooltip div with class "tooltip2"
 var tooltip2 = d3.select("body").append("div")
 .attr("class", "tooltip2")
