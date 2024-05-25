@@ -236,11 +236,58 @@ function showExportOptions() {
 function createExportOption(optionText) {
     var optionButton = document.createElement('button');
     optionButton.textContent = optionText;
-    optionButton.className = 'export-option-button'; // add class here
+    optionButton.className = 'pgx_btn1'; // add class here
     optionButton.addEventListener('click', function () {
         handleExportOption(optionText);
     });
-    return optionButton;
+
+    // Add CSS for the buttons directly within the function
+    var buttonContainer = document.createElement('div');
+    buttonContainer.className = 'button-container';
+    buttonContainer.appendChild(optionButton);
+
+    var style = document.createElement('style');
+    style.innerHTML = `
+        
+        .pgx_btn1 {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #fff;
+            color: #333;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.42857143;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            touch-action: manipulation;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            display: block;
+            margin-bottom: 5px;
+            width: 120px;
+            cursor:pointer;
+        }
+
+        .pgx_btn1:hover {
+            color: #333;
+            background-color: #d4d4d4;
+        }
+
+        .pgx_btn1:focus {
+            outline: 5px auto -webkit-focus-ring-color;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    `;
+    document.head.appendChild(style);
+    return buttonContainer;
+
+
+    
 }
 
 function handleExportOption(option) {
