@@ -838,6 +838,9 @@ pointer-events: none;
 .tooltip2 strong {
 font-weight: bold;
 }
+html, body {
+  overflow-x: hidden; /* Hides vertical scrollbar */
+}
   </style>
 <body>
     <div id="atc-right-network">
@@ -922,7 +925,7 @@ font-weight: bold;
     
             <div id="screenshot">
                 <div class="d-flex justify-content-center btmbar" id="threshold-slider-container">
-                  <button type="button" class="btn btn-light d-flex btmbar zoom-in-btn pgx_btn">
+                      <button type="button" class="btn btn-light d-flex btmbar zoom-in-btn pgx_btn">
                     <img class="zoom-in-icon" src="/static/d3/images/zoom-in-svgrepo-com.png" alt="Plus Icon"> Zoom In
                 </button>
                 <button type="button" class="btn btn-light d-flex btmbar col-xs-2 margin-left zoom-out-btn pgx_btn">
