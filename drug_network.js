@@ -7,7 +7,7 @@ $(function () {
 
 
 var json_GeneralFile = "json/json_GeneralFile.json";
-var json_GeneralFile = "json/json4.json";
+var json_GeneralFile = "json/json6.json";
 var json_drugData = "json/json_drugData.json";
 var json_proteinData = "json/json_proteinData.json";
 var json_interactionData = "json/json_interactionData.json";
@@ -1618,8 +1618,7 @@ const uniqueProteinClasses = [...new Set(data.map(d => d.protein_name))];
         // Extract nodes and links from the JSON data
         // console.log("inside processData: ", data);
         chartDataJ = data;
-        
-        let filteredData = data.filter(row =>{
+      data.filter(row =>{
             if( row.Phase == "1" ||  row.Phase == "2")
             {
                 row.Phase = "" ; 
@@ -1628,7 +1627,8 @@ const uniqueProteinClasses = [...new Set(data.map(d => d.protein_name))];
 
 
             }});
-  
+     
+            let filteredData = data ;
         if(thredhold_value <5 && child_nodes>180){
 
             filteredData = filteredData.slice( 0, slicedata) ; 
@@ -2166,12 +2166,15 @@ var tooltip2 = d3.select("body").append("div")
 
     // Button click handlers
     d3.select(".zoom-in-btn").on("click", function () {
-        zoom.scaleBy(svg.transition().duration(750), 1.1);  // scale up by 10%
+        // zoom.scaleBy(svg.transition().duration(750), 1.1);  // scale up by 10%
+        svg.transition().call(zoom.scaleBy, 1.2);
     });
 
     d3.select(".zoom-out-btn").on("click", function () {
         //console.log("Zoom out called");
-        zoom.scaleBy(svg.transition().duration(750), 0.9);  // scale down by 10%
+        // zoom.scaleBy(svg.transition().duration(750), 0.9);  // scale down by 10%
+        svg.transition().call(zoom.scaleBy, 0.8);
+
     });
 
     //console.log("Chart created.");
