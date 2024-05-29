@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Force-Directed Graph</title>
+    
+    <script src="https://unpkg.com/three/build/three.min.js"></script>
+    <script src="https://unpkg.com/three/build/three.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            width: 100vw;
+            height: 100vh;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <canvas></canvas>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+
+    <script>
+        // JavaScript code will go here
+        const width = window.innerWidth;
+const height = window.innerHeight;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+camera.position.z = 100;
+
+const renderer = new THREE.WebGLRenderer({ canvas: document.querySelector("canvas") });
+renderer.setSize(width, height);
+
+const color = d3.scaleOrdinal(d3.schemeCategory10);
+
+const graph = {
+    nodes: [
+        { id: "Alice" },
+        { id: "Bob" },
+        { id: "Charlie" },
+        { id: "David" },
+        { id: "Eve" }
+    ],
+    links: [
+        { source: "Alice", target: "Bob" },
+        { source: "Alice", target: "Charlie" },
+        { source: "Bob", target: "David" },
+        { source: "Charlie", target: "Eve" },
+        { source: "David", target: "Eve" }
+    ]
+};
+
+const geometry = new THREE.SphereGeometry(1, 32, 32);
+const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+
+const nodes = graph.nodes.map(node => {
+    const sphere = new THREE.Mesh(geometry, material);
+    scene.add(sphere);
+    return { id: node.id, sphere };
+});
+
+const linkMaterial = new THREE.LineBasicMaterial({ color: 0x999999 });
+const links = graph.links.map(link => {
+    const geometry = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(),
+        new THREE.Vector3()
+    ]);
+    const line = new THREE.Line(geometry, linkMaterial);
+    scene.add(line);
+    return { source: link.source, target: link.target, line };
+});
+
+const simulation = d3.forceSimulation()
+    .force("link", d3.forceLink().id(d => d.id))
+    .force("charge", d3.forceManyBody().strength(-400))
+    .force("center", d3.forceCenter(width / 2, height / 2));
+
+simulation.nodes(graph.nodes).on("tick", () => {
+    nodes.forEach((node, i) => {
+        node.sphere.position.x = graph.nodes[i].x;
+        node.sphere.position.y = graph.nodes[i].y;
+        node.sphere.position.z = graph.nodes[i].z || 0;
+    });
+
+    links.forEach((link, i) => {
+        const source = graph.nodes.find(node => node.id === graph.links[i].source);
+        const target = graph.nodes.find(node => node.id === graph.links[i].target);
+        link.line.geometry.attributes.position.array[0] = source.x;
+        link.line.geometry.attributes.position.array[1] = source.y;
+        link.line.geometry.attributes.position.array[2] = source.z || 0;
+        link.line.geometry.attributes.position.array[3] = target.x;
+        link.line.geometry.attributes.position.array[4] = target.y;
+        link.line.geometry.attributes.position.array[5] = target.z || 0;
+        link.line.geometry.attributes.position.needsUpdate = true;
+    });
+});
+
+simulation.force("link").links(graph.links);
+
+function animate() {
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+}
+animate();
+
+    </script>
+</body>
+</html>

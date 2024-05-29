@@ -1,13 +1,13 @@
-$(function () {
-    $("#all-legends").draggable({
-        containment: "window"
-    });
-});
+// $(function () {
+//     $("#all-legends").draggable({
+//         containment: "window"
+//     });
+// });
 //Pass jsonFiles Here
 
 
 var json_GeneralFile = "json/json_GeneralFile.json";
-var json_GeneralFile = "json/json6.json";
+var json_GeneralFile = "json/json5.json";
 var json_drugData = "json/json_drugData.json";
 var json_proteinData = "json/json_proteinData.json";
 var json_interactionData = "json/json_interactionData.json";
@@ -2183,6 +2183,10 @@ var tooltip2 = d3.select("body").append("div")
     //$("#loading").hide();
     updateChartVisibility();
     createLegend();
+    createLegend_status();
+    createLegend_drugType();
+    createProteinsLegend();
+    createDiseaseLegend();
 
     // here is the logic to add the height  of the  iframe there 
 
@@ -2195,10 +2199,6 @@ var tooltip2 = d3.select("body").append("div")
         localStorage.setItem('jsonData', height);
     });
 
-    createLegend_status();
-    createLegend_drugType();
-    createProteinsLegend();
-    createDiseaseLegend();
 
 }
 
@@ -3568,18 +3568,11 @@ function drag(simulation) {
 d3.select("#GetmoreData").on("click", function () {
     
     clearGraph(); 
-    console.log(thredhold_value , 'parent node ')
- 
-    console.log(child_nodes , 'child node ')
-
-
-
 if(thredhold_value < 5 && child_nodes>180 ){
 console.log('RAJHFDAJKL;SH')
     slicedata = slicedata +200
 
 }
-
 else{   
     if(thredhold_value <= 7){    
         numberofnodes = numberofnodes +1 ;  
@@ -3613,11 +3606,6 @@ console.log('incease the number of nodes')
                                 }
 
 }
-
-
-  
-
-
     processData(numberofnodes , slicedata ) ; 
   });
 
