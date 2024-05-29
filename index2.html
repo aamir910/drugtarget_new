@@ -889,7 +889,7 @@
     vertical-align: middle;
     touch-action: manipulation;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    width: 100px;
+    /* width: 100px; */
     cursor: pointer;
 }
 
@@ -1025,23 +1025,20 @@
         <div id="screenshot">
   <!--Screennshot div closing-->
   <div class="d-flex justify-content-center btmbar" id="threshold-slider-container">
-    <button type="button" class="btn btn-light d-flex btmbar zoom-in-btn">
-      <i class="fas fa-search-plus zoom-in-icon"></i>&nbsp;Zoom In
-    </button>
-    <button type="button" class="btn btn-light d-flex btmbar col-xs-2 margin-left zoom-out-btn">
-      
-      <i class="fas fa-search-minus zoom-out-icon"></i>&nbsp;Zoom Out
-    </button>
+    <button type="button" class="btn btn-light d-flex btmbar zoom-in-btn pgx_btn"> Zoom In
+  </button>
+  <button type="button" class="btn btn-light d-flex btmbar col-xs-2 margin-left zoom-out-btn pgx_btn"> Zoom Out
+  </button>
 
     <label class="d-flex btmbar" for="threshold-slider" style="display: none;">&nbsp;Threshold Value:</label>
     <input class="d-flex btmbar" type="range" id="threshold-slider" min="1" max="" value="" step="1" style="display: none;">
     <span class="d-flex btmbar" id="threshold-value" style="display: none;"></span>
-    <button type="button" id="exportButton" class="btn btn-light d-flex btmbar">Export</button>
-    <button type="button" id="redrawChart" class="btn btn-light d-flex btmbar">Redraw</button>
-    <button type="button" id="GetmoreData" class="btn btn-light d-flex btmbar">
+    <button type="button" id="exportButton" class="btn btn-light d-flex btmbar pgx_btn">Export</button>
+    <button type="button" id="redrawChart" class="btn btn-light d-flex btmbar pgx_btn">Redraw</button>
+    <button type="button" id="GetmoreData" class="btn btn-light d-flex btmbar pgx_btn">
         Get more data
-     </button>
-<button type="button" id="more_details" class="btn btn-light d-flex btmbar">
+</button>
+<button type="button" id="more_details" class="btn btn-light d-flex btmbar pgx_btn ">
   More Details
      </button>
 
