@@ -1,8 +1,12 @@
-// $(function () {
-//     $("#all-legends").draggable({
-//         containment: "window"
-//     });
-// });
+$(function () {
+    $("#all-legends").draggable({
+        containment: "window"
+    });
+  
+
+});
+
+
 //Pass jsonFiles Here
 
 
@@ -72,7 +76,7 @@ let protein_xlsxData;
 let interaction_xlsxData;
 var drugStatusNameForDialog = ""
 var selectedDrugName1 = "";
-
+let menu ; 
 // Function to read the Drugs JSON data file
 function readDrugJSON() {
     const jsonFilePath = json_drugData;
@@ -1833,10 +1837,8 @@ function createChart(links) {
     //console.log("Width : "+containerWidth+"  ----  Height : "+containerHeight);
 
     var zoom = d3.zoom()
-        .scaleExtent([0.1, 10])
+        // .scaleExtent([0.1, 10])
         .on("zoom", function (event, d) {
-            //console.log("zoom event:", event); 
-            //console.log("event.transform:", event.transform);
             svg.attr("transform", event.transform.toString());
         });
 
@@ -1846,6 +1848,7 @@ function createChart(links) {
         .attr("height", svgHeight)
         // .style("background-color" , "red")
         .call(zoom)
+
         .append("g"); // Append group element to SVG
 
     chart = svg.append("g") // Assign the group element to the 'chart' variable
@@ -2163,18 +2166,24 @@ var tooltip2 = d3.select("body").append("div")
             .on("drag", dragged)
             .on("end", dragEnded);
     }
-
     // Button click handlers
     d3.select(".zoom-in-btn").on("click", function () {
-        // zoom.scaleBy(svg.transition().duration(750), 1.1);  // scale up by 10%
-        svg.transition().call(zoom.scaleBy, 1.2);
+        svg.transition().duration(750).call(zoom.scaleBy, 1.2);
     });
-
+    
     d3.select(".zoom-out-btn").on("click", function () {
-        //console.log("Zoom out called");
-        // zoom.scaleBy(svg.transition().duration(750), 0.9);  // scale down by 10%
-        svg.transition().call(zoom.scaleBy, 0.8);
-
+        svg.transition().duration(750).call(zoom.scaleBy, 0.8);
+    });
+    
+    // Preserve the transform on button click
+    d3.select(".zoom-in-btn").on("click", function () {
+        var t = currentTransform.scale(1.2);
+        svg.transition().duration(750).call(zoom.transform, t);
+    });
+    
+    d3.select(".zoom-out-btn").on("click", function () {
+        var t = currentTransform.scale(0.8);
+        svg.transition().duration(750).call(zoom.transform, t);
     });
 
     //console.log("Chart created.");
@@ -2439,7 +2448,6 @@ function createLegend() {
         //console.log("CreateLegendItem", interaction +"\n"+color);
         //console.log("CreateLegendItem COntainer", container);
 
-
       var legendItem = container
         .append("div")
         .style("display", "flex")
@@ -2473,12 +2481,16 @@ function createLegend() {
             }
           })
             .on("click", function () {
+              
               var clickedText = d3.select(this.parentNode).select("span");
               if (!clickedText.classed("text-through")) {
-                var menu = d3.select(this).select(".dropdown-menu1");
+                //selecting the dropmeny here 
+                 menu = d3.select(this).select(".dropdown-menu1");
                 if (menu.style("display") === "none") {
+                  
                   menu.style("display", "flex");
                 } else {
+                    console.log('here is the dropdown  not opening')
                   menu.style("display", "none");
                 }
               }
@@ -2491,8 +2503,9 @@ function createLegend() {
         .style("position", "absolute")
         .style("left", "25px")
         .style("height", "20px")
-        .style("flex-direction", "row");
+        .style("flex-direction", "row") .style("z-index", "9999");;
 
+    // node of the appeding the color there 
       for (var i = 0; i < interactions.length; i++) {
         var color = getColor(interactions[i]);
         dropdownMenu
@@ -2503,16 +2516,12 @@ function createLegend() {
           .on(
             "click",
             (function (selectedInteraction) {
-              return function () {
+                return function () {
                 var selectedColor = getColor(selectedInteraction);
                 var selectedLegendItem = d3.select(".selected-legend1");
-                //console.log(selectedLegendItem, "selectedLegendItem");
-
-                console.log(selectedColor , colorMap , "here are both") ; 
-    
+               
                 colorMap[interaction.toLowerCase()] = selectedColor;
     
-                console.log(selectedColor , colorMap , "here are both") ; 
 
                 if(phases.includes(interaction)){
 
@@ -2590,7 +2599,7 @@ function createLegend() {
           !d3.select(event.target).classed("selected-legend1") &&
           !d3.select(event.target.parentNode).classed("selected-legend1")
         ) {
-          menu.style("display", "none");
+        //   menu.style("display", "none");
         }
       });
       d3.selectAll(".selected-legend1").classed("selected-legend1", false);
@@ -2611,7 +2620,7 @@ function redrawLinks() {
     // Update the 'stroke' style of the links using the updated colorMap
     //console.log(link)
     link.style("stroke", function (d) {
-        console.log( d ,d.type , colorMap, "Testinng Interaction :" + colorMap[d.type] );
+        // console.log( d ,d.type , colorMap, "Testinng Interaction :" + colorMap[d.type] );
         return colorMap[d.type.toLowerCase()];
     });
 }
@@ -2697,7 +2706,7 @@ function createProteinsLegend() {
             .style("position", "absolute")
             .style("left", "25px")
             .style("height", "20px")
-            .style("flex-direction", "row");
+            .style("flex-direction", "row") .style("z-index", "9999");;
 
         for (let i = 0; i < proteins.length; i++) {
             let color = proteinColorMap[proteins[i]];
@@ -2756,7 +2765,7 @@ function createProteinsLegend() {
                 !d3.select(event.target).classed("selected-legend2") &&
                 !d3.select(event.target.parentNode).classed("selected-legend2")
             ) {
-                menu.style("display", "none");
+                // menu.style("display", "none");
             }
         });
         d3.selectAll(".selected-legend2").classed("selected-legend2", false);
@@ -2897,7 +2906,7 @@ let DiseaseColorMap = {
         .style("position", "absolute")
         .style("left", "25px")
         .style("height", "20px")
-        .style("flex-direction", "row");
+        .style("flex-direction", "row") .style("z-index", "9999");;
   
       for (let i = 0; i < diseases.length; i++) {
         dropdownMenu
@@ -3010,7 +3019,8 @@ function createLegend_status() {
             .style("position", "absolute")
             .style("left", "25px")
             .style("height", "20px")
-            .style("flex-direction", "row");
+            .style("flex-direction", "row")
+            .style("z-index", "9999");
 
         for (var color in colorPalette) {
             dropdownMenu.append("div")
@@ -3057,8 +3067,10 @@ function createLegend_status() {
         var dropdownMenus = d3.selectAll(".dropdown-menu");
         dropdownMenus.each(function () {
             var menu = d3.select(this);
-            if (menu.style("display") === "flex" && !menu.empty() && !d3.select(event.target).classed("legend-item-clicked") && !d3.select(event.target.parentNode).classed("legend-item-clicked")) {
-                menu.style("display", "none");
+            if (menu.style("display") === "flex" && !menu.empty() && 
+            !d3.select(event.target).classed("legend-item-clicked") && 
+            !d3.select(event.target.parentNode).classed("legend-item-clicked")) {
+                // menu.style("display", "none");
             }
         });
         d3.selectAll(".legend-item-clicked").classed("legend-item-clicked", false); // Remove the class from all legend items
@@ -3159,7 +3171,6 @@ function createLegend_drugType() {
 
 
     function createLegendItem(drugType, color) {
-        console.log(legendContent , 'legendContent')
         var legendItem = legendContent.append("div")
             .style("display", "flex")
             .style("align-items", "center")
@@ -3180,8 +3191,11 @@ function createLegend_drugType() {
                 if (!clickedText.classed("text-through")) {
                     var menu = d3.select(this).select(".dropdown-menu");
                     if (menu.style("display") === "none") {
+                     
                         menu.style("display", "flex");
+            
                     } else {
+                      
                         menu.style("display", "none");
                     }
                 }
@@ -3193,7 +3207,7 @@ function createLegend_drugType() {
             .style("position", "absolute")
             .style("left", "25px")
             .style("height", "20px")
-            .style("flex-direction", "row");
+            .style("flex-direction", "row") .style("z-index", "9999");;
 
         for (var color in colorPaletteDrugType) {
             dropdownMenu.append("div")
@@ -3208,6 +3222,7 @@ function createLegend_drugType() {
                         //console.log(newImagePath)
                         changeNodeImageForDrugType(drugType, selectedColor)
                         dropdown.select(".dropdown-menu").style("display", "none");
+                        
                         event.stopPropagation();
                     };
                 }(color));
@@ -3617,3 +3632,5 @@ console.log('incease the number of nodes')
 
 
   }
+  
+document.getElementById("all-legends").on('click' ,   menu.style("display", "none"))
