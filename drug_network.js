@@ -1836,20 +1836,26 @@ function createChart(links) {
     //var containerHeight = 500;
     //console.log("Width : "+containerWidth+"  ----  Height : "+containerHeight);
 
-    var zoom = d3.zoom()
-        // .scaleExtent([0.1, 10])
-        .on("zoom", function (event, d) {
-            svg.attr("transform", event.transform.toString());
-        });
-
+   
     // SVG creation with zoom behavior
-    svg = container.append("svg")
-        .attr("width",  svgWidth)
-        .attr("height", svgHeight)
-        // .style("background-color" , "red")
-        .call(zoom)
+    // svg = container.append("svg")
+    //     .attr("width",  svgWidth)
+    //     .attr("height", svgHeight)
+    //     // .style("background-color" , "red")
+    //     .call(zoom)
+    //     .append("g"); // Append group element to SVG
 
-        .append("g"); // Append group element to SVG
+
+    var svg = container.append("svg")
+    .attr("width", svgWidth)
+    .attr("height", svgHeight)
+    .call(d3.zoom().on("zoom", zoomed))
+    .append("g");
+
+    function zoomed(event) {
+        svg.attr("transform", event.transform);
+    }
+
 
     chart = svg.append("g") // Assign the group element to the 'chart' variable
         .attr("class", "chart");
@@ -2143,6 +2149,32 @@ var tooltip2 = d3.select("body").append("div")
         });
     });
 
+
+// new code of dragable 
+
+ // Dragging functionality
+
+// Zoom-in and zoom-out buttons
+var zoom = d3.zoom().scaleExtent([0.1, 4]).on("zoom", zoomed);
+
+d3.select(".zoom-in-btn").on("click", function() {
+    zoom.scaleBy(d3.select("svg").transition().duration(750), 1.3);
+});
+
+d3.select(".zoom-out-btn").on("click", function() {
+    zoom.scaleBy(d3.select("svg").transition().duration(750), 1 / 1.3);
+});
+
+// Apply zoom behavior to the SVG
+d3.select("svg").call(zoom);
+
+
+// end code of dragable 
+
+
+
+
+
     // Enable drag behavior for nodes
     function drag(simulation) {
         function dragStarted(event, d) {
@@ -2166,25 +2198,25 @@ var tooltip2 = d3.select("body").append("div")
             .on("drag", dragged)
             .on("end", dragEnded);
     }
-    // Button click handlers
-    d3.select(".zoom-in-btn").on("click", function () {
-        svg.transition().duration(750).call(zoom.scaleBy, 1.2);
-    });
+    // // Button click handlers
+    // d3.select(".zoom-in-btn").on("click", function () {
+    //     svg.transition().duration(750).call(zoom.scaleBy, 1.2);
+    // });
     
-    d3.select(".zoom-out-btn").on("click", function () {
-        svg.transition().duration(750).call(zoom.scaleBy, 0.8);
-    });
+    // d3.select(".zoom-out-btn").on("click", function () {
+    //     svg.transition().duration(750).call(zoom.scaleBy, 0.8);
+    // });
     
-    // Preserve the transform on button click
-    d3.select(".zoom-in-btn").on("click", function () {
-        var t = currentTransform.scale(1.2);
-        svg.transition().duration(750).call(zoom.transform, t);
-    });
+    // // Preserve the transform on button click
+    // d3.select(".zoom-in-btn").on("click", function () {
+    //     var t = currentTransform.scale(1.2);
+    //     svg.transition().duration(750).call(zoom.transform, t);
+    // });
     
-    d3.select(".zoom-out-btn").on("click", function () {
-        var t = currentTransform.scale(0.8);
-        svg.transition().duration(750).call(zoom.transform, t);
-    });
+    // d3.select(".zoom-out-btn").on("click", function () {
+    //     var t = currentTransform.scale(0.8);
+    //     svg.transition().duration(750).call(zoom.transform, t);
+    // });
 
     //console.log("Chart created.");
     // Finish updating chart
