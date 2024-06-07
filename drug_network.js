@@ -9,14 +9,11 @@ $(function () {
 
 //Pass jsonFiles Here
 
-
 var json_GeneralFile = "json/json_GeneralFile.json";
 var json_GeneralFile = "json/json5.json";
 var json_drugData = "json/json_drugData.json";
 var json_proteinData = "json/json_proteinData.json";
 var json_interactionData = "json/json_interactionData.json";
-
-
 
 // var json_GeneralFile = "/static/json-sample/json_GeneralFile.json";
 // var json_drugData = "/static/json-sample/json_drugData.json";
@@ -3672,4 +3669,3 @@ console.log('incease the number of nodes')
 
   }
   
-document.getElementById("all-legends").on('click' ,   menu.style("display", "none"))

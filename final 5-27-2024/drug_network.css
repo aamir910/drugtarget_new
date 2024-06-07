@@ -794,7 +794,7 @@ div {
 .center-vertical-container {
     position: fixed;
     /* or absolute, depending on your layout */
-    top: 2%;
+    top: 10%;
     margin-right: 20px;
     right: 0;
     /* align it to the right edge of the viewport */
@@ -860,7 +860,7 @@ div {
     vertical-align: middle;
     touch-action: manipulation;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    width: 100px;
+    /* width: 100px; */
     cursor: pointer;
 }
 
@@ -900,7 +900,24 @@ div {
     outline: 5px auto -webkit-focus-ring-color;
 }
 
+.btmbar-container {
+    display: flex;
+    align-items: center;
+  }
 
+  .btmbar {
+    margin-right: 10px;
+  }
+
+  #more_details {
+    margin-left: auto;
+  }
 
 /* 24 May styling (buttons styling end!!)* */
 
+.atc-right-network{
+    overflow: hidden ;
+}
+body{  
+    overflow: hidden ;
+}
