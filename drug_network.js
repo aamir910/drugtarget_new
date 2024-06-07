@@ -178,6 +178,13 @@ exportButton.addEventListener('click', function () {
     showExportOptions();
 });
 
+let more_details = document.getElementById('more_details');
+more_details.addEventListener('click', function () {
+    
+    window.open('https://www.google.com', '_blank');
+});
+
+
 window.addEventListener('click', function (event) {
     var modal = document.getElementById('exportModal');
     if (event.target == modal) {
