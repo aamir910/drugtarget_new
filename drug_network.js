@@ -2595,14 +2595,14 @@ function createLegend() {
         var menu = d3.select(this);
         if (
           menu.style("display") === "flex" &&
-          !menu.empty() &&
+        //   !menu.empty() &&
           !d3.select(event.target).classed("selected-legend1") &&
           !d3.select(event.target.parentNode).classed("selected-legend1")
         ) {
-        //   menu.style("display", "none");
+          menu.style("display", "none");
         }
       });
-      d3.selectAll(".selected-legend1").classed("selected-legend1", false);
+      d3.selectAll(".selected-legend1").classed("selected-legend1", true);
     });
   }
 
@@ -2765,10 +2765,10 @@ function createProteinsLegend() {
                 !d3.select(event.target).classed("selected-legend2") &&
                 !d3.select(event.target.parentNode).classed("selected-legend2")
             ) {
-                // menu.style("display", "none");
+                menu.style("display", "none");
             }
         });
-        d3.selectAll(".selected-legend2").classed("selected-legend2", false);
+        d3.selectAll(".selected-legend2").classed("selected-legend2", true);
     });
 }
 
@@ -3070,10 +3070,10 @@ function createLegend_status() {
             if (menu.style("display") === "flex" && !menu.empty() && 
             !d3.select(event.target).classed("legend-item-clicked") && 
             !d3.select(event.target.parentNode).classed("legend-item-clicked")) {
-                // menu.style("display", "none");
+                menu.style("display", "none");
             }
         });
-        d3.selectAll(".legend-item-clicked").classed("legend-item-clicked", false); // Remove the class from all legend items
+        d3.selectAll(".legend-item-clicked").classed("legend-item-clicked", true); // Remove the class from all legend items
     });
 }
 
