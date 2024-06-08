@@ -20,27 +20,40 @@
 
     <script>
   document.addEventListener('DOMContentLoaded', (event) => {
+    function updateIframeHeight() {
         // Retrieve data from localStorage
         const storedData = localStorage.getItem('jsonData');
-        
+
         if (storedData) {
-            let  data = JSON.parse(storedData);
+            let data = JSON.parse(storedData);
             
-            console.log("before" ,data )
-            console.log(  data,'Data retrieved from localStorage:' );
-            if (data > 300){ 
-                data = 1180
-                console.log("after" ,data )
+            console.log("before", data);
+            console.log(data, 'Data retrieved from localStorage:');
+            if (data > 300) { 
+                data = 1180;
+                console.log("after", data);
             } 
 
             var iframe = document.getElementById('myIframe');
-            iframe.style.height = data+'px'
+            iframe.style.height = data + 'px';
 
-            // Process your data heres
+            // Process your data here
         } else {
             console.error('No data found in localStorage');
         }
+    }
+
+    // Initial load
+    updateIframeHeight();
+
+    // Listen for changes to localStorage
+    window.addEventListener('storage', (event) => {
+        if (event.key === 'jsonData') {
+            console.log('check the storage of the data ')
+            updateIframeHeight();
+        }
     });
+});
 
     </script>
 </body>
