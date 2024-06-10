@@ -7,7 +7,7 @@ $(function () {
 
 
 var json_GeneralFile = "json/json_GeneralFile.json";
-var json_GeneralFile = "json/data.json";
+var json_GeneralFile = "json/json5.json";
 var json_drugData = "json/json_drugData.json";
 var json_proteinData = "json/json_proteinData.json";
 var json_interactionData = "json/json_interactionData.json";
@@ -3554,6 +3554,8 @@ function drag(simulation) {
 
 d3.select("#GetmoreData").on("click", function () {  
     clearGraph(); 
+    
+  document.getElementById('ManagePreviousState').disabled = false ;
 if(thredhold_value < 5 && child_nodes>180 ){
     slicedata = slicedata +200
 }
@@ -3594,6 +3596,8 @@ console.log('incease the number of nodes')
     processData(numberofnodes , slicedata ) ; 
   });
 
+
+  document.getElementById('ManagePreviousState').disabled = true ;
 
   d3.select("#ManagePreviousState").on("click", function () {
 
