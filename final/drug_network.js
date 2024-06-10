@@ -3551,10 +3551,10 @@ function drag(simulation) {
         .on("drag", dragged)
         .on("end", dragended);
 }
-
+let  btn_count  = 0;
 d3.select("#GetmoreData").on("click", function () {  
     clearGraph(); 
-    
+    btn_count++
   document.getElementById('ManagePreviousState').disabled = false ;
 if(thredhold_value < 5 && child_nodes>180 ){
     slicedata = slicedata +200
@@ -3601,13 +3601,17 @@ console.log('incease the number of nodes')
 
   d3.select("#ManagePreviousState").on("click", function () {
 
-    clearGraph(); 
+    clearGraph();
+    btn_count-- ;  
+    if(btn_count <=0){
+        
+  document.getElementById('ManagePreviousState').disabled = true ;
+    }
     if (thredhold_value < 5 && child_nodes > 180) {
         slicedata -= 200;
     } else {   
         if (thredhold_value <= 7) {    
             numberofnodes -= 1;
-            console.log('Decrease the number of nodes');
         } else if (thredhold_value > 7 && thredhold_value <= 14) {
             numberofnodes -= 2; 
         } else if (thredhold_value > 14 && thredhold_value <= 50) {
