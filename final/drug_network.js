@@ -3596,6 +3596,7 @@ console.log('incease the number of nodes')
 
 
   d3.select("#ManagePreviousState").on("click", function () {
+
     clearGraph(); 
     if (thredhold_value < 5 && child_nodes > 180) {
         slicedata -= 200;
@@ -3617,7 +3618,13 @@ console.log('incease the number of nodes')
             numberofnodes -= 200; 
         }
     }
-    processData(numberofnodes, slicedata); 
+    processData(numberofnodes, slicedata);
+    
+    document.getElementById('GetmoreData').disabled = false ;
+    if( document.getElementById('GetmoreData').innerHTML === 'Maximum data reached'){
+
+        document.getElementById('GetmoreData').innerHTML = 'Get more data'; 
+    }
 });
 
   function clearGraph() { 
