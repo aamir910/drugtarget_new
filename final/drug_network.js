@@ -3,32 +3,33 @@ $(function () {
     containment: "window",
   });
 });
+
 //Pass jsonFiles Here
 
-// var json_GeneralFile = "json/json_GeneralFile.json";
-// var json_GeneralFile = "json/json5.json";
-// var json_drugData = "json/json_drugData.json";
-// var json_proteinData = "json/json_proteinData.json";
-// var json_interactionData = "json/json_interactionData.json";
+var json_GeneralFile = "json/json_GeneralFile.json";
+var json_GeneralFile = "json/json5.json";
+var json_drugData = "json/json_drugData.json";
+var json_proteinData = "json/json_proteinData.json";
+var json_interactionData = "json/json_interactionData.json";
 
-var json_GeneralFile = "/static/json-sample/json_GeneralFile.json";
-var json_drugData = "/static/json-sample/json_drugData.json";
-var json_proteinData = "/static/json-sample/json_proteinData.json";
-var json_interactionData = "/static/json-sample/json_interactionData.json"
+// var json_GeneralFile = "/static/json-sample/json_GeneralFile.json";
+// var json_drugData = "/static/json-sample/json_drugData.json";
+// var json_proteinData = "/static/json-sample/json_proteinData.json";
+// var json_interactionData = "/static/json-sample/json_interactionData.json"
 
-if (drug_bank_ids) {
-    json_GeneralFile = "/drugs_network/general_data?drug_bank_ids=" + drug_bank_ids.join(',');
-    json_drugData = "/drugs_network/drug_data?drug_bank_ids=" + drug_bank_ids.join(',');
-    json_proteinData = "/drugs_network/protein_data?drug_bank_ids=" + drug_bank_ids.join(',');
-    json_interactionData = "/drugs_network/interaction_data?drug_bank_ids=" + drug_bank_ids.join(',');
-}
+// if (drug_bank_ids) {
+//     json_GeneralFile = "/drugs_network/general_data?drug_bank_ids=" + drug_bank_ids.join(',');
+//     json_drugData = "/drugs_network/drug_data?drug_bank_ids=" + drug_bank_ids.join(',');
+//     json_proteinData = "/drugs_network/protein_data?drug_bank_ids=" + drug_bank_ids.join(',');
+//     json_interactionData = "/drugs_network/interaction_data?drug_bank_ids=" + drug_bank_ids.join(',');
+// }
 
-if (drug_bank_id) {
-    json_GeneralFile = "/drug_network/" + drug_bank_id + "/general_data";
-    json_drugData = "/drug_network/" + drug_bank_id + "/drug_data";
-    json_proteinData = "/drug_network/" + drug_bank_id + "/protein_data";
-    json_interactionData = "/drug_network/" + drug_bank_id + "/interaction_data";
-}
+// if (drug_bank_id) {
+//     json_GeneralFile = "/drug_network/" + drug_bank_id + "/general_data";
+//     json_drugData = "/drug_network/" + drug_bank_id + "/drug_data";
+//     json_proteinData = "/drug_network/" + drug_bank_id + "/protein_data";
+//     json_interactionData = "/drug_network/" + drug_bank_id + "/interaction_data";
+// }
 
 // code to get the li of the network visualization
 
@@ -62,7 +63,7 @@ let protein_xlsxData;
 let interaction_xlsxData;
 var drugStatusNameForDialog = "";
 var selectedDrugName1 = "";
-
+let menu;
 // Function to read the Drugs JSON data file
 function readDrugJSON() {
   const jsonFilePath = json_drugData;
@@ -132,8 +133,8 @@ function readInteractionJSON() {
 }
 
 window.onload = function () {
-  readDrugJSON();
-//   processData(numberofnodes, slicedata);
+  // readDrugJSON();
+  processData(numberofnodes, slicedata);
   // getDrugJsonData(drugBankId);
 };
 
@@ -160,6 +161,11 @@ function getDrugJsonData(drugBankId) {
 var exportButton = document.getElementById("exportButton");
 exportButton.addEventListener("click", function () {
   showExportOptions();
+});
+
+let more_details = document.getElementById("more_details");
+more_details.addEventListener("click", function () {
+  window.open("https://www.google.com", "_blank");
 });
 
 window.addEventListener("click", function (event) {
@@ -1665,11 +1671,15 @@ function processData(numberofnodes, slicedata) {
       // Extract nodes and links from the JSON data
       // console.log("inside processData: ", data);
       chartDataJ = data;
+      data.filter((row) => {
+        if (row.Phase == "1" || row.Phase == "2") {
+          row.Phase = "";
+          row.Disease_class = "";
+          row.Disease_name = "";
+        }
+      });
 
-      let filteredData = data.filter(
-        (row) => row.Phase !== "1" && row.Phase !== "2"
-      );
-
+      let filteredData = data;
       if (thredhold_value < 5 && child_nodes > 180) {
         filteredData = filteredData.slice(0, slicedata);
       }
@@ -1859,23 +1869,24 @@ function createChart(links) {
   //var containerHeight = 500;
   //console.log("Width : "+containerWidth+"  ----  Height : "+containerHeight);
 
-  var zoom = d3
-    .zoom()
-    .scaleExtent([0.1, 10])
-    .on("zoom", function (event, d) {
-      //console.log("zoom event:", event);
-      //console.log("event.transform:", event.transform);
-      svg.attr("transform", event.transform.toString());
-    });
-
   // SVG creation with zoom behavior
-  svg = container
+  // svg = container.append("svg")
+  //     .attr("width",  svgWidth)
+  //     .attr("height", svgHeight)
+  //     // .style("background-color" , "red")
+  //     .call(zoom)
+  //     .append("g"); // Append group element to SVG
+
+  var svg = container
     .append("svg")
     .attr("width", svgWidth)
     .attr("height", svgHeight)
-    // .style("background-color" , "red")
-    .call(zoom)
-    .append("g"); // Append group element to SVG
+    .call(d3.zoom().on("zoom", zoomed))
+    .append("g");
+
+  function zoomed(event) {
+    svg.attr("transform", event.transform);
+  }
 
   chart = svg
     .append("g") // Assign the group element to the 'chart' variable
@@ -2041,8 +2052,10 @@ function createChart(links) {
     });
 
   node
+    .filter((node) => node.child_type === "disease_type")
     .on("click", function (event, d) {
       window.open(`https://clinicaltrials.gov/search?cond=${d.id}`, "_blank");
+      showDialog(d.id, d.id);
     })
     // Attach cursor style change on mouseover to all nodes
     .on("mouseover", function () {
@@ -2150,6 +2163,26 @@ function createChart(links) {
     });
   });
 
+  // new code of dragable
+
+  // Dragging functionality
+
+  // Zoom-in and zoom-out buttons
+  var zoom = d3.zoom().scaleExtent([0.1, 4]).on("zoom", zoomed);
+
+  d3.select(".zoom-in-btn").on("click", function () {
+    zoom.scaleBy(d3.select("svg").transition().duration(750), 1.3);
+  });
+
+  d3.select(".zoom-out-btn").on("click", function () {
+    zoom.scaleBy(d3.select("svg").transition().duration(750), 1 / 1.3);
+  });
+
+  // Apply zoom behavior to the SVG
+  d3.select("svg").call(zoom);
+
+  // end code of dragable
+
   // Enable drag behavior for nodes
   function drag(simulation) {
     function dragStarted(event, d) {
@@ -2174,16 +2207,25 @@ function createChart(links) {
       .on("drag", dragged)
       .on("end", dragEnded);
   }
+  // // Button click handlers
+  // d3.select(".zoom-in-btn").on("click", function () {
+  //     svg.transition().duration(750).call(zoom.scaleBy, 1.2);
+  // });
 
-  // Button click handlers
-  d3.select(".zoom-in-btn").on("click", function () {
-    zoom.scaleBy(svg.transition().duration(750), 1.1); // scale up by 10%
-  });
+  // d3.select(".zoom-out-btn").on("click", function () {
+  //     svg.transition().duration(750).call(zoom.scaleBy, 0.8);
+  // });
 
-  d3.select(".zoom-out-btn").on("click", function () {
-    //console.log("Zoom out called");
-    zoom.scaleBy(svg.transition().duration(750), 0.9); // scale down by 10%
-  });
+  // // Preserve the transform on button click
+  // d3.select(".zoom-in-btn").on("click", function () {
+  //     var t = currentTransform.scale(1.2);
+  //     svg.transition().duration(750).call(zoom.transform, t);
+  // });
+
+  // d3.select(".zoom-out-btn").on("click", function () {
+  //     var t = currentTransform.scale(0.8);
+  //     svg.transition().duration(750).call(zoom.transform, t);
+  // });
 
   //console.log("Chart created.");
   // Finish updating chart
@@ -2191,6 +2233,10 @@ function createChart(links) {
   //$("#loading").hide();
   updateChartVisibility();
   createLegend();
+  createLegend_status();
+  createLegend_drugType();
+  createProteinsLegend();
+  createDiseaseLegend();
 
   // here is the logic to add the height  of the  iframe there
 
@@ -2201,11 +2247,6 @@ function createChart(links) {
 
     localStorage.setItem("jsonData", height);
   });
-
-  createLegend_status();
-  createLegend_drugType();
-  createProteinsLegend();
-  createDiseaseLegend();
 }
 
 // Update the chart visibility based on the threshold value
@@ -2470,10 +2511,12 @@ function createLegend() {
       .on("click", function () {
         var clickedText = d3.select(this.parentNode).select("span");
         if (!clickedText.classed("text-through")) {
-          var menu = d3.select(this).select(".dropdown-menu1");
+          //selecting the dropmeny here
+          menu = d3.select(this).select(".dropdown-menu1");
           if (menu.style("display") === "none") {
             menu.style("display", "flex");
           } else {
+            console.log("here is the dropdown  not opening");
             menu.style("display", "none");
           }
         }
@@ -2486,8 +2529,10 @@ function createLegend() {
       .style("position", "absolute")
       .style("left", "25px")
       .style("height", "20px")
-      .style("flex-direction", "row");
+      .style("flex-direction", "row")
+      .style("z-index", "9999");
 
+    // node of the appeding the color there
     for (var i = 0; i < interactions.length; i++) {
       var color = getColor(interactions[i]);
       dropdownMenu
@@ -2501,13 +2546,8 @@ function createLegend() {
             return function () {
               var selectedColor = getColor(selectedInteraction);
               var selectedLegendItem = d3.select(".selected-legend1");
-              //console.log(selectedLegendItem, "selectedLegendItem");
-
-              console.log(selectedColor, colorMap, "here are both");
 
               colorMap[interaction.toLowerCase()] = selectedColor;
-
-              console.log(selectedColor, colorMap, "here are both");
 
               if (phases.includes(interaction)) {
                 dropdown.style("border-top", `3px dotted ${selectedColor}`);
@@ -2572,14 +2612,14 @@ function createLegend() {
       var menu = d3.select(this);
       if (
         menu.style("display") === "flex" &&
-        !menu.empty() &&
+        //   !menu.empty() &&
         !d3.select(event.target).classed("selected-legend1") &&
         !d3.select(event.target.parentNode).classed("selected-legend1")
       ) {
         menu.style("display", "none");
       }
     });
-    d3.selectAll(".selected-legend1").classed("selected-legend1", false);
+    d3.selectAll(".selected-legend1").classed("selected-legend1", true);
   });
 }
 
@@ -2601,12 +2641,7 @@ function redrawLinks() {
   // Update the 'stroke' style of the links using the updated colorMap
   //console.log(link)
   link.style("stroke", function (d) {
-    console.log(
-      d,
-      d.type,
-      colorMap,
-      "Testinng Interaction :" + colorMap[d.type]
-    );
+    // console.log( d ,d.type , colorMap, "Testinng Interaction :" + colorMap[d.type] );
     return colorMap[d.type.toLowerCase()];
   });
 }
@@ -2711,7 +2746,8 @@ function createProteinsLegend() {
       .style("position", "absolute")
       .style("left", "25px")
       .style("height", "20px")
-      .style("flex-direction", "row");
+      .style("flex-direction", "row")
+      .style("z-index", "9999");
 
     for (let i = 0; i < proteins.length; i++) {
       let color = proteinColorMap[proteins[i]];
@@ -2781,7 +2817,7 @@ function createProteinsLegend() {
         menu.style("display", "none");
       }
     });
-    d3.selectAll(".selected-legend2").classed("selected-legend2", false);
+    d3.selectAll(".selected-legend2").classed("selected-legend2", true);
   });
 }
 
@@ -2916,7 +2952,8 @@ function createDiseaseLegend() {
       .style("position", "absolute")
       .style("left", "25px")
       .style("height", "20px")
-      .style("flex-direction", "row");
+      .style("flex-direction", "row")
+      .style("z-index", "9999");
 
     for (let i = 0; i < diseases.length; i++) {
       dropdownMenu
@@ -3037,7 +3074,8 @@ function createLegend_status() {
       .style("position", "absolute")
       .style("left", "25px")
       .style("height", "20px")
-      .style("flex-direction", "row");
+      .style("flex-direction", "row")
+      .style("z-index", "9999");
 
     for (var color in colorPalette) {
       dropdownMenu
@@ -3096,7 +3134,7 @@ function createLegend_status() {
         menu.style("display", "none");
       }
     });
-    d3.selectAll(".legend-item-clicked").classed("legend-item-clicked", false); // Remove the class from all legend items
+    d3.selectAll(".legend-item-clicked").classed("legend-item-clicked", true); // Remove the class from all legend items
   });
 }
 
@@ -3185,7 +3223,6 @@ function createLegend_drugType() {
   });
 
   function createLegendItem(drugType, color) {
-    console.log(legendContent, "legendContent");
     var legendItem = legendContent
       .append("div")
       .style("display", "flex")
@@ -3222,7 +3259,8 @@ function createLegend_drugType() {
       .style("position", "absolute")
       .style("left", "25px")
       .style("height", "20px")
-      .style("flex-direction", "row");
+      .style("flex-direction", "row")
+      .style("z-index", "9999");
 
     for (var color in colorPaletteDrugType) {
       dropdownMenu
@@ -3240,6 +3278,7 @@ function createLegend_drugType() {
               //console.log(newImagePath)
               changeNodeImageForDrugType(drugType, selectedColor);
               dropdown.select(".dropdown-menu").style("display", "none");
+
               event.stopPropagation();
             };
           })(color)
@@ -3577,12 +3616,15 @@ function drag(simulation) {
     .on("drag", dragged)
     .on("end", dragended);
 }
+
 let btn_count = 0;
 d3.select("#GetmoreData").on("click", function () {
   clearGraph();
-  btn_count++;
-  document.getElementById("ManagePreviousState").style.display = "block";
+  
+btn_count++;
+document.getElementById("ManagePreviousState").style.display = "block";
   if (thredhold_value < 5 && child_nodes > 180) {
+    console.log("RAJHFDAJKL;SH");
     slicedata = slicedata + 200;
   } else {
     if (thredhold_value <= 7) {
@@ -3648,3 +3690,7 @@ function clearGraph() {
   nodes = [];
   links = [];
 }
+
+document
+  .getElementById("all-legends")
+  .on("click", menu.style("display", "none"));
