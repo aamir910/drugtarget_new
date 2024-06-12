@@ -438,7 +438,7 @@ $(function () {
       if (xlinkHref) {
         //imgObj.src = "http://localhost:8000/" + xlinkHref;
         imgObj.src =
-          "https://pharmacogenomics-database-5pltq.ondigitalocean.app" +
+        "https://pgx-db.org"  +
           xlinkHref;
       } else {
         loadedCount++;
@@ -607,7 +607,7 @@ $(function () {
       if (xlinkHref) {
         //imgObj.src = "http://localhost:8000/" + xlinkHref;
         imgObj.src =
-          "https://pharmacogenomics-database-5pltq.ondigitalocean.app/" +
+        "https://pgx-db.org/"  +
           xlinkHref;
       } else {
         loadedCount++;
