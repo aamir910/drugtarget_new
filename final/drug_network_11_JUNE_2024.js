@@ -2095,7 +2095,6 @@ $(function () {
       });
     
     tooltip2.on("click", function (event, d) {
-      alert('hello')
       // This function will execute when the tooltip is clicked
       // Note: 'd' might not be defined here, you may need to handle this case
       window.open(`https://clinicaltrials.gov/search?cond=${d.id}`, "_blank");
