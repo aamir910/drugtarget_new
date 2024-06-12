@@ -160,6 +160,7 @@ $(function () {
   
   var exportButton = document.getElementById("exportButton");
   exportButton.addEventListener("click", function () {
+    
     showExportOptions();
   });
   
@@ -228,6 +229,7 @@ $(function () {
   }
   
   function createExportOption(optionText) {
+    
     var optionButton = document.createElement("button");
     optionButton.textContent = optionText;
     optionButton.className = "pgx_btn1"; // add class here
@@ -300,6 +302,7 @@ $(function () {
         downloadCSV();
         break;
       case "Download XLS":
+        
         downloadXLS();
         break;
       case "View Data Table":
@@ -677,7 +680,12 @@ $(function () {
   
   // Download XLS
   function downloadXLS() {
+    
+    var modal = document.getElementById("exportModal");
+    modal.style.display = "none"
+    $("#loading").show();
     var filteredLinks = getFilteredLinksXLSX();
+ 
     //console.log(filteredLinks)
     // Load the XLSX
     var req = new XMLHttpRequest();
@@ -715,6 +723,7 @@ $(function () {
     };
   
     req.send();
+    $("#loading").hide();
   }
   
   function downloadXLS11() {
@@ -2062,28 +2071,35 @@ $(function () {
         d3.select(this).style("cursor", "pointer");
       });
   
+
+  
+      
+      var tooltip2 = d3
+      .select("body")
+      .append("div")
+      .attr("class", "tooltip2")
+      .style("opacity", 0);
+    
     node
       .filter((d) => d.child_type === "disease_type")
       .on("mouseover", function (event, d) {
         d3.select(this).style("cursor", "pointer");
         tooltip2.transition().style("opacity", 0.9);
         tooltip2
-          .html(d.id)
-          .style("left", event.pageX + "px")
-          .style("top", event.pageY + "px");
+          .style("left", event.pageX + 20 + "px")
+          .style("top", event.pageY + 20 + "px")
+          .html(d.id); // Set HTML content before handling click event
       })
       .on("mouseout", function () {
         tooltip2.transition().style("opacity", 0);
       });
-  
-    // Attach click event to all nodes
-  
-    // Define a tooltip div with class "tooltip2"
-    var tooltip2 = d3
-      .select("body")
-      .append("div")
-      .attr("class", "tooltip2")
-      .style("opacity", 0);
+    
+    tooltip2.on("click", function (event, d) {
+      alert('hello')
+      // This function will execute when the tooltip is clicked
+      // Note: 'd' might not be defined here, you may need to handle this case
+      window.open(`https://clinicaltrials.gov/search?cond=${d.id}`, "_blank");
+    });
   
     node
       .filter(function (d) {
