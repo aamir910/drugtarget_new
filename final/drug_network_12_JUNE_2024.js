@@ -2093,14 +2093,28 @@ $(function () {
             
               <a href="https://clinicaltrials.gov/search?cond=${d.id}" target="_blank">Click here</a>
             </div>
-          `); // Set HTML content with link before handling click event
-          setTimeout(() => {
+          `).on("mouseout", function () {
+     
             tooltip2.transition().style("opacity", 0);
-          }, 2000);
+        
+        });
+  ; // Set HTML content with link before handling click event
+       
     
       })
+      tooltip2
+      .on("mouseover", function () {
       
+        tooltip2.transition().style("opacity", 1);
+      })
+      .on("mouseout", function () {
+     
+          tooltip2.transition().style("opacity", 0);
+      
+      });
+
    
+      
     node
       .filter(function (d) {
         return d.isParent;
