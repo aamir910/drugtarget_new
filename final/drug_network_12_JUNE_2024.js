@@ -2091,17 +2091,20 @@ $(function () {
             <div>
               ${d.id}<br>
             
-              <a href="https://clinicaltrials.gov/search?cond=${d.id}" target="_blank">Click here</a>
+              <a href="https://clinicaltrials.gov/search?cond=${d.id}" target="_blank">Click here to see disease clinical information</a>
             </div>
-          `).on("mouseout", function () {
-     
-            tooltip2.transition().style("opacity", 0);
-        
-        });
-  ; // Set HTML content with link before handling click event
+          `)
+   // Set HTML content with link before handling click event
        
     
-      })
+      }).on("mouseout", function () {
+     
+        tooltip2.transition().style("opacity", 0);
+    
+    });
+
+
+
       tooltip2
       .on("mouseover", function () {
       
