@@ -2094,7 +2094,9 @@ $(function () {
               <a href="https://clinicaltrials.gov/search?cond=${d.id}" target="_blank">Click here</a>
             </div>
           `); // Set HTML content with link before handling click event
-  
+          setTimeout(() => {
+            tooltip2.transition().style("opacity", 0);
+          }, 2000);
     
       })
       
