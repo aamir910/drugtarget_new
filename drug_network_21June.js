@@ -15,17 +15,13 @@ $(function () {
 var json_GeneralFile = "/static/json-sample/json_GeneralFile.json";
 var json_drugData = "/static/json-sample/json_drugData.json";
 var json_proteinData = "/static/json-sample/json_proteinData.json";
-var json_interactionData = "/static/json-sample/json_interactionData.json";
+var json_interactionData = "/static/json-sample/json_interactionData.json"
 
 if (drug_bank_ids) {
-  json_GeneralFile =
-    "/drugs_network/general_data?drug_bank_ids=" + drug_bank_ids.join(",");
-  json_drugData =
-    "/drugs_network/drug_data?drug_bank_ids=" + drug_bank_ids.join(",");
-  json_proteinData =
-    "/drugs_network/protein_data?drug_bank_ids=" + drug_bank_ids.join(",");
-  json_interactionData =
-    "/drugs_network/interaction_data?drug_bank_ids=" + drug_bank_ids.join(",");
+  json_GeneralFile = "/drugs_network/general_data?drug_bank_ids=" + drug_bank_ids.join(',');
+  json_drugData = "/drugs_network/drug_data?drug_bank_ids=" + drug_bank_ids.join(',');
+  json_proteinData = "/drugs_network/protein_data?drug_bank_ids=" + drug_bank_ids.join(',');
+  json_interactionData = "/drugs_network/interaction_data?drug_bank_ids=" + drug_bank_ids.join(',');
 }
 
 if (drug_bank_id) {
@@ -36,29 +32,48 @@ if (drug_bank_id) {
 }
 
 var urlParams = new URLSearchParams(window.location.search);
-if (urlParams.has("atc_code")) {
-  var atc_code = urlParams.get("atc_code");
+if (urlParams.has('atc_code')) {
+  var atc_code = urlParams.get('atc_code');
   if (atc_code.length === 3 || atc_code.length === 4) {
-    var json_GeneralFile =
-      "/static/json-drug-network/" + atc_code + "/general_data.json";
-    var json_drugData =
-      "/static/json-drug-network/" + atc_code + "/drug_data.json";
-    var json_proteinData =
-      "/static/json-drug-network/" + atc_code + "/protein_data.json";
-    var json_interactionData =
-      "/static/json-drug-network/" + atc_code + "/interaction_data.json";
+    var json_GeneralFile = "/serve_general_data_json_file/?atc_code=" + atc_code;
+    var json_drugData = "/serve_drug_data_json_file/?atc_code=" + atc_code;
+    var json_proteinData = "/serve_protein_data_json_file/?atc_code=" + atc_code;
+    var json_interactionData = "/serve_interaction_data_json_file/?atc_code=" + atc_code;
   }
 }
 
-function readJSONFileFromCache(file_path) {
-  return $.getJSON(file_path, function (data) {
-    console.log("getJSON:" + file_path);
-    return data;
+// function readPrecachedJSONFromDatabase(url) {
+//     var data;
+//     $.ajax({
+//       url: url,
+//       method: "GET",
+//       success: function (data) {
+//         data = data;
+//       },
+//       error: function (error) {
+//           console.error("Error:", error);
+//       }
+//     });
+//     return data;
+//   };
+
+function readPrecachedJSONFromDatabase(url) {
+  return new Promise(function (resolve, reject) {
+    $.ajax({
+      url: url,
+      method: "GET",
+      success: function (data) {
+        resolve(data);
+      },
+      error: function (error) {
+        reject(error);
+      }
+    });
   });
 }
 
-// code to get the li of the network visualization
 
+// code to get the li of the network visualization
 document.addEventListener("DOMContentLoaded", function () {
   // Get all <li> elements within the <ul>
   var listItems = document.querySelectorAll(".nav-tabs li");
@@ -90,41 +105,69 @@ let interaction_xlsxData;
 var drugStatusNameForDialog = "";
 var selectedDrugName1 = "";
 let menu;
+
+// (async function() {
+//   try {
+//       const data = await readPrecachedJSONFromDatabase("your_url_here");
+//       console.log("Data:", data);
+//   } catch (error) {
+//       console.error("Error:", error);
+//   }
+// })();
 // Function to read the Drugs JSON data file
-function readDrugJSON() {
-  const jsonFilePath = json_drugData;
-  var jsonData = readJSONFileFromCache(json_drugData);
-  // Assuming your JSON data is an array of objects, adjust this code accordingly
-  // drug_xlsxData = jsonData.map(item => item.fields);
-  if (typeof jsonData === "string") {
-    try {
-      var drug_xlsxData1 = JSON.parse(jsonData);
-      //console.log("Data type is string, Parsing data",drug_xlsxData );
-      // var matchingRow = drug_xlsxData.find((row) => row.fields.name === "Sennosides").fields;
-      //   console.log("matching row", matchingRow)
-      drug_xlsxData = drug_xlsxData1.map((item) => {
-        if (item && item.fields && item.pk) {
-          item.fields.pk = item.pk;
-        }
-        return item.fields;
-      });
-      //console.log("Final Drug Data", drug_xlsxData);
-    } catch (error) {
-      console.error("Error parsing JSON string:", error);
-      return;
+async function readDrugJSON() {
+  const jsonFilePath = json_drugData; //url
+  try {
+    const jsonData = await readPrecachedJSONFromDatabase(jsonFilePath);
+    // console.log("JSON Data:", jsonData);
+
+    // Assuming your JSON data is an array of objects, adjust this code accordingly
+    // drug_xlsxData = jsonData.map(item => item.fields);
+    if (typeof jsonData === "string") {
+      try {
+        var drug_xlsxData1 = JSON.parse(jsonData);
+        //console.log("Data type is string, Parsing data",drug_xlsxData );
+        // var matchingRow = drug_xlsxData.find((row) => row.fields.name === "Sennosides").fields;
+        //   console.log("matching row", matchingRow)
+        drug_xlsxData = drug_xlsxData1.map((item) => {
+          if (item && item.fields && item.pk) {
+            item.fields.pk = item.pk;
+          }
+          return item.fields;
+        });
+        //console.log("Final Drug Data", drug_xlsxData);
+      } catch (error) {
+        console.error("Error parsing JSON string:", error);
+        return;
+      }
+    } else {
+      drug_xlsxData = jsonData;
     }
-  } else {
-    drug_xlsxData = jsonData;
+    // readProteinJSON();
+    (async function() {
+      await readProteinJSON();
+    })();
+  } catch (error) {
+    console.error("Error:", error);
   }
-  readProteinJSON();
 }
 
-function readProteinJSON() {
+async function readProteinJSON() {
   const jsonFilePath = json_proteinData;
-  protein_xlsxData = readJSONFileFromCache(json_proteinData);
-  readInteractionJSON();
+  // protein_xlsxData = readPrecachedJSONFromDatabase(json_proteinData);
+  // readInteractionJSON();
+  try {
+    protein_xlsxData = readPrecachedJSONFromDatabase(jsonFilePath);
+    // readInteractionJSON();
+    (async function() {
+      await readInteractionJSON();
+    })();
+  } catch (error) {
+      console.error("Error:", error);
+  }
   // protein_xlsxData = jsonData;
   //console.log("ProteinData", protein_xlsxData);
+
 
   // fetch(jsonFilePath)
   //   .then((response) => response.json())
@@ -139,10 +182,15 @@ function readProteinJSON() {
   //   });
 }
 
-function readInteractionJSON() {
+async function readInteractionJSON() {
   const jsonFilePath = json_interactionData;
-  interaction_xlsxData = readJSONFileFromCache(json_interactionData);
-  processData(numberofnodes, slicedata);
+  try {
+    const interaction_xlsxData = await readPrecachedJSONFromDatabase(jsonFilePath);
+    console.log("JSON Data:", interaction_xlsxData);
+    processData(numberofnodes, slicedata);
+  } catch (error) {
+      console.error("Error:", error);
+  }
   // fetch(jsonFilePath)
   //   .then((response) => response.json())
   //   .then((jsonData) => {
@@ -157,7 +205,10 @@ function readInteractionJSON() {
 }
 
 window.onload = function () {
-  readDrugJSON();
+    (async function() {
+      await readDrugJSON();
+  })();
+  // readDrugJSON();
   // processData(numberofnodes, slicedata);
   // getDrugJsonData(drugBankId);
 };
@@ -184,15 +235,13 @@ function getDrugJsonData(drugBankId) {
 
 var exportButton = document.getElementById("exportButton");
 exportButton.addEventListener("click", function () {
+
   showExportOptions();
 });
 
 let more_details = document.getElementById("more_details");
 more_details.addEventListener("click", function () {
-  window.open(
-    "https://pgx-documentation.readthedocs.io/en/latest/atc_code.html#network-visualization",
-    "_blank"
-  );
+  window.open("https://www.google.com", "_blank");
 });
 
 window.addEventListener("click", function (event) {
@@ -255,6 +304,7 @@ function showExportOptions() {
 }
 
 function createExportOption(optionText) {
+
   var optionButton = document.createElement("button");
   optionButton.textContent = optionText;
   optionButton.className = "pgx_btn1"; // add class here
@@ -269,41 +319,41 @@ function createExportOption(optionText) {
 
   var style = document.createElement("style");
   style.innerHTML = `
-          
-          .pgx_btn1 {
-              padding: 5px;
-              border: 1px solid #ccc;
-              border-radius: 5px;
-              background: #fff;
-              color: #333;
-              font-size: 14px;
-              font-weight: 400;
-              line-height: 1.42857143;
-              text-align: center;
-              white-space: nowrap;
-              vertical-align: middle;
-              touch-action: manipulation;
-              font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-              display: block;
-              margin-bottom: 5px;
-              width: 120px;
-              cursor:pointer;
-          }
-  
-          .pgx_btn1:hover {
-              color: #333;
-              background-color: #d4d4d4;
-          }
-  
-          .pgx_btn1:focus {
-              outline: 5px auto -webkit-focus-ring-color;
-          }
-          .button-container {
-              display: flex;
-              justify-content: center;
-              align-items: center;
-          }
-      `;
+        
+        .pgx_btn1 {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #fff;
+            color: #333;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.42857143;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            touch-action: manipulation;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            display: block;
+            margin-bottom: 5px;
+            width: 120px;
+            cursor:pointer;
+        }
+
+        .pgx_btn1:hover {
+            color: #333;
+            background-color: #d4d4d4;
+        }
+
+        .pgx_btn1:focus {
+            outline: 5px auto -webkit-focus-ring-color;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    `;
   document.head.appendChild(style);
   return buttonContainer;
 }
@@ -327,6 +377,7 @@ function handleExportOption(option) {
       downloadCSV();
       break;
     case "Download XLS":
+
       downloadXLS();
       break;
     case "View Data Table":
@@ -461,7 +512,9 @@ function svgToCanvas(svgData, callback) {
 
     if (xlinkHref) {
       //imgObj.src = "http://localhost:8000/" + xlinkHref;
-      imgObj.src = "https://pgx-db.org" + xlinkHref;
+      imgObj.src =
+        "https://pgx-db.org" +
+        xlinkHref;
     } else {
       loadedCount++;
     }
@@ -628,7 +681,9 @@ function downloadPDF() {
     // Use the href attribute for the image path
     if (xlinkHref) {
       //imgObj.src = "http://localhost:8000/" + xlinkHref;
-      imgObj.src = "https://pgx-db.org/" + xlinkHref;
+      imgObj.src =
+        "https://pgx-db.org/" +
+        xlinkHref;
     } else {
       loadedCount++;
     }
@@ -700,8 +755,9 @@ function getFilteredLinksXLSX() {
 
 // Download XLS
 function downloadXLS() {
+
   var modal = document.getElementById("exportModal");
-  modal.style.display = "none";
+  modal.style.display = "none"
   $("#loading").show();
   var filteredLinks = getFilteredLinksXLSX();
 
@@ -852,12 +908,12 @@ function showDialog(title, parentNodeName) {
     showDrugStructureTab(selectedDrugName1);
   }
   /*
-      else if (activeTab === "drug-a") {
-        showDrugATab();
-      } else if (activeTab === "drug-b") {
-        showDrugBTab();
-      }
-      */
+    else if (activeTab === "drug-a") {
+      showDrugATab();
+    } else if (activeTab === "drug-b") {
+      showDrugBTab();
+    }
+    */
 
   // Function to handle tab click event
   function handleTabClick(event) {
@@ -879,12 +935,12 @@ function showDialog(title, parentNodeName) {
       showDrugStructureTab(selectedDrugName1);
     }
     /*
-          else if (tabName === "drug-a") {
-            showDrugATab();
-          } else if (tabName === "drug-b") {
-            showDrugBTab();
-          }
-          */
+        else if (tabName === "drug-a") {
+          showDrugATab();
+        } else if (tabName === "drug-b") {
+          showDrugBTab();
+        }
+        */
   }
 
   // Function to showdrug image
@@ -1452,7 +1508,7 @@ function showDialog_Links(title, interactionTy) {
         row.drugbank_id === interaction_source &&
         row.uniprot_ID_id === interaction_target &&
         row.interaction_type.toLowerCase() ===
-          selectedInteractionName1.toLowerCase()
+        selectedInteractionName1.toLowerCase()
     );
 
     if (matchingRow) {
@@ -1679,6 +1735,7 @@ let flag_processData = false;
 let numberofnodes = 2;
 let slicedata = 400;
 
+
 window.parent.postMessage({ data: slicedata }, "*");
 
 function processData(numberofnodes, slicedata) {
@@ -1688,6 +1745,7 @@ function processData(numberofnodes, slicedata) {
   fetch(jsonFilePath)
     .then((response) => response.json())
     .then((data) => {
+      var data = JSON.parse(data.data);
       console.log(data, "here is the data ");
 
       const uniqueProteinClasses = [
@@ -2080,13 +2138,16 @@ function createChart(links) {
   node
     .filter((node) => node.child_type === "disease_type")
     .on("click", function (event, d) {
-      // window.open(`https://clinicaltrials.gov/search?cond=${d.id}`, "_blank");
+      window.open(`https://clinicaltrials.gov/search?cond=${d.id}`, "_blank");
       showDialog(d.id, d.id);
     })
     // Attach cursor style change on mouseover to all nodes
     .on("mouseover", function () {
       d3.select(this).style("cursor", "pointer");
     });
+
+
+
 
   var tooltip2 = d3
     .select("body")
@@ -2101,26 +2162,18 @@ function createChart(links) {
       tooltip2.transition().style("opacity", 0.9);
       tooltip2
         .style("left", event.pageX + 20 + "px")
-        .style("top", event.pageY + 20 + "px").html(`
-            <div>
-              ${d.id}<br>
-            
-              <a href="https://clinicaltrials.gov/search?cond=${d.id}" target="_blank">Click here to see disease clinical information</a>
-            </div>
-          `);
-      // Set HTML content with link before handling click event
+        .style("top", event.pageY + 20 + "px")
+        .html(d.id); // Set HTML content before handling click event
     })
     .on("mouseout", function () {
       tooltip2.transition().style("opacity", 0);
     });
 
-  tooltip2
-    .on("mouseover", function () {
-      tooltip2.transition().style("opacity", 1);
-    })
-    .on("mouseout", function () {
-      tooltip2.transition().style("opacity", 0);
-    });
+  tooltip2.on("click", function (event, d) {
+    // This function will execute when the tooltip is clicked
+    // Note: 'd' might not be defined here, you may need to handle this case
+    window.open(`https://clinicaltrials.gov/search?cond=${d.id}`, "_blank");
+  });
 
   node
     .filter(function (d) {
@@ -2742,10 +2795,10 @@ function createProteinsLegend() {
     }
   });
   /*
-    proteins.forEach(function(protein) {
-                      createLegendItem(protein, proteinColorMap[protein]);
-    });
-                  */
+  proteins.forEach(function(protein) {
+                    createLegendItem(protein, proteinColorMap[protein]);
+  });
+                */
 
   function createLegendItem(protein, color) {
     var legendItem = legendContent
@@ -3069,10 +3122,10 @@ function createLegend_status() {
     }
   });
   /*
-    for (var status in colorCodes) {
-                      createLegendItem(status, colorCodes[status]);
-    }
-                  */
+  for (var status in colorCodes) {
+                    createLegendItem(status, colorCodes[status]);
+  }
+                */
 
   function createLegendItem(status, color) {
     var legendItem = legendContent
@@ -3472,8 +3525,8 @@ function updateAllFilters() {
       (l) =>
         !hiddenInteractions[l.type] &&
         !hiddenProteinClasses[
-          nodes.find((n) => n.id === l.target.id).Protein_Class &&
-            nodes.find((n) => n.id === l.target.id).DiseaseClass
+        nodes.find((n) => n.id === l.target.id).Protein_Class &&
+        nodes.find((n) => n.id === l.target.id).DiseaseClass
         ]
     );
 
@@ -3481,7 +3534,7 @@ function updateAllFilters() {
       (l) =>
         !hiddenInteractions[l.type] &&
         !hiddenDiseaseClasses[
-          nodes.find((n) => n.id === l.target.id).DiseaseClass
+        nodes.find((n) => n.id === l.target.id).DiseaseClass
         ]
     );
 
