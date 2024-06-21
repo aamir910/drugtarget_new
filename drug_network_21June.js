@@ -2184,11 +2184,7 @@ function createChart(links) {
       // Set HTML content with link before handling click event
     })
 
-   .on("mouseout", function () {
-    
-    tooltip2.transition().style("opacity", 0);
   
-});
 
   tooltip2
 
@@ -2197,9 +2193,8 @@ function createChart(links) {
     })
 
     .on("mouseout", function () {
-      setTimeout(function() {
         tooltip2.transition().style("opacity", 0);
-      }, 1000);
+ 
     });
 
   node
