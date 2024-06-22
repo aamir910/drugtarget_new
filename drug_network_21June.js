@@ -2330,11 +2330,12 @@ function createChart(links) {
   console.log(link , node , 'herea rea the links and the nodes ')
   node.filter(function(templink) {
     // Filter links with a value greater than 5
- 
     if(templink.hidden === true){
-    if(!true_node.includes(templink.Protein_Class )){
+      console.log(templink , 'faksldjasl')
+    if(!true_node.includes(templink.Protein_Class) ){
 
       true_node.push(templink.Protein_Class)
+
     }
      
   }else{
@@ -2343,7 +2344,52 @@ function createChart(links) {
       False_node.push(templink.Protein_Class)
     }
   }
-  
+
+  if(templink.hidden === true){
+    if(!true_node.includes(templink.DiseaseClass) ){
+
+      true_node.push(templink.DiseaseClass)
+
+    }
+     
+  }else{
+    
+    if(!False_node.includes(templink.DiseaseClass )){
+
+      False_node.push(templink.DiseaseClass)
+    }
+  }
+
+  if(templink.hidden === true){
+  if(!true_node.includes(templink.Drug_type) ){
+
+    true_node.push(templink.Drug_type)
+
+  }
+   
+}else{
+  if(!False_node.includes(templink.Drug_type )){
+
+    False_node.push(templink.Drug_type)
+  }
+}
+
+if(templink.hidden === true){
+  if(!true_node.includes(templink.Drug_status) ){
+
+    true_node.push(templink.Drug_status)
+
+  }
+   
+}else{
+  if(!False_node.includes(templink.Drug_status )){
+
+    False_node.push(templink.Drug_status)
+  }
+}
+
+
+
   })
   link.filter(function(templink) {
     // Filter links with a value greater than 5
@@ -2378,6 +2424,7 @@ function createChart(links) {
         });
     });
 }
+console.log(true_node , 'true_node')
 function removeElements(array1, array2) {
   return array1.filter(element => !array2.includes(element));
 }
