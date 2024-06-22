@@ -2181,8 +2181,12 @@ function createChart(links) {
 
     .on("mouseout", function () {
       tooltip2.transition()
-      .style("display", "none");;
+      .style("display", "none");
     });
+
+
+
+
 
   node
     .filter(function (d) {
@@ -3889,4 +3893,12 @@ function clearGraph() {
   links = [];
 }
 
-
+$(document).ready(function() {
+  $(document).click(function(e) {
+      // Check if the click did not originate from within any element with class 'tooltip2'
+      if (!$(e.target).closest('.tooltip2').length) {
+          // Hide all elements with class 'tooltip2'
+          $('.tooltip2').hide();
+      }
+  });
+});
