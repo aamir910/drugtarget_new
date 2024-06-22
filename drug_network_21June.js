@@ -7,7 +7,7 @@ $(function () {
 //Pass jsonFiles Here
 
 var json_GeneralFile = "json/json_GeneralFile.json";
-var json_GeneralFile = "json/json5.json";
+var json_GeneralFile = "json/data.json";
 var json_drugData = "json/json_drugData.json";
 var json_proteinData = "json/json_proteinData.json";
 var json_interactionData = "json/json_interactionData.json";
@@ -2330,8 +2330,8 @@ function createChart(links) {
   console.log(link , node , 'herea rea the links and the nodes ')
   node.filter(function(templink) {
     // Filter links with a value greater than 5
-  if(templink.hidden === true){
-    console.log(templink.Protein_Class ,'here it is ')
+ 
+    if(templink.hidden === true){
     if(!true_node.includes(templink.Protein_Class )){
 
       true_node.push(templink.Protein_Class)
@@ -2343,10 +2343,25 @@ function createChart(links) {
       False_node.push(templink.Protein_Class)
     }
   }
-  console.log( true_node ,'true_node' , False_node , 'false_node ')
   
   })
+  link.filter(function(templink) {
+    // Filter links with a value greater than 5
+ 
+    if(templink.hidden === true){
+    if(!true_node.includes(templink.type )){
+
+      true_node.push(templink.type)
+    }
+     
+  }else{
+    if(!False_node.includes(templink.type )){
+
+      False_node.push(templink.type)
+    }
+  }
   
+  })
   function removeDivContainingSpanText(texts) {
     texts.forEach(text => {
         // Select all span elements
