@@ -2346,7 +2346,28 @@ function createChart(links) {
   console.log( true_node ,'true_node' , False_node , 'false_node ')
   
   })
-
+  
+  function removeDivContainingSpanText(texts) {
+    texts.forEach(text => {
+        // Select all span elements
+        const spans = document.querySelectorAll('span');
+        
+        spans.forEach(span => {
+            if (span.textContent.includes(text)) {
+                // Remove the parent div of the span
+                const parentDiv = span.closest('div');
+                if (parentDiv) {
+                    parentDiv.remove();
+                }
+            }
+        });
+    });
+}
+function removeElements(array1, array2) {
+  return array1.filter(element => !array2.includes(element));
+}
+  let remove_element = removeElements(true_node ,False_node  )
+removeDivContainingSpanText(remove_element);
 
 }
 
