@@ -7,7 +7,7 @@ $(function () {
 //Pass jsonFiles Here
 
 var json_GeneralFile = "json/json_GeneralFile.json";
-var json_GeneralFile = "json/json5.json";
+var json_GeneralFile = "json/json2.json";
 var json_drugData = "json/json_drugData.json";
 var json_proteinData = "json/json_proteinData.json";
 var json_interactionData = "json/json_interactionData.json";
@@ -2322,7 +2322,10 @@ function createChart(links) {
 
     localStorage.setItem("jsonData", height);
   });
+ 
   
+
+  // update of the links and the nodes there  aamir2
   console.log(link , node , 'herea rea the links and the nodes ')
   node.filter(function(templink) {
     // Filter links with a value greater than 5
@@ -2790,6 +2793,7 @@ function createProteinsLegend() {
       createLegendItem(proteinClass11, proteinColorMap[proteinClass11]);
       uniqueProteins.add(proteinClass11);
     }
+
 
   });
   /*
