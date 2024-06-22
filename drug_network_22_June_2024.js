@@ -247,7 +247,10 @@ exportButton.addEventListener("click", function () {
 
 let more_details = document.getElementById("more_details");
 more_details.addEventListener("click", function () {
-  window.open("https://www.google.com", "_blank");
+  window.open(
+    "https://pgx-documentation.readthedocs.io/en/latest/atc_code.html#network-visualization",
+    "_blank"
+  );
 });
 
 window.addEventListener("click", function (event) {
