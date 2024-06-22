@@ -756,8 +756,7 @@ function getFilteredLinksXLSX() {
 // Download XLS
 function downloadXLS() {
   var modal = document.getElementById("exportModal");
-  modal.style.display = "none";
-  $("#loading").show();
+
   var filteredLinks = getFilteredLinksXLSX();
 
   //console.log(filteredLinks)
@@ -797,7 +796,6 @@ function downloadXLS() {
   };
 
   req.send();
-  $("#loading").hide();
 }
 
 function downloadXLS11() {
@@ -2136,7 +2134,6 @@ function createChart(links) {
   node
     .filter((node) => node.child_type === "disease_type")
     .on("click", function (event, d) {
-      window.open(`https://clinicaltrials.gov/search?cond=${d.id}`, "_blank");
       showDialog(d.id, d.id);
     })
     // Attach cursor style change on mouseover to all nodes
@@ -2160,26 +2157,15 @@ function createChart(links) {
 
     .on("mouseover", function (event, d) {
       d3.select(this).style("cursor", "pointer");
-
       tooltip2.transition()
       .style("display", "block");
-
       tooltip2
-
         .style("left", event.pageX + 20 + "px")
-
         .style("top", event.pageY + 20 + "px").html(`
-
             <div>
-
               ${d.id}<br>
-
-            
-
-              <a href="https://clinicaltrials.gov/search?cond=${d.id}" target="_blank">Click here to see disease clinical information</a>
-
+               <a href="https://clinicaltrials.gov/search?cond=${d.id}" target="_blank">Click here to see disease clinical information</a>
             </div>
-
           `);
 
       // Set HTML content with link before handling click event
@@ -2319,27 +2305,6 @@ function createChart(links) {
       .on("drag", dragged)
       .on("end", dragEnded);
   }
-  // // Button click handlers
-  // d3.select(".zoom-in-btn").on("click", function () {
-  //     svg.transition().duration(750).call(zoom.scaleBy, 1.2);
-  // });
-
-  // d3.select(".zoom-out-btn").on("click", function () {
-  //     svg.transition().duration(750).call(zoom.scaleBy, 0.8);
-  // });
-
-  // // Preserve the transform on button click
-  // d3.select(".zoom-in-btn").on("click", function () {
-  //     var t = currentTransform.scale(1.2);
-  //     svg.transition().duration(750).call(zoom.transform, t);
-  // });
-
-  // d3.select(".zoom-out-btn").on("click", function () {
-  //     var t = currentTransform.scale(0.8);
-  //     svg.transition().duration(750).call(zoom.transform, t);
-  // });
-
-  //console.log("Chart created.");
   // Finish updating chart
   $("#loading").hide();
   //$("#loading").hide();
@@ -2806,7 +2771,7 @@ function createProteinsLegend() {
 
   links.forEach(function (link) {
     var proteinClass11 = link.target.Protein_Class; // No need to convert to lowercase
-    //console.log(proteinClass11);
+    console.log(proteinClass11 ,'here are the protien classes ');
 
     if (
       proteins.includes(proteinClass11) &&
