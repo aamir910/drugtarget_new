@@ -7,7 +7,7 @@ $(function () {
 //Pass jsonFiles Here
 
 var json_GeneralFile = "json/json_GeneralFile.json";
-var json_GeneralFile = "json/json2.json";
+var json_GeneralFile = "json/json5.json";
 var json_drugData = "json/json_drugData.json";
 var json_proteinData = "json/json_proteinData.json";
 var json_interactionData = "json/json_interactionData.json";
@@ -2323,19 +2323,30 @@ function createChart(links) {
     localStorage.setItem("jsonData", height);
   });
  
-  
+  let False_node = [];
+  let true_node = []
 
   // update of the links and the nodes there  aamir2
   console.log(link , node , 'herea rea the links and the nodes ')
   node.filter(function(templink) {
     // Filter links with a value greater than 5
-    let visible = d3.select(this).style("visibility")
-  console.log(visible )
-  if(visible === 'visible'){
-    console.log(this)
+  if(templink.hidden === true){
+    console.log(templink.Protein_Class ,'here it is ')
+    if(!true_node.includes(templink.Protein_Class )){
+
+      true_node.push(templink.Protein_Class)
+    }
+     
+  }else{
+    if(!False_node.includes(templink.Protein_Class )){
+
+      False_node.push(templink.Protein_Class)
+    }
   }
+  console.log( true_node ,'true_node' , False_node , 'false_node ')
   
   })
+
 
 }
 
@@ -3431,6 +3442,7 @@ function updateAllFilters() {
     .selectAll("circle, text , path")
     .style("visibility", function (d) {
       if (d.hidden) {
+      
         // if hidden by slider filter
         return "hidden";
       }
