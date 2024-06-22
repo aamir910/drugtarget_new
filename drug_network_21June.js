@@ -409,8 +409,7 @@ function getFilteredSvgContent(svgElement) {
 
   // Remove hidden parent nodes
   d3ClonedSvg
-    .selectAll(".node-parent")
-    .filter(function () {
+    .selectAll(".node-parent").filter(function () {
       return (
         this.style.visibility === "hidden" || this.style.display === "none"
       );
@@ -1927,8 +1926,7 @@ function processData(numberofnodes, slicedata) {
       console.error("Error reading the JSON file:", error);
     });
 
-  // d3.select("#loading").style("height", "800px");
-}
+   }
 
 // Read the data from the Excel file
 
@@ -2324,6 +2322,18 @@ function createChart(links) {
 
     localStorage.setItem("jsonData", height);
   });
+  
+  console.log(link , node , 'herea rea the links and the nodes ')
+  node.filter(function(templink) {
+    // Filter links with a value greater than 5
+    let visible = d3.select(this).style("visibility")
+  console.log(visible )
+  if(visible === 'visible'){
+    console.log(this)
+  }
+  
+  })
+
 }
 
 // Update the chart visibility based on the threshold value
@@ -2771,7 +2781,7 @@ function createProteinsLegend() {
 
   links.forEach(function (link) {
     var proteinClass11 = link.target.Protein_Class; // No need to convert to lowercase
-    console.log(proteinClass11 ,'here are the protien classes ');
+    
 
     if (
       proteins.includes(proteinClass11) &&
@@ -2780,6 +2790,7 @@ function createProteinsLegend() {
       createLegendItem(proteinClass11, proteinColorMap[proteinClass11]);
       uniqueProteins.add(proteinClass11);
     }
+
   });
   /*
   proteins.forEach(function(protein) {
@@ -3492,6 +3503,8 @@ function updateAllFilters() {
 
   // parent nodes
   d3.selectAll(".node-parent").style("visibility", function (d) {
+
+
     if (d.hidden) {
       // if hidden by slider filter
       return "hidden";
@@ -3507,6 +3520,8 @@ function updateAllFilters() {
         }
       }
     });
+
+
 
     var anyVisibleChildren = relatedLinks.some(
       (l) =>
@@ -3548,6 +3563,7 @@ function updateAllFilters() {
   });
 
   // hey
+
 }
 
 // Pull nodes towards the center
@@ -3724,6 +3740,7 @@ d3.select("#GetmoreData").on("click", function () {
 
   console.log(slicedata, "slicedata");
   processData(numberofnodes, slicedata);
+  
 });
 
 document.getElementById("ManagePreviousState").style.display = "none";
@@ -3770,6 +3787,4 @@ function clearGraph() {
   links = [];
 }
 
-document
-  .getElementById("all-legends")
-  .on("click", menu.style("display", "none"));
+
