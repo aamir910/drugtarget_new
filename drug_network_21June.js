@@ -2152,7 +2152,7 @@ function createChart(links) {
 
     .attr("class", "tooltip2")
 
-    .style("opacity", 0);
+    .style("display", "none");
 
   node
 
@@ -2161,7 +2161,8 @@ function createChart(links) {
     .on("mouseover", function (event, d) {
       d3.select(this).style("cursor", "pointer");
 
-      tooltip2.transition().style("opacity", 0.9);
+      tooltip2.transition()
+      .style("display", "block");
 
       tooltip2
 
@@ -2182,19 +2183,18 @@ function createChart(links) {
           `);
 
       // Set HTML content with link before handling click event
-    })
-
-  
+    });
 
   tooltip2
 
     .on("mouseover", function () {
-      tooltip2.transition().style("opacity", 1);
+      tooltip2.transition()
+      .style("display", "block");;
     })
 
     .on("mouseout", function () {
-        tooltip2.transition().style("opacity", 0);
- 
+      tooltip2.transition()
+      .style("display", "none");;
     });
 
   node
