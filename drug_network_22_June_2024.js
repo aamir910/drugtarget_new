@@ -6,78 +6,78 @@ $(function () {
 
 //Pass jsonFiles Here
 
-// var json_GeneralFile = "json/json_GeneralFile.json";
-// var json_GeneralFile = "json/data.json";
-// var json_drugData = "json/json_drugData.json";
-// var json_proteinData = "json/json_proteinData.json";
-// var json_interactionData = "json/json_interactionData.json";
+var json_GeneralFile = "json/json_GeneralFile.json";
+var json_GeneralFile = "json/data.json";
+var json_drugData = "json/json_drugData.json";
+var json_proteinData = "json/json_proteinData.json";
+var json_interactionData = "json/json_interactionData.json";
 
-var json_GeneralFile = "/static/json-sample/json_GeneralFile.json";
-var json_drugData = "/static/json-sample/json_drugData.json";
-var json_proteinData = "/static/json-sample/json_proteinData.json";
-var json_interactionData = "/static/json-sample/json_interactionData.json";
+// var json_GeneralFile = "/static/json-sample/json_GeneralFile.json";
+// var json_drugData = "/static/json-sample/json_drugData.json";
+// var json_proteinData = "/static/json-sample/json_proteinData.json";
+// var json_interactionData = "/static/json-sample/json_interactionData.json";
 
-if (drug_bank_ids) {
-  json_GeneralFile =
-    "/drugs_network/general_data?drug_bank_ids=" + drug_bank_ids.join(",");
-  json_drugData =
-    "/drugs_network/drug_data?drug_bank_ids=" + drug_bank_ids.join(",");
-  json_proteinData =
-    "/drugs_network/protein_data?drug_bank_ids=" + drug_bank_ids.join(",");
-  json_interactionData =
-    "/drugs_network/interaction_data?drug_bank_ids=" + drug_bank_ids.join(",");
-}
+// if (drug_bank_ids) {
+//   json_GeneralFile =
+//     "/drugs_network/general_data?drug_bank_ids=" + drug_bank_ids.join(",");
+//   json_drugData =
+//     "/drugs_network/drug_data?drug_bank_ids=" + drug_bank_ids.join(",");
+//   json_proteinData =
+//     "/drugs_network/protein_data?drug_bank_ids=" + drug_bank_ids.join(",");
+//   json_interactionData =
+//     "/drugs_network/interaction_data?drug_bank_ids=" + drug_bank_ids.join(",");
+// }
 
-if (drug_bank_id) {
-  json_GeneralFile = "/drug_network/" + drug_bank_id + "/general_data";
-  json_drugData = "/drug_network/" + drug_bank_id + "/drug_data";
-  json_proteinData = "/drug_network/" + drug_bank_id + "/protein_data";
-  json_interactionData = "/drug_network/" + drug_bank_id + "/interaction_data";
-}
+// if (drug_bank_id) {
+//   json_GeneralFile = "/drug_network/" + drug_bank_id + "/general_data";
+//   json_drugData = "/drug_network/" + drug_bank_id + "/drug_data";
+//   json_proteinData = "/drug_network/" + drug_bank_id + "/protein_data";
+//   json_interactionData = "/drug_network/" + drug_bank_id + "/interaction_data";
+// }
 
-var urlParams = new URLSearchParams(window.location.search);
-if (urlParams.has("atc_code")) {
-  var atc_code = urlParams.get("atc_code");
-  if (atc_code.length === 3 || atc_code.length === 4) {
-    var json_GeneralFile =
-      "/serve_general_data_json_file/?atc_code=" + atc_code;
-    var json_drugData = "/serve_drug_data_json_file/?atc_code=" + atc_code;
-    var json_proteinData =
-      "/serve_protein_data_json_file/?atc_code=" + atc_code;
-    var json_interactionData =
-      "/serve_interaction_data_json_file/?atc_code=" + atc_code;
-  }
-}
+// var urlParams = new URLSearchParams(window.location.search);
+// if (urlParams.has("atc_code")) {
+//   var atc_code = urlParams.get("atc_code");
+//   if (atc_code.length === 3 || atc_code.length === 4) {
+//     var json_GeneralFile =
+//       "/serve_general_data_json_file/?atc_code=" + atc_code;
+//     var json_drugData = "/serve_drug_data_json_file/?atc_code=" + atc_code;
+//     var json_proteinData =
+//       "/serve_protein_data_json_file/?atc_code=" + atc_code;
+//     var json_interactionData =
+//       "/serve_interaction_data_json_file/?atc_code=" + atc_code;
+//   }
+// }
+
+// // function readPrecachedJSONFromDatabase(url) {
+// //     var data;
+// //     $.ajax({
+// //       url: url,
+// //       method: "GET",
+// //       success: function (data) {
+// //         data = data;
+// //       },
+// //       error: function (error) {
+// //           console.error("Error:", error);
+// //       }
+// //     });
+// //     return data;
+// //   };
 
 // function readPrecachedJSONFromDatabase(url) {
-//     var data;
+//   return new Promise(function (resolve, reject) {
 //     $.ajax({
 //       url: url,
 //       method: "GET",
 //       success: function (data) {
-//         data = data;
+//         resolve(data);
 //       },
 //       error: function (error) {
-//           console.error("Error:", error);
-//       }
+//         reject(error);
+//       },
 //     });
-//     return data;
-//   };
-
-function readPrecachedJSONFromDatabase(url) {
-  return new Promise(function (resolve, reject) {
-    $.ajax({
-      url: url,
-      method: "GET",
-      success: function (data) {
-        resolve(data);
-      },
-      error: function (error) {
-        reject(error);
-      },
-    });
-  });
-}
+//   });
+// }
 
 // code to get the li of the network visualization
 document.addEventListener("DOMContentLoaded", function () {
@@ -449,6 +449,8 @@ function printChart() {
 // Download PNG
 // Download PNG
 function downloadPNG() {
+  
+$("#loading").show();
   var svgElement = document.querySelector("#chart svg");
 
   // Reset transformations by cloning the SVG element and removing any transformations
@@ -495,7 +497,9 @@ function downloadPNG() {
       a.click();
     });
   });
-}
+
+ 
+  $("#loading").hide();}
 
 function svgToCanvas(svgData, callback) {
   var canvas = document.createElement("canvas");
@@ -552,6 +556,8 @@ function svgToCanvas(svgData, callback) {
 // Download JPEG
 
 function downloadJPEG() {
+  
+$("#loading").show(); 
   var svgElement = document.querySelector("#chart svg");
   var svgData = getFilteredSvgContent(svgElement);
   svgData = addWhiteBackground(svgData);
@@ -593,7 +599,10 @@ function downloadJPEG() {
       a.click();
     });
   });
-}
+
+  $("#loading").hide(); 
+
+ }
 
 function downloadJPEG1() {
   var svgElement = document.querySelector("#chart svg");
@@ -757,6 +766,8 @@ function getFilteredLinksXLSX() {
 
 // Download XLS
 function downloadXLS() {
+  
+$("#loading").show();
   var modal = document.getElementById("exportModal");
 
   var filteredLinks = getFilteredLinksXLSX();
@@ -798,6 +809,8 @@ function downloadXLS() {
   };
 
   req.send();
+
+  $("#loading").hide();
 }
 
 function downloadXLS11() {
@@ -2334,11 +2347,9 @@ function createChart(links) {
   let true_node = []
 
   // update of the links and the nodes there  aamir2
-  console.log(link , node , 'herea rea the links and the nodes ')
   node.filter(function(templink) {
     // Filter links with a value greater than 5
     if(templink.hidden === true){
-      console.log(templink , 'faksldjasl')
     if(!true_node.includes(templink.Protein_Class) ){
 
       true_node.push(templink.Protein_Class)
@@ -2431,7 +2442,6 @@ if(templink.hidden === true){
         });
     });
 }
-console.log(true_node , 'true_node')
 function removeElements(array1, array2) {
   return array1.filter(element => !array2.includes(element));
 }
