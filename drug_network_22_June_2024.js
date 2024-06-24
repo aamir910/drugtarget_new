@@ -495,11 +495,14 @@ $("#loading").show();
       a.href = finalCanvas.toDataURL("image/png");
       a.download = "chart.png";
       a.click();
-    });
-  });
+    
+      });
+    $("#loading").hide();
+      });
 
  
-  $("#loading").hide();}
+
+}
 
 function svgToCanvas(svgData, callback) {
   var canvas = document.createElement("canvas");
@@ -598,9 +601,9 @@ $("#loading").show();
       a.download = "chart.jpeg";
       a.click();
     });
+  $("#loading").hide(); 
   });
 
-  $("#loading").hide(); 
 
  }
 
@@ -806,11 +809,11 @@ $("#loading").show();
 
     // Download the new XLSX file
     XLSX.writeFile(newWb, "filtered_data.xlsx");
+  $("#loading").hide();
   };
 
   req.send();
 
-  $("#loading").hide();
 }
 
 function downloadXLS11() {
