@@ -964,13 +964,34 @@ if (isset($_POST['drugName2'])) {
 
         }
       });
-
+console.log(data ,"here is the data")
       //  creating the links  
+// Function to remove duplicate data entries
+function removeDuplicates(data) {
+    let uniqueEntries = new Set();
+    let uniqueData = [];
 
-      links = data.flatMap((item) => [{
-          source: item.COMPOUND_NAME,
-          target: item.CELL_LINE_NAME,
-          value: item.VALUE,
+    data.forEach(item => {
+        let itemString = JSON.stringify(item);
+        if (!uniqueEntries.has(itemString)) {
+            uniqueEntries.add(itemString);
+            uniqueData.push(item);
+        }
+    });
+
+    return uniqueData;
+}
+
+// Process the data
+let uniqueData = removeDuplicates(data);
+console.log(uniqueData ,'here is the unique data')
+      links = uniqueData.flatMap((item) => [
+          
+          {
+          
+           source: item.COMPOUND_NAME,
+           target: item.CELL_LINE_NAME,
+           value: item.VALUE,
           max_range_link: item.MAX_PHASE,
           dataset: item.DATASET,
           link_matric: item.METRIC,
@@ -983,8 +1004,43 @@ if (isset($_POST['drugName2'])) {
           max_range_link: "temp2",
           dataset: "temp3",
           link_matric: item.Phase === 'Preclinical' ? item.Phase : `Phase ${item.Phase}`,
-        },
+        },   
+          
+          
       ]);
+      
+      let seenPairs = [];
+      let repeatPair = [];
+      let repeatLinks = []
+
+links.forEach(link => {
+    if(true){
+    let sourceId = link.source;
+    let targetId = link.target;
+    let pairKey = `${sourceId}-${targetId}-${link.link_matric}`;
+// console.log(pairKey ,'pairkey')
+    // Check if the pair has already been seen
+  if (seenPairs.includes(pairKey)) {
+      
+        // If seen, update overlap to true
+        link.overlap = true;
+        console.log("aamir2 ")
+        repeatPair.push(pairKey);
+        repeatLinks.push(link);
+    } else {
+        link.overlap = false;
+        seenPairs.push(pairKey);
+        
+        console.log("aamir2 false")
+    }
+    
+
+        
+    }
+ 
+});
+      
+    console.log(repeatPair,repeatLinks , 'here is seenpair')  
       console.log("nodes", nodes)
       console.log("links", links);
 
@@ -1482,8 +1538,9 @@ for (let i = 0; i < link._groups[0].length - 1; i++) {
 
     let link1 = link._groups[0][i].__data__;
     let link2 = link._groups[0][i + 1].__data__;
-console.log(link1 , 'here is the link1')
-    if (link1.source.id === link2.source.id && link1.target.id === link2.target.id) {
+ 
+ 
+    if (link1.source.id === link2.source.id && link2.target.id === link2.target.id) {
         foundLinks.push(link1);
     }
 }
@@ -1832,20 +1889,21 @@ console.log(foundLinks);
 
 // here is the updated code 
 
+simulation.on("tick", () => {
+    link.attr("x1", (d) => Math.max(0, Math.min(svgWidth, d.source.x)))
+        .attr("y1", (d) => {
+            let y1 = Math.max(0, Math.min(svgHeight, d.source.y)) + 50;
+            return d.overlap ? y1 + 7 : y1; // Adjust y1 position for overlapping links
+        })
+        .attr("x2", (d) => Math.max(0, Math.min(svgWidth, d.target.x)))
+        .attr("y2", (d) => {
+            let y2 = Math.max(0, Math.min(svgHeight, d.target.y)) + 50;
+            return d.overlap ? y2 +7 : y2; // Adjust y2 position for overlapping links
+        });
 
-      simulation.on("tick", () => {
-        link
-          .attr("x1", (d) => Math.max(0, Math.min(svgWidth, d.source.x)))
-          .attr("y1", (d) => Math.max(0, Math.min(svgHeight, d.source.y)) + 50)
-          .attr("x2", (d) => Math.max(0, Math.min(svgWidth, d.target.x)))
-          .attr("y2", (d) => Math.max(0, Math.min(svgHeight, d.target.y)) + 50);
-
-        node.attr("transform", (d) => `translate(${Math.max(0, Math.min(svgWidth, d.x))}
-        ,${Math.max(0, Math.min(svgHeight, d.y))+50})`);
-      });
+    node.attr("transform", (d) => `translate(${Math.max(0, Math.min(svgWidth, d.x))},${Math.max(0, Math.min(svgHeight, d.y)) + 50})`);
+});
       
-         
-        
         
       var zoom = d3.zoom()
         .scaleExtent([0.5, 10]) // Set the zoom scale extent as needed

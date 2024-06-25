@@ -810,9 +810,9 @@ $("#loading").show();
     // Download the new XLSX file
     XLSX.writeFile(newWb, "filtered_data.xlsx");
   $("#loading").hide();
-  };
-
-  req.send();
+    };
+    
+    req.send();
 
 }
 
