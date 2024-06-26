@@ -1752,6 +1752,23 @@ let slicedata = 400;
 
 window.parent.postMessage({ data: slicedata }, "*");
 
+
+function stopSimulationIfSettled() {
+  if (true) { // Adjust this threshold value if needed
+    // simulation.stop();
+    nodes.forEach(node => {
+      node.fx = node.x;
+      node.fy = node.y;
+    });
+    console.log('Simulation stopped and nodes fixed.');
+  } else {
+    // Continue checking after a short delay
+    setTimeout(stopSimulationIfSettled, 100); // Check every 100ms
+  }
+  }
+  
+
+
 function processData(numberofnodes, slicedata) {
   const jsonFilePath = json_GeneralFile; // JSON file path
 
@@ -2033,28 +2050,55 @@ function createChart(links) {
     var distanceBetweenNodes = 60;
   }
 
-  simulation = d3
-    .forceSimulation(nodes)
-    .force(
-      "link",
-      d3
-        .forceLink(links)
-        .id(function (d) {
-          return d.id;
-        })
-        .distance(distanceBetweenNodes)
-    )
-    .force("charge", d3.forceManyBody().strength(chargeStrength))
-    // Adding centering forces for X and Y coordinates
-    .force("x", d3.forceX(svgWidth / 2).strength(0.1))
-    .force("y", d3.forceY(svgHeight / 2).strength(0.1))
+  // simulation = d3
+  //   .forceSimulation(nodes)
+  //   .force(
+  //     "link",
+  //     d3
+  //       .forceLink(links)
+  //       .id(function (d) {
+  //         return d.id;
+  //       })
+  //       .distance(distanceBetweenNodes)
+  //   )
+  //   .force("charge", d3.forceManyBody().strength(-150))
+  //   // Adding centering forces for X and Y coordinates
+  //   .force("x", d3.forceX(svgWidth / 2))
+  //   .force("y", d3.forceY(svgHeight / 2)).on("end", () => {
+  //  // Fix the nodes' positions when the simulation ends
+  // nodes.forEach(node => {
+  //   node.fx = node.x;
+  //   node.fy = node.y;
+  // });
 
-    .on("end", function () {
-      nodes.forEach(function (node) {
-        node.fx = node.x;
-        node.fy = node.y;
-      });
-    });
+ 
+simulation = d3.forceSimulation(nodes)
+.force(
+  "link",
+  d3.forceLink(links)
+    .id(d => d.id)
+    .distance(distanceBetweenNodes)
+)
+.force("charge", d3.forceManyBody().strength(-150))
+.force("center", d3.forceCenter(svgWidth / 2, (svgHeight - 180) / 2))
+.on("tick", () => {
+  // Logic for rendering or updating nodes and links on each tick
+})
+.on("end", () => {
+  // Fix the nodes' positions when the simulation ends
+  nodes.forEach(node => {
+    node.fx = node.x;
+    node.fy = node.y;
+  });
+});
+
+// Function to check if the simulation is settled and stop it
+
+// // Start the checking process after a delay to allow initial forces to act
+setTimeout(stopSimulationIfSettled, 4000);
+
+
+
 
   link = svg
     .selectAll(".link")
@@ -2280,6 +2324,7 @@ function createChart(links) {
         Math.min(svgWidth, d.x)
       )},${Math.max(0, Math.min(svgHeight, d.y))})`;
     });
+ 
   });
 
   // new code of dragable
@@ -2551,12 +2596,40 @@ function redrawChart(originalLinks) {
         node.fy = node.y;
       });
     });
+    setTimeout(stopSimulationIfSettled, 4000);
 
     //console.log("Simulation after restart: ", simulation);
   } else {
     console.log("Simulation is not defined");
   }
 }
+
+
+function redrawChart2(originalLinks) {
+
+    // Restart the simulation
+
+    
+    if (simulation.alpha() < 0.01) {
+      // Manually restart the simulation
+      simulation.alpha(1).restart();
+    
+      nodes.forEach(function(d) {
+        d.fx = null;
+        d.fy = null;
+      });
+    } else {
+      simulation.alpha(1).restart();
+    
+      nodes.forEach(function(d) {
+        d.fx = null;
+        d.fy = null;
+      });
+    
+    };
+}
+
+
 
 // Get color based on interaction type
 // Get color based on interaction type
