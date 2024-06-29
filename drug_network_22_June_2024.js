@@ -120,7 +120,7 @@ let menu;
 //       console.error("Error:", error);
 //   }
 // })();
-// Function to read the Drugs JSON data file
+// Function to read the Drugs JSON data file      
 async function readDrugJSON() {
   const jsonFilePath = json_drugData; //url
   try {
@@ -1778,9 +1778,7 @@ function processData(numberofnodes, slicedata) {
     .then((data) => {
       // var data = JSON.parse(data.data);
       console.log(data, "here is the data ");
-      const uniqueDrugNames = [...new Set(data.map(item => item.drug_name))];
 
-      console.log(uniqueDrugNames);
       const uniqueProteinClasses = [
         ...new Set(data.map((d) => d.protein_name)),
       ];
@@ -2073,34 +2071,13 @@ function createChart(links) {
   //   node.fy = node.y;
   // });
 
- 
-simulation = d3.forceSimulation(nodes)
-.force(
-  "link",
-  d3.forceLink(links)
-    .id(d => d.id)
-    .distance(distanceBetweenNodes)
-)
-.force("charge", d3.forceManyBody().strength(-150))
-.force("center", d3.forceCenter(svgWidth / 2, (svgHeight ) / 3))
-.on("tick", () => {
-  // Logic for rendering or updating nodes and links on each tick
-})
-.on("end", () => {
-  // Fix the nodes' positions when the simulation ends
-  nodes.forEach(node => {
-    node.fx = node.x;
-    node.fy = node.y;
-  });
-});
+
+
 
 // Function to check if the simulation is settled and stop it
 
 // // Start the checking process after a delay to allow initial forces to act
 setTimeout(stopSimulationIfSettled, 4000);
-
-
-
 
   link = svg
     .selectAll(".link")
@@ -2301,6 +2278,44 @@ setTimeout(stopSimulationIfSettled, 4000);
     .attr("class", "node-label");
   // tag4
 
+ let linkvisible = [];
+ let count_link = 0 ;
+
+//  linkvisible = links.filter((link) =>console.log(link.hidden));
+
+
+
+  let linkcount  = 0 
+  simulation = d3.forceSimulation(nodes)
+  .force(
+    "link",
+    d3.forceLink(links)
+      .id(d =>{
+        linkcount++ 
+        
+        return d.id
+      }
+    )
+      .distance(distanceBetweenNodes)
+      
+  )
+  .force("charge", d3.forceManyBody().strength(-150))
+  .force("center", d3.forceCenter(svgWidth / 2, (svgHeight ) / 2))
+  .on("tick", () => {
+    // Logic for rendering or updating nodes and links on each tick
+  })
+  .on("end", () => {
+    // Fix the nodes' positions when the simulation ends
+    nodes.forEach(node => {
+      node.fx = node.x;
+      node.fy = node.y;
+    });
+  });
+
+
+
+
+
   simulation.on("tick", function () {
     link
       .attr("x1", function (d) {
@@ -2396,9 +2411,13 @@ setTimeout(stopSimulationIfSettled, 4000);
   let False_node = [];
   let true_node = []
 
+
+
+  
   // update of the links and the nodes there  aamir2
   node.filter(function(templink) {
     // Filter links with a value greater than 5
+    
     if(templink.hidden === true){
     if(!true_node.includes(templink.Protein_Class) ){
 
@@ -2461,7 +2480,6 @@ if(templink.hidden === true){
   })
   link.filter(function(templink) {
     // Filter links with a value greater than 5
- 
     if(templink.hidden === true){
     if(!true_node.includes(templink.type )){
 
@@ -2476,6 +2494,20 @@ if(templink.hidden === true){
   }
   
   })
+const visibleNodesCount = d3.selectAll(".node")
+  .filter(function(node) {
+          return !node.hidden;
+  })
+  .size();
+
+console.log(visibleNodesCount ,  'visibleNodesCount ') ;
+if(visibleNodesCount < 45){
+  simulation.force("center", d3.forceCenter(svgWidth / 2, (svgHeight-300 ) / 3))
+}
+
+
+
+  
   function removeDivContainingSpanText(texts) {
     texts.forEach(text => {
         // Select all span elements
