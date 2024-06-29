@@ -2082,7 +2082,7 @@ simulation = d3.forceSimulation(nodes)
     .distance(distanceBetweenNodes)
 )
 .force("charge", d3.forceManyBody().strength(-150))
-.force("center", d3.forceCenter(svgWidth / 2, (svgHeight - 180) / 2))
+.force("center", d3.forceCenter(svgWidth / 2, (svgHeight ) / 3))
 .on("tick", () => {
   // Logic for rendering or updating nodes and links on each tick
 })
