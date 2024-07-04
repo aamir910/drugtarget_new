@@ -1802,29 +1802,29 @@ function processData(numberofnodes, slicedata , child_select) {
               row.Phase = "";
               row.Disease_class = "";
               row.Disease_name = "";
-      
                return row;
          });
             // Add your logic for Protein Only here
             break;
         case 'DiseaseOnly':
+
+        filteredData.forEach(function(row) {
+          row.protein = "";
+          row.Protein_Class = "";
+          row.gene_name = '';
+          if (!["Target", "Enzyme", "Transporter", "Carrier", "unknown"].includes(row.interaction_type)) {
+            row.interaction_type = '';
+          }
+        });
+
             console.log('Handling Disease Only');
             // Add your logic for Disease Only here
-            
-    
+           
             break;
         default:
-            console.log('Handling Default');
+            
             // Add your logic for Default here
     }
-
-
-
-
-
-
-
-
 
 
 
@@ -2771,15 +2771,16 @@ function createLegend() {
       ) &&
       !uniqueInteractions.includes(interaction)
     ) {
+      uniqueInteractions.push(interaction);
       if (["Phase1", "Phase2", "Phase3", "Phase4"].includes(interaction)) {
         createLegendItem(interaction, getColor(interaction), legendContent2);
       } else {
         createLegendItem(interaction, getColor(interaction), legendContent);
       }
-      uniqueInteractions.push(interaction);
     }
   });
-  //console.log("unique Interactions", uniqueInteractions);
+  console.log("unique Interactions", uniqueInteractions);
+  
   function createLegendItem(interaction, color, container) {
     //console.log("CreateLegendItem", interaction +"\n"+color);
     //console.log("CreateLegendItem COntainer", container);
@@ -2880,17 +2881,22 @@ function createLegend() {
       .style("margin-left", "10px")
       .text(interaction);
 
+      
+  console.log("unique Interactions 4", uniqueInteractions);
     if (
       uniqueInteractions.includes("Phase1") ||
       uniqueInteractions.includes("Phase2") ||
       uniqueInteractions.includes("Phase3") ||
       uniqueInteractions.includes("Phase4")
     ) {
+      console.log( 'ions.includes("Phase3")')
       legendContent3.style("display", "block");
     } else {
+      
       legendContent3.style("display", "none");
       // Set display to "block" or any other desired value
     }
+
 
     // Event listener for the legend item text
     // Assuming that you have already defined the "nodes" and "links" arrays
@@ -3234,6 +3240,8 @@ function createDiseaseLegend() {
     }
   });
 
+
+
   function createLegendItem(disease, color, diseasetemp) {
     var legendItem = legendContent
       .append("div")
@@ -3301,6 +3309,11 @@ function createDiseaseLegend() {
     // Set display to "block" or any other desired value
   }
 }
+
+
+
+
+
 
 // var legendContent4 = d3.select("#Disease_to_hide");
 
