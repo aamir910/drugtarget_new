@@ -1797,20 +1797,21 @@ function processData(numberofnodes, slicedata , child_select) {
       switch(child_select) {
         case 'ProteinOnly':
             console.log('Handling Protein Only');
+            filteredData.forEach(function (row) {
+
+              row.Phase = "";
+              row.Disease_class = "";
+              row.Disease_name = "";
+      
+               return row;
+         });
             // Add your logic for Protein Only here
             break;
         case 'DiseaseOnly':
             console.log('Handling Disease Only');
             // Add your logic for Disease Only here
             
-       filteredData.forEach(function (row) {
-
-        row.Phase = "";
-        row.Disease_class = "";
-        row.Disease_name = "";
-
-         return row;
-   });
+    
             break;
         default:
             console.log('Handling Default');
