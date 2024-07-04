@@ -1815,7 +1815,6 @@ function processData(numberofnodes, slicedata) {
 
       
 
-
         var drugName = row.drug_name;
         var drugID = row.drugbank_id;
         var protein = row.protein;
