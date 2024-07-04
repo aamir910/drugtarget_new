@@ -7,7 +7,7 @@ $(function () {
 //Pass jsonFiles Here
 
 // var json_GeneralFile = "json/json_GeneralFile.json";
-// var json_GeneralFile = "json/json2.json";
+// var json_GeneralFile = "json/data.json";
 // var json_drugData = "json/json_drugData.json";
 // var json_proteinData = "json/json_proteinData.json";
 // var json_interactionData = "json/json_interactionData.json";
@@ -46,7 +46,8 @@ if (urlParams.has("atc_code")) {
       "/serve_protein_data_json_file/?atc_code=" + atc_code;
     var json_interactionData =
       "/serve_interaction_data_json_file/?atc_code=" + atc_code;
-  } else {
+  }
+  else {
     json_GeneralFile =
       "/drugs_network/general_data?drug_bank_ids=" + drug_bank_ids.join(",");
     json_drugData =
@@ -54,25 +55,17 @@ if (urlParams.has("atc_code")) {
     json_proteinData =
       "/drugs_network/protein_data?drug_bank_ids=" + drug_bank_ids.join(",");
     json_interactionData =
-      "/drugs_network/interaction_data?drug_bank_ids=" +
-      drug_bank_ids.join(",");
+      "/drugs_network/interaction_data?drug_bank_ids=" + drug_bank_ids.join(",");
   }
+    // json_GeneralFile =
+    //   "/drugs_network/general_data?drug_bank_ids=" + drug_bank_ids.join(",");
+    // json_drugData =
+    //   "/drugs_network/drug_data?drug_bank_ids=" + drug_bank_ids.join(",");
+    // json_proteinData =
+    //   "/drugs_network/protein_data?drug_bank_ids=" + drug_bank_ids.join(",");
+    // json_interactionData =
+    //   "/drugs_network/interaction_data?drug_bank_ids=" + drug_bank_ids.join(",");
 }
-
-// function readPrecachedJSONFromDatabase(url) {
-//     var data;
-//     $.ajax({
-//       url: url,
-//       method: "GET",
-//       success: function (data) {
-//         data = data;
-//       },
-//       error: function (error) {
-//           console.error("Error:", error);
-//       }
-//     });
-//     return data;
-//   };
 
 function readPrecachedJSONFromDatabase(url) {
   return new Promise(function (resolve, reject) {
@@ -122,36 +115,20 @@ var drugStatusNameForDialog = "";
 var selectedDrugName1 = "";
 let menu;
 
-// (async function() {
-//   try {
-//       const data = await readPrecachedJSONFromDatabase("your_url_here");
-//       console.log("Data:", data);
-//   } catch (error) {
-//       console.error("Error:", error);
-//   }
-// })();
-// Function to read the Drugs JSON data file
+
 async function readDrugJSON() {
   const jsonFilePath = json_drugData; //url
   try {
     const jsonData = await readPrecachedJSONFromDatabase(jsonFilePath);
-    // console.log("JSON Data:", jsonData);
-
-    // Assuming your JSON data is an array of objects, adjust this code accordingly
-    // drug_xlsxData = jsonData.map(item => item.fields);
     if (typeof jsonData === "string") {
       try {
         var drug_xlsxData1 = JSON.parse(jsonData);
-        //console.log("Data type is string, Parsing data",drug_xlsxData );
-        // var matchingRow = drug_xlsxData.find((row) => row.fields.name === "Sennosides").fields;
-        //   console.log("matching row", matchingRow)
         drug_xlsxData = drug_xlsxData1.map((item) => {
           if (item && item.fields && item.pk) {
             item.fields.pk = item.pk;
           }
           return item.fields;
         });
-        //console.log("Final Drug Data", drug_xlsxData);
       } catch (error) {
         console.error("Error parsing JSON string:", error);
         return;
@@ -159,7 +136,7 @@ async function readDrugJSON() {
     } else {
       drug_xlsxData = jsonData;
     }
-    // readProteinJSON();
+    // alert("finally, type of drug_xlsxData: "+typeof drug_xlsxData + " length "+drug_xlsxData.length);
     (async function () {
       await readProteinJSON();
     })();
@@ -170,31 +147,16 @@ async function readDrugJSON() {
 
 async function readProteinJSON() {
   const jsonFilePath = json_proteinData;
-  // protein_xlsxData = readPrecachedJSONFromDatabase(json_proteinData);
-  // readInteractionJSON();
   try {
     protein_xlsxData = await readPrecachedJSONFromDatabase(jsonFilePath);
-    // readInteractionJSON();
+    // alert("finally, type of protein_xlsxData: "+typeof protein_xlsxData + " length "+protein_xlsxData.length);
     (async function () {
       await readInteractionJSON();
     })();
   } catch (error) {
     console.error("Error:", error);
   }
-  // protein_xlsxData = jsonData;
-  //console.log("ProteinData", protein_xlsxData);
-
-  // fetch(jsonFilePath)
-  //   .then((response) => response.json())
-  //   .then((jsonData) => {
-  //     protein_xlsxData = jsonData;
-  //     //console.log("ProteinData", protein_xlsxData);
-
-  //     readInteractionJSON();
-  //   })
-  //   .catch((error) => {
-  //     console.error("Error reading the file:", error);
-  //   });
+  
 }
 
 async function readInteractionJSON() {
@@ -203,38 +165,20 @@ async function readInteractionJSON() {
     const interaction_xlsxData = await readPrecachedJSONFromDatabase(
       jsonFilePath
     );
-    console.log("JSON Data:", interaction_xlsxData);
     processData(numberofnodes, slicedata);
   } catch (error) {
     console.error("Error:", error);
   }
-  // fetch(jsonFilePath)
-  //   .then((response) => response.json())
-  //   .then((jsonData) => {
-  //     interaction_xlsxData = jsonData;
-  //     // console.log("InteractionData",interaction_xlsxData);
-  //     // console.log("End of Logs ");
-  //     processData(numberofnodes, slicedata);
-  //   })
-  //   .catch((error) => {
-  //     console.error("Error reading the file:", error);
-  //   });
+  
 }
 
 window.onload = function () {
   (async function () {
     await readDrugJSON();
   })();
-  // readDrugJSON();
-  // processData(numberofnodes, slicedata);
-  // getDrugJsonData(drugBankId);
 };
 
 function getDrugJsonData(drugBankId) {
-  // Call to Server to get the data
-  //
-  // protein_xlsxData
-  // interaction_xlsxData
   var url = "/get-drug-network";
   $.ajax(
     {
@@ -246,8 +190,6 @@ function getDrugJsonData(drugBankId) {
     }
   );
 
-  // call process data
-  //processData(numberofnodes);
 }
 
 var exportButton = document.getElementById("exportButton");
@@ -422,8 +364,7 @@ function getFilteredSvgContent(svgElement) {
 
   // Remove hidden parent nodes
   d3ClonedSvg
-    .selectAll(".node-parent")
-    .filter(function () {
+    .selectAll(".node-parent").filter(function () {
       return (
         this.style.visibility === "hidden" || this.style.display === "none"
       );
@@ -460,6 +401,7 @@ function printChart() {
 // Download PNG
 // Download PNG
 function downloadPNG() {
+
   $("#loading").show();
   var svgElement = document.querySelector("#chart svg");
 
@@ -505,9 +447,13 @@ function downloadPNG() {
       a.href = finalCanvas.toDataURL("image/png");
       a.download = "chart.png";
       a.click();
+
     });
     $("#loading").hide();
   });
+
+
+
 }
 
 function svgToCanvas(svgData, callback) {
@@ -565,6 +511,7 @@ function svgToCanvas(svgData, callback) {
 // Download JPEG
 
 function downloadJPEG() {
+
   $("#loading").show();
   var svgElement = document.querySelector("#chart svg");
   var svgData = getFilteredSvgContent(svgElement);
@@ -608,6 +555,8 @@ function downloadJPEG() {
     });
     $("#loading").hide();
   });
+
+
 }
 
 function downloadJPEG1() {
@@ -772,6 +721,7 @@ function getFilteredLinksXLSX() {
 
 // Download XLS
 function downloadXLS() {
+
   $("#loading").show();
   var modal = document.getElementById("exportModal");
 
@@ -815,6 +765,7 @@ function downloadXLS() {
   };
 
   req.send();
+
 }
 
 function downloadXLS11() {
@@ -1524,7 +1475,7 @@ function showDialog_Links(title, interactionTy) {
         row.drugbank_id === interaction_source &&
         row.uniprot_ID_id === interaction_target &&
         row.interaction_type.toLowerCase() ===
-          selectedInteractionName1.toLowerCase()
+        selectedInteractionName1.toLowerCase()
     );
 
     if (matchingRow) {
@@ -1753,20 +1704,22 @@ let slicedata = 400;
 
 window.parent.postMessage({ data: slicedata }, "*");
 
+
 function stopSimulationIfSettled() {
-  if (true) {
-    // Adjust this threshold value if needed
+  if (true) { // Adjust this threshold value if needed
     // simulation.stop();
-    nodes.forEach((node) => {
+    nodes.forEach(node => {
       node.fx = node.x;
       node.fy = node.y;
     });
-    console.log("Simulation stopped and nodes fixed.");
+    console.log('Simulation stopped and nodes fixed.');
   } else {
     // Continue checking after a short delay
     setTimeout(stopSimulationIfSettled, 100); // Check every 100ms
   }
 }
+
+
 
 function processData(numberofnodes, slicedata) {
   const jsonFilePath = json_GeneralFile; // JSON file path
@@ -1776,14 +1729,12 @@ function processData(numberofnodes, slicedata) {
     .then((response) => response.json())
     .then((data) => {
       // var data = JSON.parse(data.data);
-
-      // try {
-      //   var data = JSON.parse(data.data);
-      // } catch {
-      //   data = data.data;
-      // }
-
-      console.log(data, "here is the data ");
+      try {
+        var data = JSON.parse(data.data);
+      }
+      catch {
+        data = data.data;
+      }
 
       const uniqueProteinClasses = [
         ...new Set(data.map((d) => d.protein_name)),
@@ -1807,15 +1758,7 @@ function processData(numberofnodes, slicedata) {
 
       console.log(filteredData, "filternodes");
 
-
-     
-
-
       filteredData.forEach(function (row) {
-
-      
-
-
         var drugName = row.drug_name;
         var drugID = row.drugbank_id;
         var protein = row.protein;
@@ -1975,6 +1918,7 @@ function processData(numberofnodes, slicedata) {
     .catch((error) => {
       console.error("Error reading the JSON file:", error);
     });
+
 }
 
 // Read the data from the Excel file
@@ -2084,10 +2028,34 @@ function createChart(links) {
   //   node.fy = node.y;
   // });
 
+
+  simulation = d3.forceSimulation(nodes)
+    .force(
+      "link",
+      d3.forceLink(links)
+        .id(d => d.id)
+        .distance(distanceBetweenNodes)
+    )
+    .force("charge", d3.forceManyBody().strength(-150))
+    .force("center", d3.forceCenter(svgWidth / 2, (svgHeight - 180) / 2))
+    .on("tick", () => {
+      // Logic for rendering or updating nodes and links on each tick
+    })
+    .on("end", () => {
+      // Fix the nodes' positions when the simulation ends
+      nodes.forEach(node => {
+        node.fx = node.x;
+        node.fy = node.y;
+      });
+    });
+
   // Function to check if the simulation is settled and stop it
 
   // // Start the checking process after a delay to allow initial forces to act
   setTimeout(stopSimulationIfSettled, 4000);
+
+
+
 
   link = svg
     .selectAll(".link")
@@ -2207,7 +2175,8 @@ function createChart(links) {
 
     .on("mouseover", function (event, d) {
       d3.select(this).style("cursor", "pointer");
-      tooltip2.transition().style("display", "block");
+      tooltip2.transition()
+        .style("display", "block");
       tooltip2
         .style("left", event.pageX + 20 + "px")
         .style("top", event.pageY + 20 + "px").html(`
@@ -2223,12 +2192,18 @@ function createChart(links) {
   tooltip2
 
     .on("mouseover", function () {
-      tooltip2.transition().style("display", "block");
+      tooltip2.transition()
+        .style("display", "block");;
     })
 
     .on("mouseout", function () {
-      tooltip2.transition().style("display", "none");
+      tooltip2.transition()
+        .style("display", "none");
     });
+
+
+
+
 
   node
     .filter(function (d) {
@@ -2281,38 +2256,6 @@ function createChart(links) {
     .attr("class", "node-label");
   // tag4
 
-  let linkvisible = [];
-  let count_link = 0;
-
-  //  linkvisible = links.filter((link) =>console.log(link.hidden));
-
-  let linkcount = 0;
-  simulation = d3
-    .forceSimulation(nodes)
-    .force(
-      "link",
-      d3
-        .forceLink(links)
-        .id((d) => {
-          linkcount++;
-
-          return d.id;
-        })
-        .distance(distanceBetweenNodes)
-    )
-    .force("charge", d3.forceManyBody().strength(-150))
-    .force("center", d3.forceCenter(svgWidth / 2, svgHeight / 2))
-    .on("tick", () => {
-      // Logic for rendering or updating nodes and links on each tick
-    })
-    .on("end", () => {
-      // Fix the nodes' positions when the simulation ends
-      nodes.forEach((node) => {
-        node.fx = node.x;
-        node.fy = node.y;
-      });
-    });
-
   simulation.on("tick", function () {
     link
       .attr("x1", function (d) {
@@ -2338,6 +2281,7 @@ function createChart(links) {
         Math.min(svgWidth, d.x)
       )},${Math.max(0, Math.min(svgHeight, d.y))})`;
     });
+
   });
 
   // new code of dragable
@@ -2405,88 +2349,97 @@ function createChart(links) {
   });
 
   let False_node = [];
-  let true_node = [];
+  let true_node = []
 
   // update of the links and the nodes there  aamir2
   node.filter(function (templink) {
     // Filter links with a value greater than 5
-
     if (templink.hidden === true) {
       if (!true_node.includes(templink.Protein_Class)) {
-        true_node.push(templink.Protein_Class);
+
+        true_node.push(templink.Protein_Class)
+
       }
+
     } else {
       if (!False_node.includes(templink.Protein_Class)) {
-        False_node.push(templink.Protein_Class);
+
+        False_node.push(templink.Protein_Class)
       }
     }
 
     if (templink.hidden === true) {
       if (!true_node.includes(templink.DiseaseClass)) {
-        true_node.push(templink.DiseaseClass);
+
+        true_node.push(templink.DiseaseClass)
+
       }
+
     } else {
+
       if (!False_node.includes(templink.DiseaseClass)) {
-        False_node.push(templink.DiseaseClass);
+
+        False_node.push(templink.DiseaseClass)
       }
     }
 
     if (templink.hidden === true) {
       if (!true_node.includes(templink.Drug_type)) {
-        true_node.push(templink.Drug_type);
+
+        true_node.push(templink.Drug_type)
+
       }
+
     } else {
       if (!False_node.includes(templink.Drug_type)) {
-        False_node.push(templink.Drug_type);
+
+        False_node.push(templink.Drug_type)
       }
     }
 
     if (templink.hidden === true) {
       if (!true_node.includes(templink.Drug_status)) {
-        true_node.push(templink.Drug_status);
+
+        true_node.push(templink.Drug_status)
+
       }
+
     } else {
       if (!False_node.includes(templink.Drug_status)) {
-        False_node.push(templink.Drug_status);
+
+        False_node.push(templink.Drug_status)
       }
     }
-  });
+
+
+
+  })
   link.filter(function (templink) {
     // Filter links with a value greater than 5
+
     if (templink.hidden === true) {
       if (!true_node.includes(templink.type)) {
-        true_node.push(templink.type);
+
+        true_node.push(templink.type)
       }
+
     } else {
       if (!False_node.includes(templink.type)) {
-        False_node.push(templink.type);
+
+        False_node.push(templink.type)
       }
     }
-  });
-  const visibleNodesCount = d3
-    .selectAll(".node")
-    .filter(function (node) {
-      return !node.hidden;
-    })
-    .size();
 
-  console.log(visibleNodesCount, "visibleNodesCount ");
-  if (visibleNodesCount < 45) {
-    simulation.force(
-      "center",
-      d3.forceCenter(svgWidth / 2, (svgHeight) / 3)
-    );
-  }
-
+  })
   function removeDivContainingSpanText(texts) {
-    texts.forEach((text) => {
+    texts.forEach(text => {
       // Select all span elements
-      const spans = document.querySelectorAll("span");
+      const spans = document.querySelectorAll('span');
 
-      spans.forEach((span) => {
+      spans.forEach(span => {
         if (span.textContent.includes(text)) {
           // Remove the parent div of the span
-          const parentDiv = span.closest("div");
+          const parentDiv = span.closest('div');
           if (parentDiv) {
             parentDiv.remove();
           }
@@ -2495,10 +2448,11 @@ function createChart(links) {
     });
   }
   function removeElements(array1, array2) {
-    return array1.filter((element) => !array2.includes(element));
+    return array1.filter(element => !array2.includes(element));
   }
-  let remove_element = removeElements(true_node, False_node);
+  let remove_element = removeElements(true_node, False_node)
   removeDivContainingSpanText(remove_element);
+
 }
 
 // Update the chart visibility based on the threshold value
@@ -2607,8 +2561,11 @@ function redrawChart(originalLinks) {
   }
 }
 
+
 function redrawChart2(originalLinks) {
+
   // Restart the simulation
+
 
   if (simulation.alpha() < 0.01) {
     // Manually restart the simulation
@@ -2625,8 +2582,11 @@ function redrawChart2(originalLinks) {
       d.fx = null;
       d.fy = null;
     });
-  }
+
+  };
 }
+
+
 
 // Get color based on interaction type
 // Get color based on interaction type
@@ -2969,6 +2929,7 @@ function createProteinsLegend() {
   links.forEach(function (link) {
     var proteinClass11 = link.target.Protein_Class; // No need to convert to lowercase
 
+
     if (
       proteins.includes(proteinClass11) &&
       !uniqueProteins.has(proteinClass11)
@@ -2976,6 +2937,8 @@ function createProteinsLegend() {
       createLegendItem(proteinClass11, proteinColorMap[proteinClass11]);
       uniqueProteins.add(proteinClass11);
     }
+
+
   });
   /*
   proteins.forEach(function(protein) {
@@ -3612,6 +3575,7 @@ function updateAllFilters() {
     .selectAll("circle, text , path")
     .style("visibility", function (d) {
       if (d.hidden) {
+
         // if hidden by slider filter
         return "hidden";
       }
@@ -3688,6 +3652,8 @@ function updateAllFilters() {
 
   // parent nodes
   d3.selectAll(".node-parent").style("visibility", function (d) {
+
+
     if (d.hidden) {
       // if hidden by slider filter
       return "hidden";
@@ -3704,12 +3670,14 @@ function updateAllFilters() {
       }
     });
 
+
+
     var anyVisibleChildren = relatedLinks.some(
       (l) =>
         !hiddenInteractions[l.type] &&
         !hiddenProteinClasses[
-          nodes.find((n) => n.id === l.target.id).Protein_Class &&
-            nodes.find((n) => n.id === l.target.id).DiseaseClass
+        nodes.find((n) => n.id === l.target.id).Protein_Class &&
+        nodes.find((n) => n.id === l.target.id).DiseaseClass
         ]
     );
 
@@ -3717,7 +3685,7 @@ function updateAllFilters() {
       (l) =>
         !hiddenInteractions[l.type] &&
         !hiddenDiseaseClasses[
-          nodes.find((n) => n.id === l.target.id).DiseaseClass
+        nodes.find((n) => n.id === l.target.id).DiseaseClass
         ]
     );
 
@@ -3744,6 +3712,7 @@ function updateAllFilters() {
   });
 
   // hey
+
 }
 
 // Pull nodes towards the center
@@ -3920,6 +3889,7 @@ d3.select("#GetmoreData").on("click", function () {
 
   console.log(slicedata, "slicedata");
   processData(numberofnodes, slicedata);
+
 });
 
 document.getElementById("ManagePreviousState").style.display = "none";
@@ -3969,9 +3939,9 @@ function clearGraph() {
 $(document).ready(function () {
   $(document).click(function (e) {
     // Check if the click did not originate from within any element with class 'tooltip2'
-    if (!$(e.target).closest(".tooltip2").length) {
+    if (!$(e.target).closest('.tooltip2').length) {
       // Hide all elements with class 'tooltip2'
-      $(".tooltip2").hide();
+      $('.tooltip2').hide();
     }
   });
 });
