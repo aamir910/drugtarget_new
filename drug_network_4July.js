@@ -165,7 +165,7 @@ async function readInteractionJSON() {
     const interaction_xlsxData = await readPrecachedJSONFromDatabase(
       jsonFilePath
     );
-    processData(numberofnodes, slicedata);
+    processData(numberofnodes, slicedata , child_selection);
   } catch (error) {
     console.error("Error:", error);
   }
@@ -177,7 +177,7 @@ window.onload = function () {
   //   await readDrugJSON();
   // })();
 
-  processData(numberofnodes, slicedata);
+  processData(numberofnodes, slicedata , child_selection);
 };
 
 function getDrugJsonData(drugBankId) {
@@ -1721,9 +1721,43 @@ function stopSimulationIfSettled() {
   }
 }
 
+// Get the buttons by their IDs
+const proteinOnlyButton = document.getElementById('proteinOnly');
+const diseaseOnlyButton = document.getElementById('diseaseOnly');
+const defaultButton = document.getElementById('default');
+ let child_selection ; 
+// Add event listeners to the buttons
+proteinOnlyButton.addEventListener('click', () => {
+    console.log('Protein Only button clicked');
+    
+    child_selection =  'ProteinOnly';
+    clearGraph();
+    processData(numberofnodes, slicedata , child_selection);
+
+    // Add your logic here
+});
+
+diseaseOnlyButton.addEventListener('click', () => {
+    console.log('Disease Only button clicked');
 
 
-function processData(numberofnodes, slicedata) {
+    // Add your logic here
+      child_selection =  'DiseaseOnly'
+      clearGraph();
+      processData(numberofnodes, slicedata , child_selection);
+
+});
+
+defaultButton.addEventListener('click', () => {
+    console.log('Default button clicked');
+    // Add your logic here
+    child_selection = '';
+    clearGraph() ; 
+    processData(numberofnodes, slicedata , child_selection);
+});
+
+
+function processData(numberofnodes, slicedata , child_select) {
   const jsonFilePath = json_GeneralFile; // JSON file path
 
   //console.log("Inside Process Data Function11");
@@ -1760,15 +1794,37 @@ function processData(numberofnodes, slicedata) {
 
       console.log(filteredData, "filternodes");
 
+      switch(child_select) {
+        case 'ProteinOnly':
+            console.log('Handling Protein Only');
+            // Add your logic for Protein Only here
+            break;
+        case 'DiseaseOnly':
+            console.log('Handling Disease Only');
+            // Add your logic for Disease Only here
+            
        filteredData.forEach(function (row) {
 
-            row.Phase = "";
-            row.Disease_class = "";
-            row.Disease_name = "";
+        row.Phase = "";
+        row.Disease_class = "";
+        row.Disease_name = "";
 
-             return row;
-       })
-   
+         return row;
+   });
+            break;
+        default:
+            console.log('Handling Default');
+            // Add your logic for Default here
+    }
+
+
+
+
+
+
+
+
+
 
 
        
@@ -3902,7 +3958,7 @@ d3.select("#GetmoreData").on("click", function () {
   }
 
   console.log(slicedata, "slicedata");
-  processData(numberofnodes, slicedata);
+  processData(numberofnodes, slicedata ,child_selection);
 
 });
 
@@ -3933,7 +3989,7 @@ d3.select("#ManagePreviousState").on("click", function () {
       numberofnodes -= 200;
     }
   }
-  processData(numberofnodes, slicedata);
+  processData(numberofnodes, slicedata , child_selection);
 
   document.getElementById("GetmoreData").disabled = false;
   if (
