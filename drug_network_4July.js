@@ -1725,7 +1725,7 @@ function stopSimulationIfSettled() {
 const proteinOnlyButton = document.getElementById('proteinOnly');
 const diseaseOnlyButton = document.getElementById('diseaseOnly');
 const defaultButton = document.getElementById('default');
- let child_selection ; 
+ let child_selection = 'ProteinOnly' ; 
 // Add event listeners to the buttons
 proteinOnlyButton.addEventListener('click', () => {
     console.log('Protein Only button clicked');
@@ -2180,7 +2180,8 @@ function createChart(links) {
   //  tag2
   node
     .filter(function (d) {
-      return d.child_type === "protein_type" && !d.isParent;
+      console.log(d , 'protine')
+      return d.child_type === "protein_type" && !d.isParent && d.Protein_Class !== '';
     })
     .append("circle")
     .attr("r", function (d) {
@@ -2925,7 +2926,20 @@ function createLegend() {
     Interaction_to_hide.style("display", "none");
     // Set display to "block" or any other desired value
   }
+  
+// Check if any protein from the proteins array is in the uniqueProteins array
+// var isAnyProteinIncluded = proteins.some(function(protein) {
+//   return uniqueProteins.includes(protein);
+// });
+// console.log(uniqueProteins , 'uniqueProteins')
 
+// // Show or hide the element based on the check
+// if (isAnyProteinIncluded) {
+  
+//   Protein_to_hide.style("display", "block");
+// } else {
+//   Protein_to_hide.style("display", "none");
+// }
 
 
     // Event listener for the legend item text
@@ -3011,42 +3025,48 @@ function updateChildNodeColors() {
   });
 }
 
+let proteins = [
+  "Adhesion",
+  "Secreted protein",
+  "Enzyme",
+  "GPCR",
+  "Membrane receptor",
+  "Kinase",
+  "Transporter",
+  "Unknown",
+  "Epigenetic regulator",
+  "Structural protein",
+  "Surface antigen",
+  "Ion channel",
+  "Transcription factor",
+  "Nuclear receptor",
+];
 function createProteinsLegend() {
   var hiddenProteins = {}; // Change this to hiddenProteinClasses
-  var proteins = [
-    "Adhesion",
-    "Secreted protein",
-    "Enzyme",
-    "GPCR",
-    "Membrane receptor",
-    "Kinase",
-    "Transporter",
-    "Unknown",
-    "Epigenetic regulator",
-    "Structural protein",
-    "Surface antigen",
-    "Ion channel",
-    "Transcription factor",
-    "Nuclear receptor",
-  ];
   var legendContent = d3.select("#legend_protein_status-content");
-  legendContent.selectAll("div").remove();
   var uniqueProteins = new Set();
+  legendContent.selectAll("div").remove();
+  let flag2 = false ;
 
   links.forEach(function (link) {
     var proteinClass11 = link.target.Protein_Class; // No need to convert to lowercase
 
-
     if (
       proteins.includes(proteinClass11) &&
-      !uniqueProteins.has(proteinClass11)
+      !uniqueProteins.has(proteinClass11) && proteinClass11 !== '' 
     ) {
+      console.log( 'proteinClass11')
       createLegendItem(proteinClass11, proteinColorMap[proteinClass11]);
       uniqueProteins.add(proteinClass11);
+      flag2 = true
     }
 
-
   });
+ if(!flag2){
+d3.select("#Protein_to_hide").style("display", "none"); 
+ }
+
+  
   /*
   proteins.forEach(function(protein) {
                     createLegendItem(protein, proteinColorMap[protein]);
