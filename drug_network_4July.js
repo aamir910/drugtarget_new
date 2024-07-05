@@ -2758,6 +2758,11 @@ function createLegend() {
   var legendContent3 = d3.select("#trial_to_hide");
   legendContent3.selectAll("div").remove();
 
+  var Interaction_to_hide = d3.select("#Interaction_to_hide");
+
+  
+  var Protein_to_hide = d3.select("#Protein_to_hide");
+
   //console.log("interaction legend",legendContent);
   //console.log("disease legend",legendContent2);
 
@@ -2896,6 +2901,31 @@ function createLegend() {
       legendContent3.style("display", "none");
       // Set display to "block" or any other desired value
     }
+
+
+    [
+      "Target",
+      "Phase3",
+      "Enzyme",
+      "Carrier"
+  ]
+
+  if (
+    uniqueInteractions.includes("Target") ||
+    uniqueInteractions.includes("Carrier") ||
+    uniqueInteractions.includes("Enzyme") ||
+    uniqueInteractions.includes("Transporter") ||
+    uniqueInteractions.includes("unknown")
+
+  ) {
+    
+    Interaction_to_hide.style("display", "block");
+  } else {
+    
+    Interaction_to_hide.style("display", "none");
+    // Set display to "block" or any other desired value
+  }
+
 
 
     // Event listener for the legend item text
