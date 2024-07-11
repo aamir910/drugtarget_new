@@ -7,7 +7,7 @@ $(function () {
 //Pass jsonFiles Here
 
 var json_GeneralFile = "json/json_GeneralFile.json";
-var json_GeneralFile = "json/json4.json";
+var json_GeneralFile = "json/json5.json";
 var json_drugData = "json/json_drugData.json";
 var json_proteinData = "json/json_proteinData.json";
 var json_interactionData = "json/json_interactionData.json";
@@ -177,7 +177,7 @@ window.onload = function () {
   //   await readDrugJSON();
   // })();
 
-  processData(numberofnodes, slicedata , child_selection);
+  processData(numberofnodes, slicedata , child_selection );
 };
 
 function getDrugJsonData(drugBankId) {
@@ -1821,7 +1821,7 @@ function processData(numberofnodes, slicedata , child_select) {
       switch(child_select) {
         case 'ProteinOnly':
 
-          proteinOnlyButton.style.backgroundColor = "lightgreen";
+          proteinOnlyButton.style.backgroundColor = "#3333";
           
           diseaseOnlyButton.style.backgroundColor = "white";
           
@@ -1840,7 +1840,7 @@ function processData(numberofnodes, slicedata , child_select) {
 
         proteinOnlyButton.style.backgroundColor = "white";
         
-        diseaseOnlyButton.style.backgroundColor = "lightgreen";
+        diseaseOnlyButton.style.backgroundColor = "#3333";
         
         defaultButton.style.backgroundColor = "white";
         filteredData.forEach(function(row) {
@@ -1862,7 +1862,7 @@ function processData(numberofnodes, slicedata , child_select) {
         
         diseaseOnlyButton.style.backgroundColor = "white";
         
-        defaultButton.style.backgroundColor = "lightgreen";
+        defaultButton.style.backgroundColor = "#3333";
             // Add your logic for Default here
     }
 
