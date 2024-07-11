@@ -922,3 +922,6 @@ div {
 body{  
     overflow: hidden ;
 }
+#proteinOnly:focus{
+    background-color: #007bff;
+}
