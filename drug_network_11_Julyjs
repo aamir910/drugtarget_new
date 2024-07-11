@@ -6,81 +6,81 @@ $(function () {
 
 //Pass jsonFiles Here
 
-var json_GeneralFile = "json/json_GeneralFile.json";
-var json_GeneralFile = "json/json5.json";
-var json_drugData = "json/json_drugData.json";
-var json_proteinData = "json/json_proteinData.json";
-var json_interactionData = "json/json_interactionData.json";
+// var json_GeneralFile = "json/json_GeneralFile.json";
+// var json_GeneralFile = "json/json5.json";
+// var json_drugData = "json/json_drugData.json";
+// var json_proteinData = "json/json_proteinData.json";
+// var json_interactionData = "json/json_interactionData.json";
 
-// var json_GeneralFile = "/static/json-sample/json_GeneralFile.json";
-// var json_drugData = "/static/json-sample/json_drugData.json";
-// var json_proteinData = "/static/json-sample/json_proteinData.json";
-// var json_interactionData = "/static/json-sample/json_interactionData.json";
+var json_GeneralFile = "/static/json-sample/json_GeneralFile.json";
+var json_drugData = "/static/json-sample/json_drugData.json";
+var json_proteinData = "/static/json-sample/json_proteinData.json";
+var json_interactionData = "/static/json-sample/json_interactionData.json";
 
-// if (drug_bank_ids) {
-//   json_GeneralFile =
-//     "/drugs_network/general_data?drug_bank_ids=" + drug_bank_ids.join(",");
-//   json_drugData =
-//     "/drugs_network/drug_data?drug_bank_ids=" + drug_bank_ids.join(",");
-//   json_proteinData =
-//     "/drugs_network/protein_data?drug_bank_ids=" + drug_bank_ids.join(",");
-//   json_interactionData =
-//     "/drugs_network/interaction_data?drug_bank_ids=" + drug_bank_ids.join(",");
-// }
+if (drug_bank_ids) {
+  json_GeneralFile =
+    "/drugs_network/general_data?drug_bank_ids=" + drug_bank_ids.join(",");
+  json_drugData =
+    "/drugs_network/drug_data?drug_bank_ids=" + drug_bank_ids.join(",");
+  json_proteinData =
+    "/drugs_network/protein_data?drug_bank_ids=" + drug_bank_ids.join(",");
+  json_interactionData =
+    "/drugs_network/interaction_data?drug_bank_ids=" + drug_bank_ids.join(",");
+}
 
-// if (drug_bank_id) {
-//   json_GeneralFile = "/drug_network/" + drug_bank_id + "/general_data";
-//   json_drugData = "/drug_network/" + drug_bank_id + "/drug_data";
-//   json_proteinData = "/drug_network/" + drug_bank_id + "/protein_data";
-//   json_interactionData = "/drug_network/" + drug_bank_id + "/interaction_data";
-// }
+if (drug_bank_id) {
+  json_GeneralFile = "/drug_network/" + drug_bank_id + "/general_data";
+  json_drugData = "/drug_network/" + drug_bank_id + "/drug_data";
+  json_proteinData = "/drug_network/" + drug_bank_id + "/protein_data";
+  json_interactionData = "/drug_network/" + drug_bank_id + "/interaction_data";
+}
 
-// var urlParams = new URLSearchParams(window.location.search);
-// if (urlParams.has("atc_code")) {
-//   var atc_code = urlParams.get("atc_code");
-//   if (atc_code.length === 3 || atc_code.length === 4) {
-//     var json_GeneralFile =
-//       "/serve_general_data_json_file/?atc_code=" + atc_code;
-//     var json_drugData = "/serve_drug_data_json_file/?atc_code=" + atc_code;
-//     var json_proteinData =
-//       "/serve_protein_data_json_file/?atc_code=" + atc_code;
-//     var json_interactionData =
-//       "/serve_interaction_data_json_file/?atc_code=" + atc_code;
-//   }
-//   else {
-//     json_GeneralFile =
-//       "/drugs_network/general_data?drug_bank_ids=" + drug_bank_ids.join(",");
-//     json_drugData =
-//       "/drugs_network/drug_data?drug_bank_ids=" + drug_bank_ids.join(",");
-//     json_proteinData =
-//       "/drugs_network/protein_data?drug_bank_ids=" + drug_bank_ids.join(",");
-//     json_interactionData =
-//       "/drugs_network/interaction_data?drug_bank_ids=" + drug_bank_ids.join(",");
-//   }
-//     // json_GeneralFile =
-//     //   "/drugs_network/general_data?drug_bank_ids=" + drug_bank_ids.join(",");
-//     // json_drugData =
-//     //   "/drugs_network/drug_data?drug_bank_ids=" + drug_bank_ids.join(",");
-//     // json_proteinData =
-//     //   "/drugs_network/protein_data?drug_bank_ids=" + drug_bank_ids.join(",");
-//     // json_interactionData =
-//     //   "/drugs_network/interaction_data?drug_bank_ids=" + drug_bank_ids.join(",");
-// }
+var urlParams = new URLSearchParams(window.location.search);
+if (urlParams.has("atc_code")) {
+  var atc_code = urlParams.get("atc_code");
+  if (atc_code.length === 3 || atc_code.length === 4) {
+    var json_GeneralFile =
+      "/serve_general_data_json_file/?atc_code=" + atc_code;
+    var json_drugData = "/serve_drug_data_json_file/?atc_code=" + atc_code;
+    var json_proteinData =
+      "/serve_protein_data_json_file/?atc_code=" + atc_code;
+    var json_interactionData =
+      "/serve_interaction_data_json_file/?atc_code=" + atc_code;
+  }
+  else {
+    json_GeneralFile =
+      "/drugs_network/general_data?drug_bank_ids=" + drug_bank_ids.join(",");
+    json_drugData =
+      "/drugs_network/drug_data?drug_bank_ids=" + drug_bank_ids.join(",");
+    json_proteinData =
+      "/drugs_network/protein_data?drug_bank_ids=" + drug_bank_ids.join(",");
+    json_interactionData =
+      "/drugs_network/interaction_data?drug_bank_ids=" + drug_bank_ids.join(",");
+  }
+    // json_GeneralFile =
+    //   "/drugs_network/general_data?drug_bank_ids=" + drug_bank_ids.join(",");
+    // json_drugData =
+    //   "/drugs_network/drug_data?drug_bank_ids=" + drug_bank_ids.join(",");
+    // json_proteinData =
+    //   "/drugs_network/protein_data?drug_bank_ids=" + drug_bank_ids.join(",");
+    // json_interactionData =
+    //   "/drugs_network/interaction_data?drug_bank_ids=" + drug_bank_ids.join(",");
+}
 
-// function readPrecachedJSONFromDatabase(url) {
-//   return new Promise(function (resolve, reject) {
-//     $.ajax({
-//       url: url,
-//       method: "GET",
-//       success: function (data) {
-//         resolve(data);
-//       },
-//       error: function (error) {
-//         reject(error);
-//       },
-//     });
-//   });
-// }
+function readPrecachedJSONFromDatabase(url) {
+  return new Promise(function (resolve, reject) {
+    $.ajax({
+      url: url,
+      method: "GET",
+      success: function (data) {
+        resolve(data);
+      },
+      error: function (error) {
+        reject(error);
+      },
+    });
+  });
+}
 
 // code to get the li of the network visualization
 document.addEventListener("DOMContentLoaded", function () {
@@ -165,7 +165,7 @@ async function readInteractionJSON() {
     const interaction_xlsxData = await readPrecachedJSONFromDatabase(
       jsonFilePath
     );
-    processData(numberofnodes, slicedata , child_selection);
+    processData(numberofnodes, slicedata , child_selection  ,checkedInteractionTypes , checkedPhases );
   } catch (error) {
     console.error("Error:", error);
   }
@@ -173,11 +173,11 @@ async function readInteractionJSON() {
 }
 
 window.onload = function () {
-  // (async function () {
-  //   await readDrugJSON();
-  // })();
+  (async function () {
+    await readDrugJSON();
+  })();
 
-  processData(numberofnodes, slicedata , child_selection );
+  // processData(numberofnodes, slicedata , child_selection,checkedInteractionTypes , checkedPhases  );
 };
 
 function getDrugJsonData(drugBankId) {
@@ -1739,7 +1739,7 @@ proteinOnlyButton.addEventListener('click', () => {
     
     child_selection =  'ProteinOnly';
     clearGraph();
-    processData(numberofnodes, slicedata , child_selection);
+    processData(numberofnodes, slicedata , child_selection ,checkedInteractionTypes , checkedPhases );
 
     // Add your logic here
 });
@@ -1751,7 +1751,7 @@ diseaseOnlyButton.addEventListener('click', () => {
     // Add your logic here
       child_selection =  'DiseaseOnly'
       clearGraph();
-      processData(numberofnodes, slicedata , child_selection);
+      processData(numberofnodes, slicedata , child_selection ,checkedInteractionTypes , checkedPhases );
 
 });
 
@@ -1760,13 +1760,65 @@ defaultButton.addEventListener('click', () => {
     // Add your logic here
     child_selection = '';
     clearGraph() ; 
-    processData(numberofnodes, slicedata , child_selection);
+    processData(numberofnodes, slicedata , child_selection ,checkedInteractionTypes , checkedPhases);
+});
+
+document.getElementById('closeBtn').addEventListener('click', function() {
+  document.getElementById('popup').style.display = 'none';
 });
 
 
-function processData(numberofnodes, slicedata , child_select) {
+// Function to get checked values from checkboxes
+function getCheckedValues(containerId) {
+  const checkboxes = document.querySelectorAll(`#${containerId} input[type="checkbox"]`);
+  const checkedValues = [];
+  checkboxes.forEach(checkbox => {
+    if (checkbox.checked) {
+      if (checkbox.value.includes("Phase")) {
+          const phaseNumber = checkbox.value.replace("Phase", "");
+          checkedValues.push(phaseNumber);
+      } else {
+          checkedValues.push(checkbox.value);
+      }
+  }
+
+  });
+  return checkedValues;
+}
+let checkedInteractionTypes = []
+checkedPhases = [];
+// Handle submit button click
+document.getElementById('submitBtn').addEventListener('click', function() {
+   checkedInteractionTypes = getCheckedValues('interactionTypesContainer');
+   checkedPhases = getCheckedValues('phasesContainer');
+
+  console.log('Checked Interaction Types:', checkedInteractionTypes);
+  console.log('Checked Phases:', checkedPhases);
+  child_selection =  'ProteinOnly';
+  clearGraph();
+  processData(numberofnodes, slicedata , child_selection ,checkedInteractionTypes , checkedPhases );
+
+  document.getElementById('popup').style.display = 'none';
 
 
+
+  // You can now use the checked values as needed
+  // For example, save them to another array or perform an action with them
+});
+
+
+
+
+
+
+
+
+
+flag_first = false ; 
+
+function processData(numberofnodes, slicedata , child_select ,checkedInteractionTypes , checkedPhases  ) {
+
+console.log('checkedInteractionTypes ' ,checkedInteractionTypes , checkedPhases )
 
 
 
@@ -1776,13 +1828,14 @@ function processData(numberofnodes, slicedata , child_select) {
   fetch(jsonFilePath)
     .then((response) => response.json())
     .then((data) => {
-      // var data = JSON.parse(data.data);
-      // try {
-      //   var data = JSON.parse(data.data);
-      // }
-      // catch {
-      //   data = data.data;
-      // }
+      try {
+        var data = JSON.parse(data.data);
+      }
+      catch {
+        data = data.data;
+      }
+
+   
 
 
 
@@ -1803,15 +1856,104 @@ function processData(numberofnodes, slicedata , child_select) {
       // Extract nodes and links from the JSON data
       // console.log("inside processData: ", data);
       chartDataJ = data;
-      data.filter((row) => {
-        if (row.Phase == "1" || row.Phase == "2") {
-          row.Phase = "";
-          row.Disease_class = "";
-          row.Disease_name = "";
-        }
-      });
+      // data.filter((row) => {
+      //   if (row.Phase == "1" || row.Phase == "2") {
+      //     row.Phase = "";
+      //     row.Disease_class = "";
+      //     row.Disease_name = "";
+      //   }
+      // });
 
-      let filteredData = data;
+
+
+  
+    
+    
+
+    function getUniqueValues(data, key) {
+      const uniqueValues = new Set();
+      data.forEach(row => {
+          if (row[key]) {
+            if(key === "Phase" ){
+
+              uniqueValues.add(`Phase${row[key]}`);
+            }
+            else{
+              
+              uniqueValues.add(row[key]);
+            }
+          }
+      });
+      return Array.from(uniqueValues);
+  }
+  
+  // Get unique interaction types
+  const uniqueInteractionTypes = getUniqueValues(data, 'interaction_type');
+  console.log('Unique Interaction Types:', uniqueInteractionTypes);
+  
+  // Get unique phases
+  const uniquePhases = getUniqueValues(data, 'Phase');
+  console.log('Unique Phases:', uniquePhases);
+
+
+// Function to create checkboxes
+function createCheckboxes(containerId, items) {
+  const container = document.getElementById(containerId);
+  items.forEach(item => {
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.value = item;
+      checkbox.id = item;
+
+      const label = document.createElement('label');
+      label.htmlFor = item;
+      label.appendChild(document.createTextNode(item));
+
+      const div = document.createElement('div');
+      div.appendChild(checkbox);
+      div.appendChild(label);
+
+      container.appendChild(div);
+  });
+}
+
+// Create checkboxes for interaction types and phases
+createCheckboxes('interactionTypesContainer', uniqueInteractionTypes);
+createCheckboxes('phasesContainer', uniquePhases);
+
+
+
+let  fitlerdata_pop  = data ; 
+   
+
+
+
+if(flag_first){
+  fitlerdata_pop =  data.filter((row) => {
+      if (!checkedPhases.includes(row.Phase)) {
+    
+        row.Phase = "";
+        row.Disease_class = "";
+        row.Disease_name = "";
+      }
+
+     if (!checkedInteractionTypes.includes(row.interaction_type)) {
+        row.protein = "";
+        row.Protein_Class = "";
+        row.gene_name = '';
+        if (!["Target", "Enzyme", "Transporter", "Carrier", "unknown"].includes(row.interaction_type)) {
+          row.interaction_type = '';
+        }
+      }
+      return row; 
+    });
+}
+
+flag_first= true ; 
+
+      let filteredData = fitlerdata_pop;
+
+      console.log('filteredData_popup'  , filteredData)
       if (thredhold_value < 5 && child_nodes > 180) {
         filteredData = filteredData.slice(0, slicedata);
       }
@@ -2220,7 +2362,6 @@ function createChart(links) {
   //  tag2
   node
     .filter(function (d) {
-      console.log(d , 'protine')
       return d.child_type === "protein_type" && !d.isParent && d.Protein_Class !== '';
     })
     .append("circle")
@@ -4062,7 +4203,7 @@ d3.select("#GetmoreData").on("click", function () {
   }
 
   console.log(slicedata, "slicedata");
-  processData(numberofnodes, slicedata ,child_selection);
+  processData(numberofnodes, slicedata ,child_selection ,checkedInteractionTypes , checkedPhases );
 
 });
 
@@ -4093,7 +4234,7 @@ d3.select("#ManagePreviousState").on("click", function () {
       numberofnodes -= 200;
     }
   }
-  processData(numberofnodes, slicedata , child_selection);
+  processData(numberofnodes, slicedata , child_selection ,checkedInteractionTypes , checkedPhases );
 
   document.getElementById("GetmoreData").disabled = false;
   if (
