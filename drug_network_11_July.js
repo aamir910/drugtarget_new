@@ -756,6 +756,10 @@ function downloadXLS() {
       )
     );
 
+
+
+
+
     // Create a new worksheet with the filtered rows
     // console.log(filteredRows)
     var newWs = XLSX.utils.json_to_sheet(filteredRows);
@@ -1835,15 +1839,17 @@ console.log( jsonFilePath  , 'jsonFilePath')
       // catch {
       //   data = data.data;
       // }
-console.log('data to be log '  , data ) 
-      const allFieldsEmpty_disease  = data.every(row => 
-        row.Disease_name === "" && row.Disease_class === "" && row.Phase === ""
-    );
-    if(allFieldsEmpty_disease){
-      proteinOnlyButton.style.display = 'none';
-      diseaseOnlyButton.style.display = 'none';
-      defaultButton.style.display = 'none';
-    }
+
+
+
+    //   const allFieldsEmpty_disease  = data.every(row => 
+    //     row.Disease_name === "" && row.Disease_class === "" && row.Phase === ""
+    // );
+    // if(allFieldsEmpty_disease){
+    //   proteinOnlyButton.style.display = 'none';
+    //   diseaseOnlyButton.style.display = 'none';
+    //   defaultButton.style.display = 'none';
+    // }
     
 
       const uniqueProteinClasses = [
@@ -2362,12 +2368,13 @@ function createChart(links) {
   node
     .filter(function (d) {
       // change1
+      console.log('disease data protien ' , d)
       return (
         d.child_type === "disease_type" &&
         !d.isParent &&
-        d.disease_phase !== 1 &&
+        // d.disease_phase !== 1 &&
         d.DiseaseClass &&
-        d.DiseaseClass !== ''
+        d.DiseaseClass !== ''   && d.disease_phase !== ''
       );
     })
     .append("path")
