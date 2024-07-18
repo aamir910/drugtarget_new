@@ -7,7 +7,7 @@ $(function () {
 //Pass jsonFiles Here
 
 var json_GeneralFile = "json/json_GeneralFile.json";
-var json_GeneralFile = "json/json5.json";
+var json_GeneralFile = "json/data.json";
 var json_drugData = "json/json_drugData.json";
 var json_proteinData = "json/json_proteinData.json";
 var json_interactionData = "json/json_interactionData.json";
@@ -1833,6 +1833,7 @@ function processData(
   checkedInteractionTypes,
   checkedPhases
 ) {
+
   const jsonFilePath = json_GeneralFile; // JSON file path
   console.log(jsonFilePath, "jsonFilePath");
   //console.log("Inside Process Data Function11");
@@ -2067,9 +2068,10 @@ function processData(
             // Add your logic for Default here
 
             if (
-              checkedInteractionTypes.includes(row.interaction_type) &&
+              checkedInteractionTypes.includes(row.interaction_type) || 
               checkedPhases.includes(disease_phase)
             ) {
+              
               if (
                 !nodes.find(function (node) {
                   return node.id === protein;
