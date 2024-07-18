@@ -1729,11 +1729,7 @@ let child_selection = "ProteinOnly";
 
 // Add event listeners to the buttons
 proteinOnlyButton.addEventListener("click", () => {
-
   console.log("Protein Only button clicked");
-
-   
-
 
   d3.select("#Protein_to_hide").style("display", "block");
   child_selection = "ProteinOnly";
@@ -1752,9 +1748,7 @@ proteinOnlyButton.addEventListener("click", () => {
 diseaseOnlyButton.addEventListener("click", () => {
   console.log("Disease Only button clicked");
 
-
-
-    d3.select("#Protein_to_hide").style("display", "none");
+  d3.select("#Protein_to_hide").style("display", "none");
   // Add your logic here
   child_selection = "DiseaseOnly";
   clearGraph();
@@ -1768,8 +1762,9 @@ diseaseOnlyButton.addEventListener("click", () => {
 });
 
 defaultButton.addEventListener("click", () => {
-
   console.log("Default button clicked");
+  
+  d3.select("#Protein_to_hide").style("display", "block");
   // Add your logic here
   child_selection = "";
   clearGraph();
@@ -1851,8 +1846,6 @@ function processData(
       //   data = data.data;
       // }
 
-   
-
       const uniqueProteinClasses = [
         ...new Set(data.map((d) => d.protein_name)),
       ];
@@ -1860,7 +1853,6 @@ function processData(
       // Extract nodes and links from the JSON data
       // console.log("inside processData: ", data);
       chartDataJ = data;
-     
 
       function getUniqueValues(data, key) {
         const uniqueValues = new Set();
@@ -1909,8 +1901,6 @@ function processData(
       createCheckboxes("interactionTypesContainer", uniqueInteractionTypes);
       createCheckboxes("phasesContainer", uniquePhases);
 
-    
-
       let filteredData = data;
 
       if (thredhold_value < 5 && child_nodes > 180) {
@@ -1919,33 +1909,30 @@ function processData(
 
       console.log(filteredData, "filternodes");
 
-
       let allEmpty = true;
 
       // Check if all deasephase values are empty
       filteredData.forEach(function (row) {
-          if (row.Disease_name !== "") {
-              allEmpty = false;
-          }
+        if (row.Disease_name !== "") {
+          allEmpty = false;
+        }
       });
-      
+
       // If all deasephase values are empty, set protein to none and hide buttons
       if (allEmpty) {
-       
-          document.getElementById("proteinOnly").style.display = "none";
-          document.getElementById("diseaseOnly").style.display = "none";
-          document.getElementById("default").style.display = "none";
+        document.getElementById("proteinOnly").style.display = "none";
+        document.getElementById("diseaseOnly").style.display = "none";
+        document.getElementById("default").style.display = "none";
       } else {
-          // Else block - perform other actions
-    
-          // Optionally show buttons if they should be visible in the else case
-          document.getElementById("proteinOnly").style.display = "block";
-          document.getElementById("diseaseOnly").style.display = "block";
-          document.getElementById("default").style.display = "block";
+        // Else block - perform other actions
+
+        // Optionally show buttons if they should be visible in the else case
+        document.getElementById("proteinOnly").style.display = "block";
+        document.getElementById("diseaseOnly").style.display = "block";
+        document.getElementById("default").style.display = "block";
       }
 
       filteredData.forEach(function (row) {
-
         var drugName = row?.drug_name;
         var drugID = row?.drugbank_id;
         var protein = row?.protein;
@@ -1969,43 +1956,41 @@ function processData(
 
         switch (child_select) {
           case "ProteinOnly":
+            hiddenInteractions = {
+              target: false,
+              enzyme: false,
+              transporter: false,
+              carrier: false,
+              unknown: false,
+              Phase1: false,
+              Phase2: false,
+              Phase3: false,
+              Phase4: false,
+            };
 
-          hiddenInteractions = {
-            target: false,
-            enzyme: false,
-            transporter: false,
-            carrier: false,
-            unknown: false,
-            Phase1: false,
-            Phase2: false,
-            Phase3: false,
-            Phase4: false,
-          };
+            if (checkedInteractionTypes.includes(row.interaction_type)) {
+              if (
+                !nodes.find(function (node) {
+                  return node.id === protein;
+                })
+              ) {
+                nodes.push({
+                  id: protein,
+                  isParent: false,
+                  radius: 5,
+                  genename: genename,
+                  Protein_Class: proteinClass,
+                  child_type: "protein_type",
+                }); // Include the "Protein_Class" value in the node object
+              }
 
-          if (checkedInteractionTypes.includes(row.interaction_type)) {
-            if (
-              !nodes.find(function (node) {
-                return node.id === protein;
-              })
-            ) {
-              nodes.push({
-                id: protein,
-                isParent: false,
-                radius: 5,
-                genename: genename,
-                Protein_Class: proteinClass,
-                child_type: "protein_type",
-              }); // Include the "Protein_Class" value in the node object
+              links.push({
+                source: drugName,
+                target: protein,
+                type: interaction,
+                // disease_type: "temp"
+              });
             }
-
-            links.push({
-              source: drugName,
-              target: protein,
-              type: interaction,
-              // disease_type: "temp"
-            });
-
-          }
             proteinOnlyButton.style.backgroundColor = "#3333";
 
             diseaseOnlyButton.style.backgroundColor = "white";
@@ -2016,18 +2001,17 @@ function processData(
             // Add your logic for Protein Only here
             break;
           case "DiseaseOnly":
-            
-  hiddenInteractions = {
-    target: false,
-    enzyme: false,
-    transporter: false,
-    carrier: false,
-    unknown: false,
-    Phase1: false,
-    Phase2: false,
-    Phase3: false,
-    Phase4: false,
-  };
+            hiddenInteractions = {
+              target: false,
+              enzyme: false,
+              transporter: false,
+              carrier: false,
+              unknown: false,
+              Phase1: false,
+              Phase2: false,
+              Phase3: false,
+              Phase4: false,
+            };
             proteinOnlyButton.style.backgroundColor = "white";
 
             diseaseOnlyButton.style.backgroundColor = "#3333";
@@ -2064,18 +2048,17 @@ function processData(
             break;
 
           default:
-            
-  hiddenInteractions = {
-    target: false,
-    enzyme: false,
-    transporter: false,
-    carrier: false,
-    unknown: false,
-    Phase1: false,
-    Phase2: false,
-    Phase3: false,
-    Phase4: false,
-  };
+            hiddenInteractions = {
+              target: false,
+              enzyme: false,
+              transporter: false,
+              carrier: false,
+              unknown: false,
+              Phase1: false,
+              Phase2: false,
+              Phase3: false,
+              Phase4: false,
+            };
             proteinOnlyButton.style.backgroundColor = "white";
 
             diseaseOnlyButton.style.backgroundColor = "white";
@@ -2083,9 +2066,10 @@ function processData(
             defaultButton.style.backgroundColor = "#3333";
             // Add your logic for Default here
 
-            if (checkedInteractionTypes.includes(row.interaction_type) && checkedPhases.includes(disease_phase) ) {
-
-
+            if (
+              checkedInteractionTypes.includes(row.interaction_type) &&
+              checkedPhases.includes(disease_phase)
+            ) {
               if (
                 !nodes.find(function (node) {
                   return node.id === protein;
@@ -2100,14 +2084,14 @@ function processData(
                   child_type: "protein_type",
                 }); // Include the "Protein_Class" value in the node object
               }
-  
+
               links.push({
                 source: drugName,
                 target: protein,
                 type: interaction,
                 // disease_type: "temp"
               });
-  
+
               // tag1
               if (
                 !nodes.find(function (node) {
@@ -2130,11 +2114,8 @@ function processData(
                 type: disease_interaction,
                 // disease_type: disease_interaction // You can customize the type for disease links
               });
-          }
-            }   
-
-
-
+            }
+        }
 
         if (
           !nodes.find(function (node) {
