@@ -1930,17 +1930,17 @@ if(flag_first){
   fitlerdata_pop =  data.filter((row) => {
       if (!checkedPhases.includes(row.Phase)) {
     
-        row.Phase = "";
-        row.Disease_class = "";
-        row.Disease_name = "";
+        row.Phase = "toremove";
+        row.Disease_class = "toremove";
+        row.Disease_name = "toremove";
       }
 
      if (!checkedInteractionTypes.includes(row.interaction_type)) {
-        row.protein = "";
-        row.Protein_Class = "";
+        row.protein = "toremove";
+        row.Protein_Class = "toremove";
         row.gene_name = '';
         if (!["Target", "Enzyme", "Transporter", "Carrier", "unknown"].includes(row.interaction_type)) {
-          row.interaction_type = '';
+          row.interaction_type = 'toremove';
         }
       }
       return row; 
@@ -1958,55 +1958,55 @@ flag_first= true ;
 
       console.log(filteredData, "filternodes");
 
-      switch(child_select) {
-        case 'ProteinOnly':
+    //   switch(child_select) {
+    //     case 'ProteinOnly':
 
-          proteinOnlyButton.style.backgroundColor = "#3333";
+    //       proteinOnlyButton.style.backgroundColor = "#3333";
           
-          diseaseOnlyButton.style.backgroundColor = "white";
+    //       diseaseOnlyButton.style.backgroundColor = "white";
           
-          defaultButton.style.backgroundColor = "white";
-            console.log('Handling Protein Only');
-            filteredData.forEach(function (row) {
+    //       defaultButton.style.backgroundColor = "white";
+    //         console.log('Handling Protein Only');
+    //         filteredData.forEach(function (row) {
 
-               row.Phase = "";
-               row.Disease_class ="";
-               row.Disease_name = "";
-               return row;
-         });
+    //            row.Phase = "";
+    //            row.Disease_class ="";
+    //            row.Disease_name = "";
+    //            return row;
+    //      });
 
-            // Add your logic for Protein Only here
-            break;
-        case 'DiseaseOnly':
+    //         // Add your logic for Protein Only here
+    //         break;
+    //     case 'DiseaseOnly':
 
-        proteinOnlyButton.style.backgroundColor = "white";
+    //     proteinOnlyButton.style.backgroundColor = "white";
         
-        diseaseOnlyButton.style.backgroundColor = "#3333";
+    //     diseaseOnlyButton.style.backgroundColor = "#3333";
         
-        defaultButton.style.backgroundColor = "white";
-        filteredData.forEach(function(row) {
-           row.protein  = "";
-           row.Protein_Class = "";
-     row.gene_name = "";
+    //     defaultButton.style.backgroundColor = "white";
+    //     filteredData.forEach(function(row) {
+    //        row.protein  = "";
+    //        row.Protein_Class = "";
+    //  row.gene_name = "";
     
-    if (!["Target", "Enzyme", "Transporter", "Carrier", "unknown"].includes(row.interaction_type)) {
-         row.interaction_type = "";
-    }
-        });
+    // if (!["Target", "Enzyme", "Transporter", "Carrier", "unknown"].includes(row.interaction_type)) {
+    //      row.interaction_type = "";
+    // }
+    //     });
 
-            console.log('Handling Disease Only');
-            // Add your logic for Disease Only here
+    //         console.log('Handling Disease Only');
+    //         // Add your logic for Disease Only here
            
-            break;
-        default:
+    //         break;
+    //     default:
             
-        proteinOnlyButton.style.backgroundColor = "white";
+    //     proteinOnlyButton.style.backgroundColor = "white";
         
-        diseaseOnlyButton.style.backgroundColor = "white";
+    //     diseaseOnlyButton.style.backgroundColor = "white";
         
-        defaultButton.style.backgroundColor = "#3333";
-            // Add your logic for Default here
-    }
+    //     defaultButton.style.backgroundColor = "#3333";
+    //         // Add your logic for Default here
+    // }
 
 
 
@@ -2320,6 +2320,7 @@ function createChart(links) {
     .attr("class", "node")
     .call(drag(simulation));
 
+
   var childNodeMap = {};
   links.forEach(function (link) {
     if (!link.target.isParent) {
@@ -2341,6 +2342,7 @@ function createChart(links) {
   //  tag2
   node
     .filter(function (d) {
+
       return d.child_type === "protein_type" && !d.isParent && d.Protein_Class !== '';
     })
     .append("circle")
@@ -2367,8 +2369,7 @@ function createChart(links) {
 
   node
     .filter(function (d) {
-      // change1
-      console.log('disease data protien ' , d)
+   
       return (
         d.child_type === "disease_type" &&
         !d.isParent &&
@@ -2855,6 +2856,7 @@ var colorMap = {
 //   Phase4: "orange"
 // };
 var hiddenInteractions = {
+  toremove: true  ,
   target: false,
   enzyme: false,
   transporter: false,
@@ -2864,6 +2866,7 @@ var hiddenInteractions = {
   Phase2: false,
   Phase3: false,
   Phase4: false,
+  
 };
 
 //Legends Dragable code below
@@ -2883,6 +2886,7 @@ var interactions = [
   "Phase2",
   "Phase3",
   "Phase4",
+  "toremove"
 ];
 //Legends Dragable code below
 // Assuming you've imported D3 as d3
@@ -3962,8 +3966,9 @@ function updateAllFilters() {
       var isLinkVisible = d3.select(this).style("visibility");
 
       if (relatedLinks.includes(temp)) {
+        flag = false;
         if (isLinkVisible === "visible") {
-          flag = false;
+          
         }
       }
     });
