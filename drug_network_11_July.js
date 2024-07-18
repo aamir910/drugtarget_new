@@ -7,7 +7,7 @@ $(function () {
 //Pass jsonFiles Here
 
 var json_GeneralFile = "json/json_GeneralFile.json";
-var json_GeneralFile = "json/json5.json";
+var json_GeneralFile = "json/json4.json";
 var json_drugData = "json/json_drugData.json";
 var json_proteinData = "json/json_proteinData.json";
 var json_interactionData = "json/json_interactionData.json";
@@ -1763,8 +1763,6 @@ diseaseOnlyButton.addEventListener("click", () => {
 
 defaultButton.addEventListener("click", () => {
   console.log("Default button clicked");
-  
-  d3.select("#Protein_to_hide").style("display", "block");
   // Add your logic here
   child_selection = "";
   clearGraph();
@@ -1904,8 +1902,6 @@ function processData(
       createCheckboxes("interactionTypesContainer", uniqueInteractionTypes);
       createCheckboxes("phasesContainer", uniquePhases);
 
-      let fitlerdata_pop = data;
-
     
 
       let filteredData = data;
@@ -1916,7 +1912,33 @@ function processData(
 
       console.log(filteredData, "filternodes");
 
+
+      let allEmpty = true;
+
+      // Check if all deasephase values are empty
       filteredData.forEach(function (row) {
+          if (row.Disease_name !== "") {
+              allEmpty = false;
+          }
+      });
+      
+      // If all deasephase values are empty, set protein to none and hide buttons
+      if (allEmpty) {
+       
+          document.getElementById("proteinOnly").style.display = "none";
+          document.getElementById("diseaseOnly").style.display = "none";
+          document.getElementById("default").style.display = "none";
+      } else {
+          // Else block - perform other actions
+    
+          // Optionally show buttons if they should be visible in the else case
+          document.getElementById("proteinOnly").style.display = "block";
+          document.getElementById("diseaseOnly").style.display = "block";
+          document.getElementById("default").style.display = "block";
+      }
+
+      filteredData.forEach(function (row) {
+
         var drugName = row?.drug_name;
         var drugID = row?.drugbank_id;
         var protein = row?.protein;
@@ -2068,6 +2090,9 @@ function processData(
               });
           }
             }   
+
+
+
 
         if (
           !nodes.find(function (node) {
