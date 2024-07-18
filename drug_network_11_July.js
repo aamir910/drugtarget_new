@@ -1731,6 +1731,7 @@ let child_selection = "ProteinOnly";
 proteinOnlyButton.addEventListener("click", () => {
   console.log("Protein Only button clicked");
 
+  d3.select("#Protein_to_hide").style("display", "block");
   child_selection = "ProteinOnly";
   clearGraph();
   processData(
@@ -1747,6 +1748,7 @@ proteinOnlyButton.addEventListener("click", () => {
 diseaseOnlyButton.addEventListener("click", () => {
   console.log("Disease Only button clicked");
 
+    d3.select("#Protein_to_hide").style("display", "none");
   // Add your logic here
   child_selection = "DiseaseOnly";
   clearGraph();
@@ -1761,6 +1763,8 @@ diseaseOnlyButton.addEventListener("click", () => {
 
 defaultButton.addEventListener("click", () => {
   console.log("Default button clicked");
+  
+  d3.select("#Protein_to_hide").style("display", "block");
   // Add your logic here
   child_selection = "";
   clearGraph();
@@ -3159,7 +3163,7 @@ function createProteinsLegend() {
     }
   });
   if (!flag2) {
-    d3.select("#Protein_to_hide").style("display", "none");
+    // d3.select("#Protein_to_hide").style("display", "none");
   }
 
   /*
