@@ -1842,14 +1842,7 @@ function processData(
       //   data = data.data;
       // }
 
-      //   const allFieldsEmpty_disease  = data.every(row =>
-      //     row.Disease_name === "" && row.Disease_class === "" && row.Phase === ""
-      // );
-      // if(allFieldsEmpty_disease){
-      //   proteinOnlyButton.style.display = 'none';
-      //   diseaseOnlyButton.style.display = 'none';
-      //   defaultButton.style.display = 'none';
-      // }
+   
 
       const uniqueProteinClasses = [
         ...new Set(data.map((d) => d.protein_name)),
@@ -1858,13 +1851,7 @@ function processData(
       // Extract nodes and links from the JSON data
       // console.log("inside processData: ", data);
       chartDataJ = data;
-      // data.filter((row) => {
-      //   if (row.Phase == "1" || row.Phase == "2") {
-      //     row.Phase = "";
-      //     row.Disease_class = "";
-      //     row.Disease_name = "";
-      //   }
-      // });
+     
 
       function getUniqueValues(data, key) {
         const uniqueValues = new Set();
