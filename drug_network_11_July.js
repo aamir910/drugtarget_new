@@ -7,7 +7,7 @@ $(function () {
 //Pass jsonFiles Here
 
 var json_GeneralFile = "json/json_GeneralFile.json";
-var json_GeneralFile = "json/json4.json";
+var json_GeneralFile = "json/json5.json";
 var json_drugData = "json/json_drugData.json";
 var json_proteinData = "json/json_proteinData.json";
 var json_interactionData = "json/json_interactionData.json";
@@ -1729,7 +1729,11 @@ let child_selection = "ProteinOnly";
 
 // Add event listeners to the buttons
 proteinOnlyButton.addEventListener("click", () => {
+
   console.log("Protein Only button clicked");
+
+   
+
 
   d3.select("#Protein_to_hide").style("display", "block");
   child_selection = "ProteinOnly";
@@ -1748,6 +1752,8 @@ proteinOnlyButton.addEventListener("click", () => {
 diseaseOnlyButton.addEventListener("click", () => {
   console.log("Disease Only button clicked");
 
+
+
     d3.select("#Protein_to_hide").style("display", "none");
   // Add your logic here
   child_selection = "DiseaseOnly";
@@ -1762,6 +1768,7 @@ diseaseOnlyButton.addEventListener("click", () => {
 });
 
 defaultButton.addEventListener("click", () => {
+
   console.log("Default button clicked");
   // Add your logic here
   child_selection = "";
@@ -1963,6 +1970,17 @@ function processData(
         switch (child_select) {
           case "ProteinOnly":
 
+          hiddenInteractions = {
+            target: false,
+            enzyme: false,
+            transporter: false,
+            carrier: false,
+            unknown: false,
+            Phase1: false,
+            Phase2: false,
+            Phase3: false,
+            Phase4: false,
+          };
 
           if (checkedInteractionTypes.includes(row.interaction_type)) {
             if (
@@ -1998,6 +2016,18 @@ function processData(
             // Add your logic for Protein Only here
             break;
           case "DiseaseOnly":
+            
+  hiddenInteractions = {
+    target: false,
+    enzyme: false,
+    transporter: false,
+    carrier: false,
+    unknown: false,
+    Phase1: false,
+    Phase2: false,
+    Phase3: false,
+    Phase4: false,
+  };
             proteinOnlyButton.style.backgroundColor = "white";
 
             diseaseOnlyButton.style.backgroundColor = "#3333";
@@ -2034,6 +2064,18 @@ function processData(
             break;
 
           default:
+            
+  hiddenInteractions = {
+    target: false,
+    enzyme: false,
+    transporter: false,
+    carrier: false,
+    unknown: false,
+    Phase1: false,
+    Phase2: false,
+    Phase3: false,
+    Phase4: false,
+  };
             proteinOnlyButton.style.backgroundColor = "white";
 
             diseaseOnlyButton.style.backgroundColor = "white";
