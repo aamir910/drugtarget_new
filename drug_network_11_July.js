@@ -7,7 +7,7 @@ $(function () {
 //Pass jsonFiles Here
 
 var json_GeneralFile = "json/json_GeneralFile.json";
-var json_GeneralFile = "json/data.json";
+var json_GeneralFile = "json/json5.json";
 var json_drugData = "json/json_drugData.json";
 var json_proteinData = "json/json_proteinData.json";
 var json_interactionData = "json/json_interactionData.json";
@@ -1584,6 +1584,18 @@ let child_nodes = 0;
 //     Illicit: "/static/d3/images/capsules/left5.png"
 // };
 
+
+let child_nodes_data = [] ; 
+let disease_nodes_data  = [] ; 
+let default_nodes_data = [] ; 
+
+let child_links_data = [] ; 
+let disease_links_data  = [] ; 
+let default_links_data = [] ; 
+
+let fitlerdata_length ; 
+
+
 var imagePaths11 = {
   Nutraceutical: "images/left0.png",
   Experimental: "images/left1.png",
@@ -1734,13 +1746,20 @@ proteinOnlyButton.addEventListener("click", () => {
   d3.select("#Protein_to_hide").style("display", "block");
   child_selection = "ProteinOnly";
   clearGraph();
-  processData(
-    numberofnodes,
-    slicedata,
-    child_selection,
-    checkedInteractionTypes,
-    checkedPhases
-  );
+  // processData(
+  //   numberofnodes,
+  //   slicedata,
+  //   child_selection,
+  //   checkedInteractionTypes,
+  //   checkedPhases
+  // );
+
+
+  nodes = child_nodes_data ; 
+  links = child_links_data ;
+   createChart(links);
+
+
 
   // Add your logic here
 });
@@ -1752,13 +1771,16 @@ diseaseOnlyButton.addEventListener("click", () => {
   // Add your logic here
   child_selection = "DiseaseOnly";
   clearGraph();
-  processData(
-    numberofnodes,
-    slicedata,
-    child_selection,
-    checkedInteractionTypes,
-    checkedPhases
-  );
+  // processData(
+  //   numberofnodes,
+  //   slicedata,
+  //   child_selection,
+  //   checkedInteractionTypes,
+  //   checkedPhases
+  // );
+  nodes = disease_nodes_data ; 
+ links = disease_links_data ;
+ createChart(links);
 });
 
 defaultButton.addEventListener("click", () => {
@@ -1768,13 +1790,16 @@ defaultButton.addEventListener("click", () => {
   // Add your logic here
   child_selection = "";
   clearGraph();
-  processData(
-    numberofnodes,
-    slicedata,
-    child_selection,
-    checkedInteractionTypes,
-    checkedPhases
-  );
+  // processData(
+  //   numberofnodes,
+  //   slicedata,
+  //   child_selection,
+  //   checkedInteractionTypes,
+  //   checkedPhases
+  // );
+  nodes = default_nodes_data ; 
+  links = default_links_data ;
+   createChart(links);
 });
 
 document.getElementById("closeBtn").addEventListener("click", function () {
@@ -1956,42 +1981,14 @@ function processData(
         var Disease_class = row?.Disease_class;
 
         switch (child_select) {
+         
           case "ProteinOnly":
-            hiddenInteractions = {
-              target: false,
-              enzyme: false,
-              transporter: false,
-              carrier: false,
-              unknown: false,
-              Phase1: false,
-              Phase2: false,
-              Phase3: false,
-              Phase4: false,
-            };
+      
 
-            if (checkedInteractionTypes.includes(row.interaction_type)) {
-              if (
-                !nodes.find(function (node) {
-                  return node.id === protein;
-                })
-              ) {
-                nodes.push({
-                  id: protein,
-                  isParent: false,
-                  radius: 5,
-                  genename: genename,
-                  Protein_Class: proteinClass,
-                  child_type: "protein_type",
-                }); // Include the "Protein_Class" value in the node object
-              }
 
-              links.push({
-                source: drugName,
-                target: protein,
-                type: interaction,
-                // disease_type: "temp"
-              });
-            }
+
+          
+
             proteinOnlyButton.style.backgroundColor = "#3333";
 
             diseaseOnlyButton.style.backgroundColor = "white";
@@ -2002,17 +1999,7 @@ function processData(
             // Add your logic for Protein Only here
             break;
           case "DiseaseOnly":
-            hiddenInteractions = {
-              target: false,
-              enzyme: false,
-              transporter: false,
-              carrier: false,
-              unknown: false,
-              Phase1: false,
-              Phase2: false,
-              Phase3: false,
-              Phase4: false,
-            };
+      
             proteinOnlyButton.style.backgroundColor = "white";
 
             diseaseOnlyButton.style.backgroundColor = "#3333";
@@ -2022,44 +2009,12 @@ function processData(
             console.log("Handling Disease Only");
             // Add your logic for Disease Only here
             // tag1
-            if (checkedPhases.includes(disease_phase)) {
-              if (
-                !nodes.find(function (node) {
-                  return node.id === disease;
-                })
-              ) {
-                nodes.push({
-                  id: disease,
-                  isParent: false,
-                  child_type: "disease_type",
-                  radius: 5,
-                  DiseaseClass: Disease_class,
-                  disease_phase: disease_phase,
-                  // Protein_Class: proteinClass,
-                }); // Include the "Protein_Class" value in the node object
-              }
-              links.push({
-                source: drugName,
-                target: disease,
-                type: disease_interaction,
-                // disease_type: disease_interaction // You can customize the type for disease links
-              });
-            }
+         
 
             break;
 
           default:
-            hiddenInteractions = {
-              target: false,
-              enzyme: false,
-              transporter: false,
-              carrier: false,
-              unknown: false,
-              Phase1: false,
-              Phase2: false,
-              Phase3: false,
-              Phase4: false,
-            };
+         
             proteinOnlyButton.style.backgroundColor = "white";
 
             diseaseOnlyButton.style.backgroundColor = "white";
@@ -2067,64 +2022,16 @@ function processData(
             defaultButton.style.backgroundColor = "#3333";
             // Add your logic for Default here
 
-            if (
-              checkedInteractionTypes.includes(row.interaction_type) || 
-              checkedPhases.includes(disease_phase)
-            ) {
-              
-              if (
-                !nodes.find(function (node) {
-                  return node.id === protein;
-                })
-              ) {
-                nodes.push({
-                  id: protein,
-                  isParent: false,
-                  radius: 5,
-                  genename: genename,
-                  Protein_Class: proteinClass,
-                  child_type: "protein_type",
-                }); // Include the "Protein_Class" value in the node object
-              }
-
-              links.push({
-                source: drugName,
-                target: protein,
-                type: interaction,
-                // disease_type: "temp"
-              });
-
-              // tag1
-              if (
-                !nodes.find(function (node) {
-                  return node.id === disease;
-                })
-              ) {
-                nodes.push({
-                  id: disease,
-                  isParent: false,
-                  child_type: "disease_type",
-                  radius: 5,
-                  DiseaseClass: Disease_class,
-                  disease_phase: disease_phase,
-                  // Protein_Class: proteinClass,
-                }); // Include the "Protein_Class" value in the node object
-              }
-              links.push({
-                source: drugName,
-                target: disease,
-                type: disease_interaction,
-                // disease_type: disease_interaction // You can customize the type for disease links
-              });
-            }
         }
 
+
+
         if (
-          !nodes.find(function (node) {
+          !child_nodes_data.find(function (node) {
             return node.id === drugName;
           })
         ) {
-          nodes.push({
+          child_nodes_data.push({
             id: drugName,
             isParent: true,
             radius: 10,
@@ -2134,74 +2041,216 @@ function processData(
           }); // Include the "Drug_status" value in the node object
         }
 
+
         if (
-          !nodes.find(function (node) {
+          !child_nodes_data.find(function (node) {
             return node.id === drugName;
           })
         ) {
-          nodes.push({ id: drugName, isParent: true, radius: 10 });
+          child_nodes_data.push({ id: drugName, isParent: true, radius: 10 });
         }
 
         if (
-          !nodes.find(function (node) {
+          !child_nodes_data.find(function (node) {
             return node.id === protein;
           })
         ) {
-          nodes.push({ id: protein, isParent: false, radius: 5 });
+          child_nodes_data.push({ id: protein, isParent: false, radius: 5 });
         }
 
-        //console.log(links, "here are the type")
+        // disease data 
+        if (
+          !disease_nodes_data.find(function (node) {
+            return node.id === drugName;
+          })
+        ) {
+          disease_nodes_data.push({
+            id: drugName,
+            isParent: true,
+            radius: 10,
+            Drug_status: drugStatus,
+            Drug_type: drugType,
+            Drug_ID: drugID,
+          }); // Include the "Drug_status" value in the node object
+        }
+
+
+        if (
+          !disease_nodes_data.find(function (node) {
+            return node.id === drugName;
+          })
+        ) {
+          disease_nodes_data.push({ id: drugName, isParent: true, radius: 10 });
+        }
+
+        if (
+          !disease_nodes_data.find(function (node) {
+            return node.id === protein;
+          })
+        ) {
+          disease_nodes_data.push({ id: protein, isParent: false, radius: 5 });
+        }
+
+// default data there 
+  if (
+          !default_nodes_data.find(function (node) {
+            return node.id === drugName;
+          })
+        ) {
+          default_nodes_data.push({
+            id: drugName,
+            isParent: true,
+            radius: 10,
+            Drug_status: drugStatus,
+            Drug_type: drugType,
+            Drug_ID: drugID,
+          }); // Include the "Drug_status" value in the node object
+        }
+
+
+        if (
+          !default_nodes_data.find(function (node) {
+            return node.id === drugName;
+          })
+        ) {
+          default_nodes_data.push({ id: drugName, isParent: true, radius: 10 });
+        }
+
+        if (
+          !default_nodes_data.find(function (node) {
+            return node.id === protein;
+          })
+        ) {
+          default_nodes_data.push({ id: protein, isParent: false, radius: 5 });
+        }
+
+
+
+// child_nodes_data
+if (checkedInteractionTypes.includes(row.interaction_type)) {
+  if (
+    !child_nodes_data.find(function (node) {
+      return node.id === protein;
+    })
+  ) {
+    child_nodes_data.push({
+      id: protein,
+      isParent: false,
+      radius: 5,
+      genename: genename,
+      Protein_Class: proteinClass,
+      child_type: "protein_type",
+    }); // Include the "Protein_Class" value in the node object
+  }
+
+
+  child_links_data.push({
+    source: drugName,
+    target: protein,
+    type: interaction,
+    // disease_type: "temp"
+  });
+}
+// child_nodes_data ended 
+  
+// disease_nodes_data 
+if (checkedPhases.includes(disease_phase)) {
+  if (
+    !disease_nodes_data.find(function (node) {
+      return node.id === disease;
+    })
+  ) {
+    disease_nodes_data.push({
+      id: disease,
+      isParent: false,
+      child_type: "disease_type",
+      radius: 5,
+      DiseaseClass: Disease_class,
+      disease_phase: disease_phase,
+      // Protein_Class: proteinClass,
+    }); // Include the "Protein_Class" value in the node object
+  }
+  disease_links_data.push({
+    source: drugName,
+    target: disease,
+    type: disease_interaction,
+    // disease_type: disease_interaction // You can customize the type for disease links
+  });
+}
+// disease_nodes_data ended 
+
+// default_nodes_data 
+
+
+if (
+  checkedInteractionTypes.includes(row.interaction_type) || 
+  checkedPhases.includes(disease_phase)
+) {
+
+  if (
+    !default_nodes_data.find(function (node) {
+      return node.id === protein;
+    })
+  ) {
+    default_links_data.push({
+      id: protein,
+      isParent: false,
+      radius: 5,
+      genename: genename,
+      Protein_Class: proteinClass,
+      child_type: "protein_type",
+    }); // Include the "Protein_Class" value in the node object
+  }
+
+  default_links_data.push({
+    source: drugName,
+    target: protein,
+    type: interaction,
+    // disease_type: "temp"
+  });
+
+  // tag1
+  if (
+    !default_nodes_data.find(function (node) {
+      return node.id === disease;
+    })
+  ) {
+    default_nodes_data.push({
+      id: disease,
+      isParent: false,
+      child_type: "disease_type",
+      radius: 5,
+      DiseaseClass: Disease_class,
+      disease_phase: disease_phase,
+      // Protein_Class: proteinClass,
+    }); // Include the "Protein_Class" value in the node object
+  }
+  default_links_data.push({
+    source: drugName,
+    target: disease,
+    type: disease_interaction,
+    // disease_type: disease_interaction // You can customize the type for disease links
+  });
+}
+// default_nodes_data ended 
+
+
       });
+
+fitlerdata_length = filteredData.length  ; 
       //console.log("here are the links", links);
-      var childNodeMap = {};
-      links.forEach(function (link) {
-        if (!link.target.isParent) {
-          var childNodeId = link.target.id;
-          childNodeMap[childNodeId] = (childNodeMap[childNodeId] || 0) + 1;
-        }
-      });
-
-      // Assign the parent count to each child node
-      nodes
-        .filter(function (d) {
-          return !d.isParent;
-        })
-        .forEach(function (node) {
-          node.degree = childNodeMap[node.id] || 0;
-        });
-
-      // Set the maximum value of the threshold slider
-      thredhold_value = nodes.filter(function (node) {
-        return node.isParent;
-      }).length;
-
-      child_nodes = nodes.filter(function (node) {
-        return !node.isParent;
-      }).length;
-
-      thresholdSlider.max = numberofnodes;
-      console.log(numberofnodes, "here are the number of nodes");
-      if (thredhold_value <= numberofnodes || slicedata > filteredData.length) {
-        thresholdSlider.max = thredhold_value;
-        document.getElementById("GetmoreData").disabled = true;
-        document.getElementById("GetmoreData").innerHTML =
-          "Maximum data reached";
-      }
-
-      if (slicedata > filteredData.length) {
-        thresholdSlider.value = 50;
-        thresholdValueLabel.textContent = thredhold_value;
-      } else {
-        thresholdSlider.value = 50;
-        thresholdValueLabel.textContent = numberofnodes;
-      }
+    
 
       // Set the default value of the threshold slider to the maximum
 
       // tag5
       // Create the chart using D3.js
 
-      createChart(links);
+nodes = child_nodes_data ; 
+console.log('child_nodes_data' ,child_nodes_data)
+links = child_links_data ;
+ createChart(links);
+
 
       // Add an event listener to detect changes in the threshold slider value
       thresholdSlider.addEventListener("input", function () {
@@ -2223,6 +2272,47 @@ var simulation = null;
 
 // Create the Forced Directed Network Chart
 function createChart(links) {
+  var childNodeMap = {};
+      links.forEach(function (link) {
+        if (!link.target.isParent) {
+          var childNodeId = link.target.id;
+          childNodeMap[childNodeId] = (childNodeMap[childNodeId] || 0) + 1;
+        }
+      });
+      // Assign the parent count to each child node
+      nodes
+        .filter(function (d) {
+          return !d.isParent;
+        })
+        .forEach(function (node) {
+          node.degree = childNodeMap[node.id] || 0;
+        });
+
+      // Set the maximum value of the threshold slider
+      thredhold_value = nodes.filter(function (node) {
+        return node.isParent;
+      }).length;
+
+      child_nodes = nodes.filter(function (node) {
+        return !node.isParent;
+      }).length;
+
+      thresholdSlider.max = numberofnodes;
+      console.log(numberofnodes, "here are the number of nodes");
+      if (thredhold_value <= numberofnodes || slicedata > fitlerdata_length) {
+        thresholdSlider.max = thredhold_value;
+        document.getElementById("GetmoreData").disabled = true;
+        document.getElementById("GetmoreData").innerHTML =
+          "Maximum data reached";
+      }
+
+      if (slicedata > fitlerdata_length) {
+        thresholdSlider.value = 50;
+        thresholdValueLabel.textContent = thredhold_value;
+      } else {
+        thresholdSlider.value = 50;
+        thresholdValueLabel.textContent = numberofnodes;
+      }
   d3.select("#chart").selectAll("*").remove();
 
   //console.log("Latest Edit CreateCHart_13_jan_2024_A");
@@ -3396,29 +3486,7 @@ function createDiseaseLegend() {
 
   var legendContent = d3.select("#legend_disease_status-content");
   legendContent.selectAll("div").remove();
-  // links.forEach(function (link) {
-  //   for(let i=0 ; i<diseases.length ; i++){
-  //     if(link.target.DiseaseClass === diseases[i])
-  //     {
-  //       console.log(link.target.DiseaseClass , "Disease_class");
-
-  //     }
-
-  //   }
-  // })
-
-  // links.forEach(function (link) {
-  //   var diceaseClass11 = link.target.Protein_Class; // No need to convert to lowercase
-  //   //console.log(proteinClass11);
-  // for(let i=0 ; i<diseases.length ; i++){
-
-  //   if (true) {
-
-  //     createLegendItem(diseases[i], diseaseColors[i]);
-
-  //   }
-
-  // }
+ 
   var uniqueDisease = new Set();
 
   links.forEach(function (link) {
@@ -3578,7 +3646,7 @@ function createLegend_status() {
           }
         }
       });
-
+      
     var dropdownMenu = dropdown
       .append("div")
       .attr("class", "dropdown-menu")
