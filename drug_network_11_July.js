@@ -4233,7 +4233,7 @@ d3.select("#GetmoreData").on("click", function () {
   btn_count++;
   document.getElementById("ManagePreviousState").style.display = "block";
   if (thredhold_value < 5 && child_nodes > 180) {
-    console.log("RAJHFDAJKL;SH");
+ 
     slicedata = slicedata + 200;
   } else {
     if (thredhold_value <= 7) {
