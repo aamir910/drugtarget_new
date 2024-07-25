@@ -1746,13 +1746,13 @@ proteinOnlyButton.addEventListener("click", () => {
   d3.select("#Protein_to_hide").style("display", "block");
   child_selection = "ProteinOnly";
   clearGraph();
-  // processData(
-  //   numberofnodes,
-  //   slicedata,
-  //   child_selection,
-  //   checkedInteractionTypes,
-  //   checkedPhases
-  // );
+  processData(
+    numberofnodes,
+    slicedata,
+    child_selection,
+    checkedInteractionTypes,
+    checkedPhases
+  );
 var hiddenInteractions = {
   target: false,
   enzyme: false,
@@ -1781,13 +1781,13 @@ diseaseOnlyButton.addEventListener("click", () => {
   // Add your logic here
   child_selection = "DiseaseOnly";
   clearGraph();
-  // processData(
-  //   numberofnodes,
-  //   slicedata,
-  //   child_selection,
-  //   checkedInteractionTypes,
-  //   checkedPhases
-  // );
+  processData(
+    numberofnodes,
+    slicedata,
+    child_selection,
+    checkedInteractionTypes,
+    checkedPhases
+  );
   nodes = disease_nodes_data ; 
  links = disease_links_data ;
  
@@ -1802,13 +1802,13 @@ defaultButton.addEventListener("click", () => {
   // Add your logic here
   child_selection = "";
   clearGraph();
-  // processData(
-  //   numberofnodes,
-  //   slicedata,
-  //   child_selection,
-  //   checkedInteractionTypes,
-  //   checkedPhases
-  // );
+  processData(
+    numberofnodes,
+    slicedata,
+    child_selection,
+    checkedInteractionTypes,
+    checkedPhases
+  );
   nodes = default_nodes_data ; 
   links = default_links_data ;
    createChart(links);
@@ -3947,6 +3947,7 @@ function updateAllFilters() {
   d3.selectAll(".node:not(.node-parent)")
     .selectAll("circle, text , path")
     .style("visibility", function (d) {
+      
       if (d.hidden) {
         // if hidden by slider filter
         return "hidden";
@@ -3957,6 +3958,8 @@ function updateAllFilters() {
         (l) => hiddenInteractions[l.type]
       );
       var isHiddenBasedOnProteinClass = hiddenProteinClasses[d.Protein_Class];
+
+      console.log(d ,isHiddenBasedOnProteinClass , 'here is the df data ')
 
       var isHiddenBasedOnDiseaseClass = hiddenDiseaseClasses[d.DiseaseClass];
       // Hide if not connected to any parent
@@ -4044,8 +4047,7 @@ function updateAllFilters() {
       (l) =>
         !hiddenInteractions[l.type] &&
         !hiddenProteinClasses[
-          nodes.find((n) => n.id === l.target.id).Protein_Class &&
-            nodes.find((n) => n.id === l.target.id).DiseaseClass
+          nodes.find((n) => n.id === l.target.id).Protein_Class 
         ]
     );
 
@@ -4072,7 +4074,7 @@ function updateAllFilters() {
       isHiddenBasedOnProteinClass ||
       isHiddenBasedOnDiseaseClass ||
       isHiddenBasedOnDrugType ||
-      flag
+      flag 
     ) {
       return "hidden";
     }
@@ -4081,9 +4083,6 @@ function updateAllFilters() {
 
   // hey
 }
-
-// Pull nodes towards the center
-// Pull nodes towards the center
 // Pull nodes towards the center
 function pullToCenterParent11(width, height, strength, gap) {
   var centerX = width / 2;
