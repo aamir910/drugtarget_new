@@ -7,7 +7,7 @@ $(function () {
 //Pass jsonFiles Here
 
 var json_GeneralFile = "json/json_GeneralFile.json";
-var json_GeneralFile = "json/json4.json";
+var json_GeneralFile = "json/json5.json";
 var json_drugData = "json/json_drugData.json";
 var json_proteinData = "json/json_proteinData.json";
 var json_interactionData = "json/json_interactionData.json";
@@ -176,9 +176,9 @@ async function readInteractionJSON() {
 }
 
 window.onload = function () {
-  (async function () {
-    await readDrugJSON();
-  })();
+  // (async function () {
+  //   await readDrugJSON();
+  // })();
 
   processData(
     numberofnodes,
@@ -1746,13 +1746,7 @@ proteinOnlyButton.addEventListener("click", () => {
   d3.select("#Protein_to_hide").style("display", "block");
   child_selection = "ProteinOnly";
   clearGraph();
-  processData(
-    numberofnodes,
-    slicedata,
-    child_selection,
-    checkedInteractionTypes,
-    checkedPhases
-  );
+
 var hiddenInteractions = {
   target: false,
   enzyme: false,
@@ -1781,13 +1775,7 @@ diseaseOnlyButton.addEventListener("click", () => {
   // Add your logic here
   child_selection = "DiseaseOnly";
   clearGraph();
-  processData(
-    numberofnodes,
-    slicedata,
-    child_selection,
-    checkedInteractionTypes,
-    checkedPhases
-  );
+
   nodes = disease_nodes_data ; 
  links = disease_links_data ;
  
@@ -1802,13 +1790,7 @@ defaultButton.addEventListener("click", () => {
   // Add your logic here
   child_selection = "";
   clearGraph();
-  processData(
-    numberofnodes,
-    slicedata,
-    child_selection,
-    checkedInteractionTypes,
-    checkedPhases
-  );
+
   nodes = default_nodes_data ; 
   links = default_links_data ;
    createChart(links);
