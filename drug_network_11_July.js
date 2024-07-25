@@ -1971,8 +1971,8 @@ function processData(
         var drugType = row?.drugtype;
         var proteinClass = row?.Protein_Class;
 
-        var disease = row?.Disease_name; // getting the new disease
-        var Disease_class = row?.Disease_class;
+        var disease = row.Disease_name; // getting the new disease
+        var Disease_class = row.Disease_class;
 
         switch (child_select) {
          
