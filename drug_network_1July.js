@@ -3868,7 +3868,8 @@ d3.select("#GetmoreData").on("click", function () {
     if (thredhold_value <= 7) {
       numberofnodes = numberofnodes + 1;
       console.log("incease the number of nodes");
-    } else if (thredhold_value > 7 && thredhold_value <= 14) {
+    } else if (thredhold_value > 7 &&
+       thredhold_value <= 14) {
       numberofnodes = numberofnodes + 2;
     } else if (thredhold_value > 14 && thredhold_value <= 50) {
       numberofnodes = numberofnodes + 6;
