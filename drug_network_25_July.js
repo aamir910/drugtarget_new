@@ -1859,13 +1859,17 @@ function processData(
   fetch(jsonFilePath)
     .then((response) => response.json())
     .then((data) => {
+
       try {
         var data = JSON.parse(data.data);
       }
       catch {
         data = data.data;
       }
+      
 
+
+      console.log("here is the data first data " , data)
       const uniqueProteinClasses = [
         ...new Set(data.map((d) => d.protein_name)),
       ];
@@ -1983,7 +1987,7 @@ function processData(
             diseaseOnlyButton.style.backgroundColor = "white";
 
             defaultButton.style.backgroundColor = "white";
-            console.log("Handling Protein Only");
+        
 
             // Add your logic for Protein Only here
             break;
@@ -2118,7 +2122,6 @@ if (checkedInteractionTypes.includes(row.interaction_type)) {
   
   if (
     !child_nodes_data.find(function (node) {
-      console.log('protein' , protein )
       return node.id === protein;
   })
   
@@ -3941,7 +3944,6 @@ function updateAllFilters() {
       );
       var isHiddenBasedOnProteinClass = hiddenProteinClasses[d.Protein_Class];
 
-      console.log(d ,isHiddenBasedOnProteinClass , 'here is the df data ')
 
       var isHiddenBasedOnDiseaseClass = hiddenDiseaseClasses[d.DiseaseClass];
       // Hide if not connected to any parent
