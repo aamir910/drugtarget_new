@@ -1744,6 +1744,8 @@ let child_selection = "ProteinOnly";
 
 // Add event listeners to the buttons
 proteinOnlyButton.addEventListener("click", () => {
+  simulation.stop();
+
   console.log("Protein Only button clicked");
 
   d3.select("#Protein_to_hide").style("display", "block");
@@ -1782,7 +1784,7 @@ var hiddenInteractions = {
 
 diseaseOnlyButton.addEventListener("click", () => {
   console.log("Disease Only button clicked");
-
+ simulation.stop();
   d3.select("#Protein_to_hide").style("display", "none");
   // Add your logic here
   child_selection = "DiseaseOnly";
@@ -1804,7 +1806,7 @@ console.log('disease_links_data' ,disease_links_data)
 
 defaultButton.addEventListener("click", () => {
   console.log("Default button clicked");
-  
+  simulation.stop();
   d3.select("#Protein_to_hide").style("display", "block");
   // Add your logic here
   child_selection = "";
@@ -2413,7 +2415,7 @@ function createChart(links) {
   // Function to check if the simulation is settled and stop it
 
   // // Start the checking process after a delay to allow initial forces to act
-  // setTimeout(stopSimulationIfSettled, 4000);
+  setTimeout(stopSimulationIfSettled, 4000);
 
   link = svg
     .selectAll(".link")
@@ -4198,6 +4200,9 @@ function drag(simulation) {
 
 let btn_count = 0;
 d3.select("#GetmoreData").on("click", function () {
+
+  simulation.stop(); 
+
   filteredData = [];
   child_nodes_data = [];
   disease_nodes_data= []
@@ -4251,6 +4256,7 @@ d3.select("#GetmoreData").on("click", function () {
 document.getElementById("ManagePreviousState").style.display = "none";
 
 d3.select("#ManagePreviousState").on("click", function () {
+  simulation.stop();
   filteredData = [];
   child_nodes_data = [];
   disease_nodes_data= []
