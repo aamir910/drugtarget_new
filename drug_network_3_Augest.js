@@ -7,7 +7,7 @@ $(function () {
 //Pass jsonFiles Here
 
 var json_GeneralFile = "json/json_GeneralFile.json";
-var json_GeneralFile = "json/data.json";
+var json_GeneralFile = "json/json5.json";
 var json_drugData = "json/json_drugData.json";
 var json_proteinData = "json/json_proteinData.json";
 var json_interactionData = "json/json_interactionData.json";
@@ -1785,6 +1785,7 @@ var hiddenInteractions = {
 diseaseOnlyButton.addEventListener("click", () => {
   console.log("Disease Only button clicked");
  simulation.stop();
+ 
   d3.select("#Protein_to_hide").style("display", "none");
   // Add your logic here
   child_selection = "DiseaseOnly";
