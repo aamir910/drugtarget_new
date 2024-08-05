@@ -981,6 +981,11 @@ body{
     background-color: rgb(203, 213, 203);
   }
 
-  
+  #proteinOnly ,#diseaseOnly , #default {
+    
+    border: 3px solid blue;
+    
+    background-color: rgb(196, 196, 233);
+  }
   
 
