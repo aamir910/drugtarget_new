@@ -969,5 +969,18 @@ body{
     cursor: pointer;
     font-size: 16px;
 }
-
 /* ended popup css  */
+#GetmoreData{
+    margin-left: 4rem;
+    border: 3px solid green;
+    background-color: rgb(203, 213, 203);
+  }
+  #ManagePreviousState{
+    border: 3px solid green;
+    
+    background-color: rgb(203, 213, 203);
+  }
+
+  
+  
+
