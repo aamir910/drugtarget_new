@@ -7,7 +7,7 @@ $(function () {
 //Pass jsonFiles Here
 
 var json_GeneralFile = "json/json_GeneralFile.json";
-var json_GeneralFile = "json/json5.json";
+var json_GeneralFile = "json/missing_Drug.json";
 var json_drugData = "json/json_drugData.json";
 var json_proteinData = "json/json_proteinData.json";
 var json_interactionData = "json/json_interactionData.json";
@@ -2233,7 +2233,7 @@ function processData(
 // child_nodes_data ended 
   
 // disease_nodes_data 
-// if (checkedPhases.includes(disease_phase)) {
+if (disease_phase !== "" ) {
   if (
     !disease_nodes_data.find(function (node) {
       return node.id === disease;
@@ -2255,7 +2255,7 @@ function processData(
     type: disease_interaction,
     // disease_type: disease_interaction // You can customize the type for disease links
   });
-// }
+}
 // disease_nodes_data ended 
 
 // default_nodes_data 
@@ -2289,27 +2289,35 @@ function processData(
   });
 
   // tag1
-  if (
-    !default_nodes_data.find(function (node) {
-      return node.id === disease;
-    })
-  ) {
-    default_nodes_data.push({
-      id: disease,
-      isParent: false,
-      child_type: "disease_type",
-      radius: 5,
-      DiseaseClass: Disease_class,
-      disease_phase: disease_phase,
-      // Protein_Class: proteinClass,
-    }); // Include the "Protein_Class" value in the node object
+
+  if (disease_phase !== "") 
+    {
+
+      if (
+        !default_nodes_data.find(function (node) {
+          return node.id === disease;
+        })
+      ) {
+        default_nodes_data.push({
+          id: disease,
+          isParent: false,
+          child_type: "disease_type",
+          radius: 5,
+          DiseaseClass: Disease_class,
+          disease_phase: disease_phase,
+          // Protein_Class: proteinClass,
+        }); // Include the "Protein_Class" value in the node object
+      }
+      default_links_data.push({
+        source: drugName,
+        target: disease,
+        type: disease_interaction,
+        // disease_type: disease_interaction // You can customize the type for disease links
+      });    
   }
-  default_links_data.push({
-    source: drugName,
-    target: disease,
-    type: disease_interaction,
-    // disease_type: disease_interaction // You can customize the type for disease links
-  });
+ 
+
+
 
 // default_nodes_data ended 
 
