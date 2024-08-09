@@ -7,7 +7,7 @@ $(function () {
 //Pass jsonFiles Here
 
 var json_GeneralFile = "json/json_GeneralFile.json";
-var json_GeneralFile = "json/missing_Drug.json";
+var json_GeneralFile = "json/json5.json";
 var json_drugData = "json/json_drugData.json";
 var json_proteinData = "json/json_proteinData.json";
 var json_interactionData = "json/json_interactionData.json";
@@ -1399,6 +1399,51 @@ function showDialog_Child(title, childName) {
   }
 }
 
+
+
+//// disase show dialog there 
+
+  function showDialog_Disease(title, childName, d) {
+    var dialog = document.getElementById("dialog3");
+    var drugName = document.getElementById("drug-name3");
+    var closeButton = document.getElementById("close-button3");
+    var tableContainer = document.getElementById("table-container");
+  
+    selectedProteinName1 = title;
+  
+    // Set the drug name text
+    drugName.textContent = childName;
+  
+    // Build the table HTML
+    var tableHtml = `
+      <table border="1" style="width:100%; border-collapse:collapse;">
+        <tr><td>Drugbank ID</td><td>${d.drugbank_id}</td></tr>
+        <tr><td>Drug Name</td><td>${d.drug_name}</td></tr>
+        <tr><td>Drug type</td><td>${d.drugType}</td></tr>
+        <tr><td>Drug Status</td><td>${d.drugStatus}</td></tr>
+        <tr><td>Disease Class</td><td>${d.DiseaseClass}</td></tr>
+        <tr><td>Disease name</td><td>${d.id}</td></tr>
+        <tr><td>Disease Phase</td><td>${d.disease_phase}</td></tr>
+     
+      </table>
+    `;
+  
+    // Insert the table into the container
+    tableContainer.innerHTML = tableHtml;
+  
+    // Display the dialog
+    dialog.style.display = "block";
+  
+    // Set up the close button to hide the dialog
+    closeButton.addEventListener("click", function () {
+      dialog.style.display = "none";
+    });
+  
+    console.log('d', d);
+  }
+  
+
+
 //Interaction Dialog
 function showDialog_Links(title, interactionTy) {
   //console.log("title: " + title)
@@ -1752,8 +1797,8 @@ const proteinOnlyButton = document.getElementById("proteinOnly");
 
 const diseaseOnlyButton = document.getElementById("diseaseOnly");
 const defaultButton = document.getElementById("default");
-
 let child_selection = "ProteinOnly";
+
 
 // Add event listeners to the buttons
 proteinOnlyButton.addEventListener("click", () => {
@@ -1930,7 +1975,10 @@ let  uniquePhases =[] ;
 document.getElementById("submitBtn").addEventListener("click", function () {
   checkedInteractionTypes2 = getCheckedValues("interactionTypesContainer");
   checkedPhases2 = getCheckedValues("phasesContainer");
-  if (checkedInteractionTypes2.length === 0 || checkedPhases2.length === 0) {
+
+  if (
+    // checkedInteractionTypes2.length === 0 || checkedPhases2.length === 0 ||
+     false) {
 
   alert("Please Select the filterations")
 }
@@ -2023,9 +2071,6 @@ function processData(
       console.log("Unique Phases:", uniquePhases);
 
   
-
-
-
       // Function to create checkboxes
       function createCheckboxes(containerId, items) {
         const container = document.getElementById(containerId);
@@ -2246,6 +2291,11 @@ if (disease_phase !== "" ) {
       radius: 5,
       DiseaseClass: Disease_class,
       disease_phase: disease_phase,
+      drug_name:row.drug_name,
+      drugbank_id: row.drugbank_id ,
+      gene_name : row.gene_name ,
+      drugType :drugType,
+      drugStatus :drugStatus
       // Protein_Class: proteinClass,
     }); // Include the "Protein_Class" value in the node object
   }
@@ -2305,6 +2355,12 @@ if (disease_phase !== "" ) {
           radius: 5,
           DiseaseClass: Disease_class,
           disease_phase: disease_phase,
+          drug_name:row.drug_name,
+          drugbank_id: row.drugbank_id ,
+          gene_name : row.gene_name ,
+          drugType:drugType ,
+          drugStatus:drugStatus
+
           // Protein_Class: proteinClass,
         }); // Include the "Protein_Class" value in the node object
       }
@@ -2341,9 +2397,25 @@ fitlerdata_length = filteredData.length  ;
         updateChartVisibility();
       });
 
-      nodes =  child_nodes_data; 
-      links = child_links_data;
-       createChart(links);
+if(child_select === "ProteinOnly"){
+  
+  nodes =  child_nodes_data; 
+ links = child_links_data;
+  createChart(links);
+}
+else if(child_select === "DiseaseOnly")
+{
+
+  nodes =  disease_nodes_data; 
+  links = disease_links_data;
+  createChart(links);
+
+}else {
+  nodes =  default_nodes_data; 
+ links = default_links_data;
+  createChart(links);
+}
+        
     })
     .catch((error) => {
       console.error("Error reading the JSON file:", error);
@@ -2358,6 +2430,7 @@ var svg, chart;
 var simulation = null;
 // Create the Forced Directed Network Chart
 function createChart(links) {
+
   // clearGraph();
  console.log(nodes ,'child_nodes_data')
   //  hiddenInteractions = {
@@ -2622,7 +2695,7 @@ function createChart(links) {
   node
     .filter((node) => node.child_type === "disease_type")
     .on("click", function (event, d) {
-      showDialog(d.id, d.id);
+      showDialog_Disease(d.id, d.id , d);
     })
     // Attach cursor style change on mouseover to all nodes
     .on("mouseover", function () {
@@ -4310,7 +4383,7 @@ d3.select("#GetmoreData").on("click", function () {
   child_nodes_data = [];
   disease_nodes_data= []
   child_links_data = [];
- disease_links_data = [] ;
+  disease_links_data = [] ;
   default_links_data = [] ; 
 
 
@@ -4339,11 +4412,9 @@ d3.select("#GetmoreData").on("click", function () {
     }
   }
 
-  console.log("processdata element" ,numberofnodes,slicedata, child_selection,
- checkedInteractionTypes,
-    checkedPhases );
 
 
+console.log(child_selection , ' child slection ')
   processData(
     numberofnodes,
     slicedata,
@@ -4352,6 +4423,7 @@ d3.select("#GetmoreData").on("click", function () {
     checkedPhases
   );
 });
+
 
 document.getElementById("ManagePreviousState").style.display = "none";
 
