@@ -2592,7 +2592,7 @@ function createChart(links) {
   //   });
 
   const simulation = d3.forceSimulation(nodes)
-  .force("link", d3.forceLink(links).id(d => d.id).distance(150))
+  .force("link", d3.forceLink(links).id(d => d.id).distance(130))
   .force("charge", d3.forceManyBody().strength(-150))
   .force("x", d3.forceX(svgWidth / 2))  // Attraction towards the center on the x-axis
   .force("y", d3.forceY((svgHeight - 180) / 2))  // Attraction towards the center on the y-axis
@@ -3084,7 +3084,7 @@ function redrawChart(originalLinks) {
         node.fy = node.y;
       });
     });
-    setTimeout(stopSimulationIfSettled, 4000);
+    setTimeout(stopSimulationIfSettled, 3000);
 
     //console.log("Simulation after restart: ", simulation);
   } else {
