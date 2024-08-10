@@ -2612,7 +2612,7 @@ function createChart(links) {
   // Function to check if the simulation is settled and stop it
 
   // // Start the checking process after a delay to allow initial forces to act
-  // setTimeout(stopSimulationIfSettled, 4000);
+  setTimeout(stopSimulationIfSettled, 4000);
 // 
   link = svg
     .selectAll(".link")
@@ -3063,14 +3063,14 @@ function redrawChart1(originalLinks) {
 }
 
 function redrawChart(originalLinks) {
-  if (simulation) {
+  if (true) {
     //console.log("Simulation before restart: ", simulation);
 
     // Unfix the node positions
-    // nodes.forEach(function (node) {
-    //   node.fx = null;
-    //   node.fy = null;
-    // });
+    nodes.forEach(function (node) {
+      node.fx = null;
+      node.fy = null;
+    });
 
     // Add nodes and links to the simulation and restart
     simulation.nodes(nodes).force("link").links(links);
@@ -3084,7 +3084,7 @@ function redrawChart(originalLinks) {
         node.fy = node.y;
       });
     });
-    // setTimeout(stopSimulationIfSettled, 4000);
+    setTimeout(stopSimulationIfSettled, 4000);
 
     //console.log("Simulation after restart: ", simulation);
   } else {
