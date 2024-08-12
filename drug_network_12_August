@@ -2033,12 +2033,16 @@ function processData(
   fetch(jsonFilePath)
     .then((response) => response.json())
     .then((data) => {
+
+
       try {
         var data = JSON.parse(data.data);
       }
       catch {
         data = data.data;
       }
+
+
       console.log("here is the data first data " , data)
       const uniqueProteinClasses = [
         ...new Set(data.map((d) => d.protein_name)),
@@ -3047,7 +3051,7 @@ d3.select("#redrawChart").on("click", function () {
   redrawChart(links);
 });
 
-function redrawChart1(originalLinks) {
+function redrawChart2(originalLinks) {
   if (simulation) {
     //console.log("Simulation before restart: ", simulation);
 
@@ -3061,10 +3065,10 @@ function redrawChart1(originalLinks) {
     //console.log("Simulation is not defined");
   }
 }
-
+console.log("created the new redraw function there that function be resolve now ")
 function redrawChart(originalLinks) {
   if (true) {
-    //console.log("Simulation before restart: ", simulation);
+    console.log("Simulation before restart: ", simulation);
 
     // Unfix the node positions
     nodes.forEach(function (node) {
@@ -3084,7 +3088,7 @@ function redrawChart(originalLinks) {
         node.fy = node.y;
       });
     });
-    setTimeout(stopSimulationIfSettled, 3000);
+    // setTimeout(stopSimulationIfSettled, 3000);
 
     //console.log("Simulation after restart: ", simulation);
   } else {
@@ -3092,10 +3096,10 @@ function redrawChart(originalLinks) {
   }
 }
 
-function redrawChart2(originalLinks) {
+function redrawChart1(originalLinks) {
   // Restart the simulation
 
-  if (simulation.alpha() < 0.01) {
+  if (simulation) {
     // Manually restart the simulation
     simulation.alpha(1).restart();
 
