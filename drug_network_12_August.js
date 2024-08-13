@@ -6,82 +6,82 @@ $(function () {
 
 //Pass jsonFiles Here
 
-// var json_GeneralFile = "json/json_GeneralFile.json";
-// var json_GeneralFile = "json/missing_Drug.json";
-// var json_drugData = "json/json_drugData.json";
-// var json_proteinData = "json/json_proteinData.json";
-// var json_interactionData = "json/json_interactionData.json";
+var json_GeneralFile = "json/json_GeneralFile.json";
+var json_GeneralFile = "json/missing_Drug.json";
+var json_drugData = "json/json_drugData.json";
+var json_proteinData = "json/json_proteinData.json";
+var json_interactionData = "json/json_interactionData.json";
 
 
-var json_GeneralFile = "/static/json-sample/json_GeneralFile.json";
-var json_drugData = "/static/json-sample/json_drugData.json";
-var json_proteinData = "/static/json-sample/json_proteinData.json";
-var json_interactionData = "/static/json-sample/json_interactionData.json";
+// var json_GeneralFile = "/static/json-sample/json_GeneralFile.json";
+// var json_drugData = "/static/json-sample/json_drugData.json";
+// var json_proteinData = "/static/json-sample/json_proteinData.json";
+// var json_interactionData = "/static/json-sample/json_interactionData.json";
 
-if (drug_bank_ids) {
-  json_GeneralFile =
-    "/drugs_network/general_data?drug_bank_ids=" + drug_bank_ids.join(",");
-  json_drugData =
-    "/drugs_network/drug_data?drug_bank_ids=" + drug_bank_ids.join(",");
-  json_proteinData =
-    "/drugs_network/protein_data?drug_bank_ids=" + drug_bank_ids.join(",");
-  json_interactionData =
-    "/drugs_network/interaction_data?drug_bank_ids=" + drug_bank_ids.join(",");
-}
+// if (drug_bank_ids) {
+//   json_GeneralFile =
+//     "/drugs_network/general_data?drug_bank_ids=" + drug_bank_ids.join(",");
+//   json_drugData =
+//     "/drugs_network/drug_data?drug_bank_ids=" + drug_bank_ids.join(",");
+//   json_proteinData =
+//     "/drugs_network/protein_data?drug_bank_ids=" + drug_bank_ids.join(",");
+//   json_interactionData =
+//     "/drugs_network/interaction_data?drug_bank_ids=" + drug_bank_ids.join(",");
+// }
 
-if (drug_bank_id) {
-  json_GeneralFile = "/drug_network/" + drug_bank_id + "/general_data";
-  json_drugData = "/drug_network/" + drug_bank_id + "/drug_data";
-  json_proteinData = "/drug_network/" + drug_bank_id + "/protein_data";
-  json_interactionData = "/drug_network/" + drug_bank_id + "/interaction_data";
-}
+// if (drug_bank_id) {
+//   json_GeneralFile = "/drug_network/" + drug_bank_id + "/general_data";
+//   json_drugData = "/drug_network/" + drug_bank_id + "/drug_data";
+//   json_proteinData = "/drug_network/" + drug_bank_id + "/protein_data";
+//   json_interactionData = "/drug_network/" + drug_bank_id + "/interaction_data";
+// }
 
-var urlParams = new URLSearchParams(window.location.search);
-if (urlParams.has("atc_code")) {
-  var atc_code = urlParams.get("atc_code");
-  if (atc_code.length === 3 || atc_code.length === 4) {
-    var json_GeneralFile =
-      "/serve_general_data_json_file/?atc_code=" + atc_code;
-    var json_drugData = "/serve_drug_data_json_file/?atc_code=" + atc_code;
-    var json_proteinData =
-      "/serve_protein_data_json_file/?atc_code=" + atc_code;
-    var json_interactionData =
-      "/serve_interaction_data_json_file/?atc_code=" + atc_code;
-  }
-  else {
-    json_GeneralFile =
-      "/drugs_network/general_data?drug_bank_ids=" + drug_bank_ids.join(",");
-    json_drugData =
-      "/drugs_network/drug_data?drug_bank_ids=" + drug_bank_ids.join(",");
-    json_proteinData =
-      "/drugs_network/protein_data?drug_bank_ids=" + drug_bank_ids.join(",");
-    json_interactionData =
-      "/drugs_network/interaction_data?drug_bank_ids=" + drug_bank_ids.join(",");
-  }
-    // json_GeneralFile =
-    //   "/drugs_network/general_data?drug_bank_ids=" + drug_bank_ids.join(",");
-    // json_drugData =
-    //   "/drugs_network/drug_data?drug_bank_ids=" + drug_bank_ids.join(",");
-    // json_proteinData =
-    //   "/drugs_network/protein_data?drug_bank_ids=" + drug_bank_ids.join(",");
-    // json_interactionData =
-    //   "/drugs_network/interaction_data?drug_bank_ids=" + drug_bank_ids.join(",");
-}
+// var urlParams = new URLSearchParams(window.location.search);
+// if (urlParams.has("atc_code")) {
+//   var atc_code = urlParams.get("atc_code");
+//   if (atc_code.length === 3 || atc_code.length === 4) {
+//     var json_GeneralFile =
+//       "/serve_general_data_json_file/?atc_code=" + atc_code;
+//     var json_drugData = "/serve_drug_data_json_file/?atc_code=" + atc_code;
+//     var json_proteinData =
+//       "/serve_protein_data_json_file/?atc_code=" + atc_code;
+//     var json_interactionData =
+//       "/serve_interaction_data_json_file/?atc_code=" + atc_code;
+//   }
+//   else {
+//     json_GeneralFile =
+//       "/drugs_network/general_data?drug_bank_ids=" + drug_bank_ids.join(",");
+//     json_drugData =
+//       "/drugs_network/drug_data?drug_bank_ids=" + drug_bank_ids.join(",");
+//     json_proteinData =
+//       "/drugs_network/protein_data?drug_bank_ids=" + drug_bank_ids.join(",");
+//     json_interactionData =
+//       "/drugs_network/interaction_data?drug_bank_ids=" + drug_bank_ids.join(",");
+//   }
+//     // json_GeneralFile =
+//     //   "/drugs_network/general_data?drug_bank_ids=" + drug_bank_ids.join(",");
+//     // json_drugData =
+//     //   "/drugs_network/drug_data?drug_bank_ids=" + drug_bank_ids.join(",");
+//     // json_proteinData =
+//     //   "/drugs_network/protein_data?drug_bank_ids=" + drug_bank_ids.join(",");
+//     // json_interactionData =
+//     //   "/drugs_network/interaction_data?drug_bank_ids=" + drug_bank_ids.join(",");
+// }
 
-function readPrecachedJSONFromDatabase(url) {
-  return new Promise(function (resolve, reject) {
-    $.ajax({
-      url: url,
-      method: "GET",
-      success: function (data) {
-        resolve(data);
-      },
-      error: function (error) {
-        reject(error);
-      },
-    });
-  });
-}
+// function readPrecachedJSONFromDatabase(url) {
+//   return new Promise(function (resolve, reject) {
+//     $.ajax({
+//       url: url,
+//       method: "GET",
+//       success: function (data) {
+//         resolve(data);
+//       },
+//       error: function (error) {
+//         reject(error);
+//       },
+//     });
+//   });
+// }
 
 // code to get the li of the network visualization
 document.addEventListener("DOMContentLoaded", function () {
@@ -177,17 +177,17 @@ async function readInteractionJSON() {
 }
 
 window.onload = function () {
-  (async function () {
-    await readDrugJSON();
-  })();
+  // (async function () {
+  //   await readDrugJSON();
+  // })();
 
-  // processData(
-  //   numberofnodes,
-  //   slicedata,
-  //   child_selection,
-  //   checkedInteractionTypes,
-  //   checkedPhases
-  // );
+  processData(
+    numberofnodes,
+    slicedata,
+    child_selection,
+    checkedInteractionTypes,
+    checkedPhases
+  );
 
 };
 
@@ -1772,8 +1772,8 @@ function xlsxToJson(file, callback) {
 let flag_tabclicked = false;
 let flag_processData = false;
 
-let numberofnodes = 2;
-let slicedata = 400;
+let numberofnodes = 3;
+let slicedata = 600;
 
 window.parent.postMessage({ data: slicedata }, "*");
 
@@ -2035,12 +2035,12 @@ function processData(
     .then((data) => {
 
 
-      try {
-        var data = JSON.parse(data.data);
-      }
-      catch {
-        data = data.data;
-      }
+      // try {
+      //   var data = JSON.parse(data.data);
+      // }
+      // catch {
+      //   data = data.data;
+      // }
 
 
       console.log("here is the data first data " , data)
@@ -2595,7 +2595,7 @@ function createChart(links) {
   //     });
   //   });
 
-  const simulation = d3.forceSimulation(nodes)
+   simulation = d3.forceSimulation(nodes)
   .force("link", d3.forceLink(links).id(d => d.id).distance(130))
   .force("charge", d3.forceManyBody().strength(-150))
   .force("x", d3.forceX(svgWidth / 2))  // Attraction towards the center on the x-axis
@@ -2603,6 +2603,30 @@ function createChart(links) {
   // .force("collision", d3.forceCollide().radius(50)) // Adjust radius as needed
   .on("tick", () => {
     // Logic for rendering or updating nodes and links on each tick
+    link
+    .attr("x1", function (d) {
+      return Math.max(0, Math.min(svgWidth, d.source.x));
+    })
+    .attr("y1", function (d) {
+      return Math.max(0, Math.min(svgHeight, d.source.y));
+    })
+    .attr("x2", function (d) {
+      return Math.max(0, Math.min(svgWidth, d.target.x));
+    })
+    .attr("y2", function (d) {
+      if (d.target.child_type === "disease_type") {
+        return Math.max(0, Math.min(svgHeight, d.target.y)) + 8;
+      } else {
+        return Math.max(0, Math.min(svgHeight, d.target.y));
+      }
+    });
+
+  node.attr("transform", function (d) {
+    return `translate(${Math.max(
+      0,
+      Math.min(svgWidth, d.x)
+    )},${Math.max(0, Math.min(svgHeight, d.y))})`;
+  });
   })
   .on("end", () => {
     // Fix the nodes' positions when the simulation ends
@@ -2814,32 +2838,32 @@ function createChart(links) {
     .attr("class", "node-label");
   // tag4
 
-  simulation.on("tick", function () {
-    link
-      .attr("x1", function (d) {
-        return Math.max(0, Math.min(svgWidth, d.source.x));
-      })
-      .attr("y1", function (d) {
-        return Math.max(0, Math.min(svgHeight, d.source.y));
-      })
-      .attr("x2", function (d) {
-        return Math.max(0, Math.min(svgWidth, d.target.x));
-      })
-      .attr("y2", function (d) {
-        if (d.target.child_type === "disease_type") {
-          return Math.max(0, Math.min(svgHeight, d.target.y)) + 8;
-        } else {
-          return Math.max(0, Math.min(svgHeight, d.target.y));
-        }
-      });
+  // simulation.on("tick", function () {
+  //   link
+  //     .attr("x1", function (d) {
+  //       return Math.max(0, Math.min(svgWidth, d.source.x));
+  //     })
+  //     .attr("y1", function (d) {
+  //       return Math.max(0, Math.min(svgHeight, d.source.y));
+  //     })
+  //     .attr("x2", function (d) {
+  //       return Math.max(0, Math.min(svgWidth, d.target.x));
+  //     })
+  //     .attr("y2", function (d) {
+  //       if (d.target.child_type === "disease_type") {
+  //         return Math.max(0, Math.min(svgHeight, d.target.y)) + 8;
+  //       } else {
+  //         return Math.max(0, Math.min(svgHeight, d.target.y));
+  //       }
+  //     });
 
-    node.attr("transform", function (d) {
-      return `translate(${Math.max(
-        0,
-        Math.min(svgWidth, d.x)
-      )},${Math.max(0, Math.min(svgHeight, d.y))})`;
-    });
-  });
+  //   node.attr("transform", function (d) {
+  //     return `translate(${Math.max(
+  //       0,
+  //       Math.min(svgWidth, d.x)
+  //     )},${Math.max(0, Math.min(svgHeight, d.y))})`;
+  //   });
+  // });
 
   // new code of dragable
 
@@ -3048,7 +3072,7 @@ function hideNodeAndChildren(node) {
 }
 
 d3.select("#redrawChart").on("click", function () {
-  redrawChart(links);
+  redrawChart3(links);
 });
 
 function redrawChart2(originalLinks) {
@@ -3065,8 +3089,7 @@ function redrawChart2(originalLinks) {
     //console.log("Simulation is not defined");
   }
 }
-console.log("created the new redraw function there that function be resolve now ")
-function redrawChart(originalLinks) {
+function redrawChart3(originalLinks) {
   if (true) {
     console.log("Simulation before restart: ", simulation);
 
@@ -3077,9 +3100,9 @@ function redrawChart(originalLinks) {
     });
 
     // Add nodes and links to the simulation and restart
-    simulation.nodes(nodes).force("link").links(links);
+    // simulation.nodes(nodes).force("link").links(links);
 
-    simulation.alpha(1).restart();
+    simulation.alpha(2).restart();
 
     // Add 'end' event listener to fix node positions when simulation ends
     simulation.on("end", function () {
@@ -3116,6 +3139,26 @@ function redrawChart1(originalLinks) {
     });
   }
 }
+
+
+// new redraw graph 
+const redrawChart = () => {
+  // Restart the simulation
+  console.log(simulation , 'here is the simulation ')
+  nodes.forEach(function (node) {
+    node.x += (Math.random() - 0.5) * 20; // Adjust the 20 to control the displacement range
+    node.y += (Math.random() - 0.5) * 20;
+  });
+
+  // Restart the simulation to apply the new positions
+  simulation
+    .alpha(0.3) // Set the alpha to a high value to reheat the simulation
+    .restart();
+
+
+  };
+  
+
 
 // Get color based on interaction type
 // Get color based on interaction type
