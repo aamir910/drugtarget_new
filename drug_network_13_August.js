@@ -179,17 +179,17 @@ async function readInteractionJSON() {
 }
 
 window.onload = function () {
-  // (async function () {
-  //   await readDrugJSON();
-  // })();
+  (async function () {
+    await readDrugJSON();
+  })();
 
-  processData(
-    numberofnodes,
-    slicedata,
-    child_selection,
-    checkedInteractionTypes,
-    checkedPhases
-  );
+  // processData(
+  //   numberofnodes,
+  //   slicedata,
+  //   child_selection,
+  //   checkedInteractionTypes,
+  //   checkedPhases
+  // );
 
 };
 
@@ -2037,12 +2037,12 @@ function processData(
     .then((data) => {
 
 
-      // try {
-      //   var data = JSON.parse(data.data);
-      // }
-      // catch {
-      //   data = data.data;
-      // }
+      try {
+        var data = JSON.parse(data.data);
+      }
+      catch {
+        data = data.data;
+      }
 
 
       console.log("here is the data first data " , data)
