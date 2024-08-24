@@ -4,86 +4,86 @@ $(function () {
   });
   $("#blinking").show();
 });
-  
+
 
 //Pass jsonFiles Here
 
-// var json_GeneralFile = "json/json_GeneralFile.json";
-// var json_GeneralFile = "json/missing_Drug.json";
-// var json_drugData = "json/json_drugData.json";
-// var json_proteinData = "json/json_proteinData.json";
-// var json_interactionData = "json/json_interactionData.json";
+var json_GeneralFile = "json/json_GeneralFile.json";
+var json_GeneralFile = "json/json5.json";
+var json_drugData = "json/json_drugData.json";
+var json_proteinData = "json/json_proteinData.json";
+var json_interactionData = "json/json_interactionData.json";
 
 
-var json_GeneralFile = "/static/json-sample/json_GeneralFile.json";
-var json_drugData = "/static/json-sample/json_drugData.json";
-var json_proteinData = "/static/json-sample/json_proteinData.json";
-var json_interactionData = "/static/json-sample/json_interactionData.json";
+// var json_GeneralFile = "/static/json-sample/json_GeneralFile.json";
+// var json_drugData = "/static/json-sample/json_drugData.json";
+// var json_proteinData = "/static/json-sample/json_proteinData.json";
+// var json_interactionData = "/static/json-sample/json_interactionData.json";
 
-if (drug_bank_ids) {
-  json_GeneralFile =
-    "/drugs_network/general_data?drug_bank_ids=" + drug_bank_ids.join(",");
-  json_drugData =
-    "/drugs_network/drug_data?drug_bank_ids=" + drug_bank_ids.join(",");
-  json_proteinData =
-    "/drugs_network/protein_data?drug_bank_ids=" + drug_bank_ids.join(",");
-  json_interactionData =
-    "/drugs_network/interaction_data?drug_bank_ids=" + drug_bank_ids.join(",");
-}
+// if (drug_bank_ids) {
+//   json_GeneralFile =
+//     "/drugs_network/general_data?drug_bank_ids=" + drug_bank_ids.join(",");
+//   json_drugData =
+//     "/drugs_network/drug_data?drug_bank_ids=" + drug_bank_ids.join(",");
+//   json_proteinData =
+//     "/drugs_network/protein_data?drug_bank_ids=" + drug_bank_ids.join(",");
+//   json_interactionData =
+//     "/drugs_network/interaction_data?drug_bank_ids=" + drug_bank_ids.join(",");
+// }
 
-if (drug_bank_id) {
-  json_GeneralFile = "/drug_network/" + drug_bank_id + "/general_data";
-  json_drugData = "/drug_network/" + drug_bank_id + "/drug_data";
-  json_proteinData = "/drug_network/" + drug_bank_id + "/protein_data";
-  json_interactionData = "/drug_network/" + drug_bank_id + "/interaction_data";
-}
+// if (drug_bank_id) {
+//   json_GeneralFile = "/drug_network/" + drug_bank_id + "/general_data";
+//   json_drugData = "/drug_network/" + drug_bank_id + "/drug_data";
+//   json_proteinData = "/drug_network/" + drug_bank_id + "/protein_data";
+//   json_interactionData = "/drug_network/" + drug_bank_id + "/interaction_data";
+// }
 
-var urlParams = new URLSearchParams(window.location.search);
-if (urlParams.has("atc_code")) {
-  var atc_code = urlParams.get("atc_code");
-  if (atc_code.length === 3 || atc_code.length === 4) {
-    var json_GeneralFile =
-      "/serve_general_data_json_file/?atc_code=" + atc_code;
-    var json_drugData = "/serve_drug_data_json_file/?atc_code=" + atc_code;
-    var json_proteinData =
-      "/serve_protein_data_json_file/?atc_code=" + atc_code;
-    var json_interactionData =
-      "/serve_interaction_data_json_file/?atc_code=" + atc_code;
-  }
-  else {
-    json_GeneralFile =
-      "/drugs_network/general_data?drug_bank_ids=" + drug_bank_ids.join(",");
-    json_drugData =
-      "/drugs_network/drug_data?drug_bank_ids=" + drug_bank_ids.join(",");
-    json_proteinData =
-      "/drugs_network/protein_data?drug_bank_ids=" + drug_bank_ids.join(",");
-    json_interactionData =
-      "/drugs_network/interaction_data?drug_bank_ids=" + drug_bank_ids.join(",");
-  }
-    // json_GeneralFile =
-    //   "/drugs_network/general_data?drug_bank_ids=" + drug_bank_ids.join(",");
-    // json_drugData =
-    //   "/drugs_network/drug_data?drug_bank_ids=" + drug_bank_ids.join(",");
-    // json_proteinData =
-    //   "/drugs_network/protein_data?drug_bank_ids=" + drug_bank_ids.join(",");
-    // json_interactionData =
-    //   "/drugs_network/interaction_data?drug_bank_ids=" + drug_bank_ids.join(",");
-}
+// var urlParams = new URLSearchParams(window.location.search);
+// if (urlParams.has("atc_code")) {
+//   var atc_code = urlParams.get("atc_code");
+//   if (atc_code.length === 3 || atc_code.length === 4) {
+//     var json_GeneralFile =
+//       "/serve_general_data_json_file/?atc_code=" + atc_code;
+//     var json_drugData = "/serve_drug_data_json_file/?atc_code=" + atc_code;
+//     var json_proteinData =
+//       "/serve_protein_data_json_file/?atc_code=" + atc_code;
+//     var json_interactionData =
+//       "/serve_interaction_data_json_file/?atc_code=" + atc_code;
+//   }
+//   else {
+//     json_GeneralFile =
+//       "/drugs_network/general_data?drug_bank_ids=" + drug_bank_ids.join(",");
+//     json_drugData =
+//       "/drugs_network/drug_data?drug_bank_ids=" + drug_bank_ids.join(",");
+//     json_proteinData =
+//       "/drugs_network/protein_data?drug_bank_ids=" + drug_bank_ids.join(",");
+//     json_interactionData =
+//       "/drugs_network/interaction_data?drug_bank_ids=" + drug_bank_ids.join(",");
+//   }
+//     // json_GeneralFile =
+//     //   "/drugs_network/general_data?drug_bank_ids=" + drug_bank_ids.join(",");
+//     // json_drugData =
+//     //   "/drugs_network/drug_data?drug_bank_ids=" + drug_bank_ids.join(",");
+//     // json_proteinData =
+//     //   "/drugs_network/protein_data?drug_bank_ids=" + drug_bank_ids.join(",");
+//     // json_interactionData =
+//     //   "/drugs_network/interaction_data?drug_bank_ids=" + drug_bank_ids.join(",");
+// }
 
-function readPrecachedJSONFromDatabase(url) {
-  return new Promise(function (resolve, reject) {
-    $.ajax({
-      url: url,
-      method: "GET",
-      success: function (data) {
-        resolve(data);
-      },
-      error: function (error) {
-        reject(error);
-      },
-    });
-  });
-}
+// function readPrecachedJSONFromDatabase(url) {
+//   return new Promise(function (resolve, reject) {
+//     $.ajax({
+//       url: url,
+//       method: "GET",
+//       success: function (data) {
+//         resolve(data);
+//       },
+//       error: function (error) {
+//         reject(error);
+//       },
+//     });
+//   });
+// }
 
 // code to get the li of the network visualization
 document.addEventListener("DOMContentLoaded", function () {
@@ -179,17 +179,17 @@ async function readInteractionJSON() {
 }
 
 window.onload = function () {
-  (async function () {
-    await readDrugJSON();
-  })();
+  // (async function () {
+  //   await readDrugJSON();
+  // })();
 
-  // processData(
-  //   numberofnodes,
-  //   slicedata,
-  //   child_selection,
-  //   checkedInteractionTypes,
-  //   checkedPhases
-  // );
+  processData(
+    numberofnodes,
+    slicedata,
+    child_selection,
+    checkedInteractionTypes,
+    checkedPhases
+  );
 
 };
 
@@ -198,7 +198,7 @@ function getDrugJsonData(drugBankId) {
   $.ajax(
     {
       type: "GET",
-      url: url + "?drugbank_id=" + drugBankId,q
+      url: url + "?drugbank_id=" + drugBankId, q
     },
     function (data) {
       //console.log(data);
@@ -1405,19 +1405,19 @@ function showDialog_Child(title, childName) {
 
 //// disase show dialog there 
 
-  function showDialog_Disease(title, childName, d) {
-    var dialog = document.getElementById("dialog3");
-    var drugName = document.getElementById("drug-name3");
-    var closeButton = document.getElementById("close-button3");
-    var tableContainer = document.getElementById("table-container");
-  
-    selectedProteinName1 = title;
-  
-    // Set the drug name text
-    drugName.textContent = childName;
-  
-    // Build the table HTML
-    var tableHtml = `
+function showDialog_Disease(title, childName, d) {
+  var dialog = document.getElementById("dialog3");
+  var drugName = document.getElementById("drug-name3");
+  var closeButton = document.getElementById("close-button3");
+  var tableContainer = document.getElementById("table-container");
+
+  selectedProteinName1 = title;
+
+  // Set the drug name text
+  drugName.textContent = childName;
+
+  // Build the table HTML
+  var tableHtml = `
       <table border="1" style="width:100%; border-collapse:collapse;">
         <tr><td>Drugbank ID</td><td>${d.drugbank_id}</td></tr>
         <tr><td>Drug Name</td><td>${d.drug_name}</td></tr>
@@ -1429,21 +1429,21 @@ function showDialog_Child(title, childName) {
      
       </table>
     `;
-  
-    // Insert the table into the container
-    tableContainer.innerHTML = tableHtml;
-  
-    // Display the dialog
-    dialog.style.display = "block";
-  
-    // Set up the close button to hide the dialog
-    closeButton.addEventListener("click", function () {
-      dialog.style.display = "none";
-    });
-  
-    console.log('d', d);
-  }
-  
+
+  // Insert the table into the container
+  tableContainer.innerHTML = tableHtml;
+
+  // Display the dialog
+  dialog.style.display = "block";
+
+  // Set up the close button to hide the dialog
+  closeButton.addEventListener("click", function () {
+    dialog.style.display = "none";
+  });
+
+  console.log('d', d);
+}
+
 
 
 //Interaction Dialog
@@ -1525,7 +1525,7 @@ function showDialog_Links(title, interactionTy) {
         row.drugbank_id === interaction_source &&
         row.uniprot_ID_id === interaction_target &&
         row.interaction_type.toLowerCase() ===
-          selectedInteractionName1.toLowerCase()
+        selectedInteractionName1.toLowerCase()
     );
 
     if (matchingRow) {
@@ -1634,15 +1634,15 @@ let child_nodes = 0;
 // };
 
 
-let child_nodes_data = [] ; 
-let disease_nodes_data  = [] ; 
-let default_nodes_data = [] ; 
+let child_nodes_data = [];
+let disease_nodes_data = [];
+let default_nodes_data = [];
 
-let child_links_data = [] ; 
-let disease_links_data  = [] ; 
-let default_links_data = [] ; 
+let child_links_data = [];
+let disease_links_data = [];
+let default_links_data = [];
 
-let fitlerdata_length ; 
+let fitlerdata_length;
 
 
 var imagePaths11 = {
@@ -1801,7 +1801,7 @@ const diseaseOnlyButton = document.getElementById("diseaseOnly");
 const defaultButton = document.getElementById("default");
 let child_selection = "ProteinOnly";
 
-function showProteinOnlyNetwork(child_selection){
+function showProteinOnlyNetwork(child_selection) {
   proteinOnlyButton.style.backgroundColor = "#3333";
   diseaseOnlyButton.style.backgroundColor = "white";
   defaultButton.style.backgroundColor = "white";
@@ -1829,38 +1829,48 @@ proteinOnlyButton.addEventListener("click", () => {
 
   clearGraph();
 
-//  hiddenInteractions = {
-//   target: false,
-//   enzyme: false,
-//   transporter: false,
-//   carrier: false,
-//   unknown: false,
-//   Phase1: false,
-//   Phase2: false,
-//   Phase3: false,
-//   Phase4: false,
-// };
+  //  hiddenInteractions = {
+  //   target: false,
+  //   enzyme: false,
+  //   transporter: false,
+  //   carrier: false,
+  //   unknown: false,
+  //   Phase1: false,
+  //   Phase2: false,
+  //   Phase3: false,
+  //   Phase4: false,
+  // };
 
 
-  nodes = child_nodes_data ; 
-  links = child_links_data ;
+  nodes = child_nodes_data;
+  links = child_links_data;
 
-   createChart(links);
+  createChart(links);
 
   // Add your logic here
+
+  setTimeout(function () {
+    // Select the button and trigger the click event
+    d3.select("#redrawChart").dispatch("click");
+  }, 4000);
+
 });
 
-// Add event listeners to the buttons
-proteinOnlyButton.addEventListener("click", () => {
-  showProteinOnlyNetwork("ProteinOnly");
-});
+
+// proteinOnlyButton.addEventListener("click", () => {
+//   showProteinOnlyNetwork("ProteinOnly");
+//   setTimeout(function() {
+//     redrawChart3(links);
+// }, 6000);
+
+// });
 
 diseaseOnlyButton.addEventListener("click", () => {
   console.log("Disease Only button clicked");
 
   clearGraph();
-//  simulation.stop();
- 
+  //  simulation.stop();
+
   d3.select("#Protein_to_hide").style("display", "none");
   d3.select("#Interaction_to_hide").style("display", "none");
 
@@ -1874,12 +1884,21 @@ diseaseOnlyButton.addEventListener("click", () => {
 
 
 
-  nodes = disease_nodes_data ; 
-  links = disease_links_data ;
- 
-console.log('disease_links_data' ,disease_links_data)
+  nodes = disease_nodes_data;
+  links = disease_links_data;
 
- createChart(links);
+  console.log('disease_links_data', disease_links_data)
+
+  createChart(links);
+  const timeouts = [1000, 2000, 3000, 4000];
+
+  // Loop through each timeout and schedule the redraw
+  timeouts.forEach((timeout) => {
+    setTimeout(function () {
+      redrawChart3(links);
+    }, timeout);
+  });
+
 });
 
 
@@ -1896,10 +1915,17 @@ defaultButton.addEventListener("click", () => {
   defaultButton.style.backgroundColor = "#3333";
   clearGraph();
 
-  nodes = default_nodes_data ; 
-  links = default_links_data ;
-  console.log('here is the default data' ,default_nodes_data , default_links_data )
-   createChart(links);
+  nodes = default_nodes_data;
+  links = default_links_data;
+  console.log('here is the default data', default_nodes_data, default_links_data)
+  createChart(links);
+  const timeouts = [1000, 2000, 3000, 4000];
+  // Loop through each timeout and schedule the redraw
+  timeouts.forEach((timeout) => {
+    setTimeout(function () {
+      redrawChart3(links);
+    }, timeout);
+  });
 
 
 });
@@ -1960,16 +1986,16 @@ function clickElementsByText(arrays) {
   const elements = document.querySelectorAll('div, button ,span');
 
   const textsToMatch = arrays.flat().map(capitalizeFirstLetter);
-console.log(textsToMatch , 'textsToMatch' )
+  console.log(textsToMatch, 'textsToMatch')
   // Loop through each text in the combined array
   textsToMatch.forEach(text => {
-      // Loop through each element to find and click matching elements
-      elements.forEach(element => {
-          if (element.textContent.trim().includes(text)) {
-              element.click();
+    // Loop through each element to find and click matching elements
+    elements.forEach(element => {
+      if (element.textContent.trim().includes(text)) {
+        element.click();
 
-          }
-      });
+      }
+    });
   });
 }
 
@@ -1978,14 +2004,14 @@ console.log(textsToMatch , 'textsToMatch' )
 
 
 let checkedInteractionTypes = [];
-let  checkedPhases = [];
+let checkedPhases = [];
 
 let checkedInteractionTypes2 = [];
-let  checkedPhases2 = [];
+let checkedPhases2 = [];
 
 
-let uniqueInteractionTypes = []; 
-let  uniquePhases =[] ;
+let uniqueInteractionTypes = [];
+let uniquePhases = [];
 
 // Handle submit button click
 document.getElementById("submitBtn").addEventListener("click", function () {
@@ -1994,43 +2020,53 @@ document.getElementById("submitBtn").addEventListener("click", function () {
 
   if (
     // checkedInteractionTypes2.length === 0 || checkedPhases2.length === 0 ||
-     false) {
+    false) {
 
-  alert("Please Select the filterations")
-}
-else {
-  checkedInteractionTypes = getunCheckedValues("interactionTypesContainer");
-  checkedPhases = getunCheckedValues("phasesContainer");
+    alert("Please Select the filterations")
+  }
+  else {
+    checkedInteractionTypes = getunCheckedValues("interactionTypesContainer");
+    checkedPhases = getunCheckedValues("phasesContainer");
 
-// Call the function with the arrays
-clickElementsByText([checkedInteractionTypes, checkedPhases]);
+    // Call the function with the arrays
+    clickElementsByText([checkedInteractionTypes, checkedPhases]);
 
-  console.log("Checked Phases:", checkedPhases);
-  child_selection = "ProteinOnly";
-  
-  
-//   checkedInteractionTypes.forEach(phase => {
-//     hiddenInteractions[phase] = true;
-// });
-// checkedPhases.forEach(phase => {
-//   hiddenInteractions[phase] = true;
-// });
-  
-  // clearGraph();
-  // processData(
-  //   numberofnodes,
-  //   slicedata,
-  //   child_selection,
-  //   checkedInteractionTypes,
-  //   checkedPhases
-  // );
+    console.log("Checked Phases:", checkedPhases);
+    child_selection = "ProteinOnly";
 
-  document.getElementById("popup").style.display = "none";
 
-  // You can now use the checked values as needed
-  // For example, save them to another array or perform an action with them
-}
- 
+    //   checkedInteractionTypes.forEach(phase => {
+    //     hiddenInteractions[phase] = true;
+    // });
+    // checkedPhases.forEach(phase => {
+    //   hiddenInteractions[phase] = true;
+    // });
+
+    // clearGraph();
+    // processData(
+    //   numberofnodes,
+    //   slicedata,
+    //   child_selection,
+    //   checkedInteractionTypes,
+    //   checkedPhases
+    // );
+
+    document.getElementById("popup").style.display = "none";
+
+    // You can now use the checked values as needed
+    // For example, save them to another array or perform an action with them
+  }
+
+
+  const timeouts = [1000, 2000];
+
+  // Loop through each timeout and schedule the redraw
+  timeouts.forEach((timeout) => {
+    setTimeout(function () {
+      redrawChart3(links);
+    }, timeout);
+  });
+
 });
 
 flag_first = false;
@@ -2051,15 +2087,15 @@ function processData(
     .then((data) => {
 
 
-      try {
-        var data = JSON.parse(data.data);
-      }
-      catch {
-        data = data.data;
-      }
+      // try {
+      //   var data = JSON.parse(data.data);
+      // }
+      // catch {
+      //   data = data.data;
+      // }
 
 
-      console.log("here is the data first data " , data)
+      console.log("here is the data first data ", data)
       const uniqueProteinClasses = [
         ...new Set(data.map((d) => d.protein_name)),
       ];
@@ -2081,49 +2117,49 @@ function processData(
         });
         return Array.from(uniqueValues);
       }
- // Get unique interaction types
+      // Get unique interaction types
 
- uniqueInteractionTypes = getUniqueValues(data, "interaction_type");
+      uniqueInteractionTypes = getUniqueValues(data, "interaction_type");
 
- console.log("Unique Interaction Types:", uniqueInteractionTypes);
-
-
-
- //yang start
-
- uniqueInteractionTypes = uniqueInteractionTypes.map(element => {
-
-   return element.charAt(0).toUpperCase() + element.slice(1);
-
- }); //yang end
+      console.log("Unique Interaction Types:", uniqueInteractionTypes);
 
 
 
- // Get unique phases
+      //yang start
 
-  uniquePhases = getUniqueValues(data, "Phase");
+      uniqueInteractionTypes = uniqueInteractionTypes.map(element => {
 
- console.log("Unique Phases:", uniquePhases);
+        return element.charAt(0).toUpperCase() + element.slice(1);
 
-
-
- //yang start
-
- uniquePhases.sort((a, b) => {
-
-   let numA = parseInt(a.replace("Phase", ""));
-
-   let numB = parseInt(b.replace("Phase", ""));
-
-   return numA - numB;
-
- }); //yang end
+      }); //yang end
 
 
 
+      // Get unique phases
+
+      uniquePhases = getUniqueValues(data, "Phase");
+
+      console.log("Unique Phases:", uniquePhases);
 
 
-  
+
+      //yang start
+
+      uniquePhases.sort((a, b) => {
+
+        let numA = parseInt(a.replace("Phase", ""));
+
+        let numB = parseInt(b.replace("Phase", ""));
+
+        return numA - numB;
+
+      }); //yang end
+
+
+
+
+
+
       // Function to create checkboxes
       function createCheckboxes(containerId, items) {
         const container = document.getElementById(containerId);
@@ -2148,11 +2184,11 @@ function processData(
       // Create checkboxes for interaction types and phases
       createCheckboxes("interactionTypesContainer", uniqueInteractionTypes);
       createCheckboxes("phasesContainer", uniquePhases);
-   // yang start
-   $('#nw_spinner').css({'visibility': 'hidden', 'opacity': '0'});
-   // $('#popup-content').css({'visibility': 'visible', 'opacity': '1'});
-   $("#popup-content").show();
-   // yang end
+      // yang start
+      $('#nw_spinner').css({ 'visibility': 'hidden', 'opacity': '0' });
+      // $('#popup-content').css({'visibility': 'visible', 'opacity': '1'});
+      $("#popup-content").show();
+      // yang end
 
       let filteredData = data;
 
@@ -2270,8 +2306,8 @@ function processData(
         //   disease_nodes_data.push({ id: protein, isParent: false, radius: 5 });
         // }
 
-// default data there 
-  if (
+        // default data there 
+        if (
           !default_nodes_data.find(function (node) {
             return node.id === drugName;
           })
@@ -2305,141 +2341,140 @@ function processData(
 
 
 
-// child_nodes_data
-// if (checkedInteractionTypes.includes(row.interaction_type)) {
-  
-  if (
-    !child_nodes_data.find(function (node) {
-      return node.id === protein;
-  })
-  
-  ) {
-    child_nodes_data.push({
-      id: protein,
-      child_type: "protein_type",
-      isParent: false,
-      radius: 5,
-      genename: genename,
-      Protein_Class: proteinClass,
-    }); // Include the "Protein_Class" value in the node object
-  }
+        // child_nodes_data
+        // if (checkedInteractionTypes.includes(row.interaction_type)) {
+
+        if (
+          !child_nodes_data.find(function (node) {
+            return node.id === protein;
+          })
+
+        ) {
+          child_nodes_data.push({
+            id: protein,
+            child_type: "protein_type",
+            isParent: false,
+            radius: 5,
+            genename: genename,
+            Protein_Class: proteinClass,
+          }); // Include the "Protein_Class" value in the node object
+        }
 
 
-  child_links_data.push({
-    source: drugName,
-    target: protein,
-    type: interaction,
-    // disease_type: "temp"
-  });
-// }
-// child_nodes_data ended 
-  
-// disease_nodes_data 
-if (disease_phase !== "" ) {
-  if (
-    !disease_nodes_data.find(function (node) {
-      return node.id === disease;
-    })
-  ) {
-    disease_nodes_data.push({
-      id: disease,
-      isParent: false,
-      child_type: "disease_type",
-      radius: 5,
-      DiseaseClass: Disease_class,
-      disease_phase: disease_phase,
-      drug_name:row.drug_name,
-      drugbank_id: row.drugbank_id ,
-      gene_name : row.gene_name ,
-      drugType :drugType,
-      drugStatus :drugStatus
-      // Protein_Class: proteinClass,
-    }); // Include the "Protein_Class" value in the node object
-  }
-  disease_links_data.push({
-    source: drugName,
-    target: disease,
-    type: disease_interaction,
-    // disease_type: disease_interaction // You can customize the type for disease links
-  });
-}
-// disease_nodes_data ended 
+        child_links_data.push({
+          source: drugName,
+          target: protein,
+          type: interaction,
+          // disease_type: "temp"
+        });
+        // }
+        // child_nodes_data ended 
 
-// default_nodes_data 
+        // disease_nodes_data 
+        if (disease_phase !== "") {
+          if (
+            !disease_nodes_data.find(function (node) {
+              return node.id === disease;
+            })
+          ) {
+            disease_nodes_data.push({
+              id: disease,
+              isParent: false,
+              child_type: "disease_type",
+              radius: 5,
+              DiseaseClass: Disease_class,
+              disease_phase: disease_phase,
+              drug_name: row.drug_name,
+              drugbank_id: row.drugbank_id,
+              gene_name: row.gene_name,
+              drugType: drugType,
+              drugStatus: drugStatus
+              // Protein_Class: proteinClass,
+            }); // Include the "Protein_Class" value in the node object
+          }
+          disease_links_data.push({
+            source: drugName,
+            target: disease,
+            type: disease_interaction,
+            // disease_type: disease_interaction // You can customize the type for disease links
+          });
+        }
+        // disease_nodes_data ended 
+
+        // default_nodes_data 
 
 
-// if (
-//   checkedInteractionTypes.includes(row.interaction_type) || 
-//   checkedPhases.includes(disease_phase)
-// ) {
+        // if (
+        //   checkedInteractionTypes.includes(row.interaction_type) || 
+        //   checkedPhases.includes(disease_phase)
+        // ) {
 
-  if (
-    !default_nodes_data.find(function (node) {
-      return node.id === protein;
-    })
-  ) {
-    default_nodes_data.push({
-      id: protein,
-      isParent: false,
-      radius: 5,
-      genename: genename,
-      Protein_Class: proteinClass,
-      child_type: "protein_type",
-    }); // Include the "Protein_Class" value in the node object
-  }
+        if (
+          !default_nodes_data.find(function (node) {
+            return node.id === protein;
+          })
+        ) {
+          default_nodes_data.push({
+            id: protein,
+            isParent: false,
+            radius: 5,
+            genename: genename,
+            Protein_Class: proteinClass,
+            child_type: "protein_type",
+          }); // Include the "Protein_Class" value in the node object
+        }
 
-  default_links_data.push({
-    source: drugName,
-    target: protein,
-    type: interaction,
-    // disease_type: "temp"
-  });
+        default_links_data.push({
+          source: drugName,
+          target: protein,
+          type: interaction,
+          // disease_type: "temp"
+        });
 
-  // tag1
+        // tag1
 
-  if (disease_phase !== "") 
-    {
+        if (disease_phase !== "") {
 
-      if (
-        !default_nodes_data.find(function (node) {
-          return node.id === disease;
-        })
-      ) {
-        default_nodes_data.push({
-          id: disease,
-          isParent: false,
-          child_type: "disease_type",
-          radius: 5,
-          DiseaseClass: Disease_class,
-          disease_phase: disease_phase,
-          drug_name:row.drug_name,
-          drugbank_id: row.drugbank_id ,
-          gene_name : row.gene_name ,
-          drugType:drugType ,
-          drugStatus:drugStatus
+          if (
+            !default_nodes_data.find(function (node) {
+              return node.id === disease;
+            })
+          ) {
+            default_nodes_data.push({
+              id: disease,
+              isParent: false,
+              child_type: "disease_type",
+              radius: 5,
+              DiseaseClass: Disease_class,
+              disease_phase: disease_phase,
+              drug_name: row.drug_name,
+              drugbank_id: row.drugbank_id,
+              gene_name: row.gene_name,
+              drugType: drugType,
+              drugStatus: drugStatus
 
-          // Protein_Class: proteinClass,
-        }); // Include the "Protein_Class" value in the node object
-      }
-      default_links_data.push({
-        source: drugName,
-        target: disease,
-        type: disease_interaction,
-        // disease_type: disease_interaction // You can customize the type for disease links
-      });    
-  }
- 
+              // Protein_Class: proteinClass,
+            }); // Include the "Protein_Class" value in the node object
+          }
+          default_links_data.push({
+            source: drugName,
+            target: disease,
+            type: disease_interaction,
+            // disease_type: disease_interaction // You can customize the type for disease links
+          });
+        }
 
 
 
-// default_nodes_data ended 
+
+        // default_nodes_data ended 
 
 
       });
 
-fitlerdata_length = filteredData.length  ; 
+      fitlerdata_length = filteredData.length;
       //console.log("here are the links", links);
-    
+
 
       // Set the default value of the threshold slider to the maximum
 
@@ -2454,25 +2489,24 @@ fitlerdata_length = filteredData.length  ;
         updateChartVisibility();
       });
 
-if(child_select === "ProteinOnly"){
-  
-  nodes =  child_nodes_data; 
- links = child_links_data;
-  createChart(links);
-}
-else if(child_select === "DiseaseOnly")
-{
+      if (child_select === "ProteinOnly") {
 
-  nodes =  disease_nodes_data; 
-  links = disease_links_data;
-  createChart(links);
+        nodes = child_nodes_data;
+        links = child_links_data;
+        createChart(links);
+      }
+      else if (child_select === "DiseaseOnly") {
 
-}else {
-  nodes =  default_nodes_data; 
- links = default_links_data;
-  createChart(links);
-}
-        
+        nodes = disease_nodes_data;
+        links = disease_links_data;
+        createChart(links);
+
+      } else {
+        nodes = default_nodes_data;
+        links = default_links_data;
+        createChart(links);
+      }
+
     })
     .catch((error) => {
       console.error("Error reading the JSON file:", error);
@@ -2489,7 +2523,7 @@ var simulation = null;
 function createChart(links) {
 
   // clearGraph();
- console.log(nodes ,'child_nodes_data')
+  console.log(nodes, 'child_nodes_data')
   //  hiddenInteractions = {
   //   target: false,
   //   enzyme: false,
@@ -2508,46 +2542,46 @@ function createChart(links) {
   //  hiddenInteractionTypes = {};
   //  hiddenDrugStatuses = {};
   var childNodeMap = {};
-      links.forEach(function (link) {
-        if (!link.target.isParent) {
-          var childNodeId = link.target.id;
-          childNodeMap[childNodeId] = (childNodeMap[childNodeId] || 0) + 1;
-        }
-      });
-      // Assign the parent count to each child node
-      nodes
-        .filter(function (d) {
-          return !d.isParent;
-        })
-        .forEach(function (node) {
-          node.degree = childNodeMap[node.id] || 0;
-        });
+  links.forEach(function (link) {
+    if (!link.target.isParent) {
+      var childNodeId = link.target.id;
+      childNodeMap[childNodeId] = (childNodeMap[childNodeId] || 0) + 1;
+    }
+  });
+  // Assign the parent count to each child node
+  nodes
+    .filter(function (d) {
+      return !d.isParent;
+    })
+    .forEach(function (node) {
+      node.degree = childNodeMap[node.id] || 0;
+    });
 
-      // Set the maximum value of the threshold slider
-      thredhold_value = nodes.filter(function (node) {
-        return node.isParent;
-      }).length;
+  // Set the maximum value of the threshold slider
+  thredhold_value = nodes.filter(function (node) {
+    return node.isParent;
+  }).length;
 
-      child_nodes = nodes.filter(function (node) {
-        return !node.isParent;
-      }).length;
+  child_nodes = nodes.filter(function (node) {
+    return !node.isParent;
+  }).length;
 
-      thresholdSlider.max = numberofnodes;
-      console.log(numberofnodes, "here are the number of nodes");
-      if (thredhold_value <= numberofnodes || slicedata > fitlerdata_length) {
-        thresholdSlider.max = thredhold_value;
-        document.getElementById("GetmoreData").disabled = true;
-        document.getElementById("GetmoreData").innerHTML =
-          "Maximum data reached";
-      }
+  thresholdSlider.max = numberofnodes;
+  console.log(numberofnodes, "here are the number of nodes");
+  if (thredhold_value <= numberofnodes || slicedata > fitlerdata_length) {
+    thresholdSlider.max = thredhold_value;
+    document.getElementById("GetmoreData").disabled = true;
+    document.getElementById("GetmoreData").innerHTML =
+      "Maximum data reached";
+  }
 
-      if (slicedata > fitlerdata_length) {
-        thresholdSlider.value = 50;
-        thresholdValueLabel.textContent = thredhold_value;
-      } else {
-        thresholdSlider.value = 50;
-        thresholdValueLabel.textContent = numberofnodes;
-      }
+  if (slicedata > fitlerdata_length) {
+    thresholdSlider.value = 50;
+    thresholdValueLabel.textContent = thredhold_value;
+  } else {
+    thresholdSlider.value = 50;
+    thresholdValueLabel.textContent = numberofnodes;
+  }
   d3.select("#chart").selectAll("*").remove();
 
   //console.log("Latest Edit CreateCHart_13_jan_2024_A");
@@ -2648,53 +2682,53 @@ function createChart(links) {
   //     });
   //   });
 
-   simulation = d3.forceSimulation(nodes)
-  .force("link", d3.forceLink(links).id(d => d.id).distance(130))
-  .force("charge", d3.forceManyBody().strength(-150))
-  .force("x", d3.forceX(svgWidth / 2))  // Attraction towards the center on the x-axis
-  .force("y", d3.forceY((svgHeight - 180) / 2))  // Attraction towards the center on the y-axis
-  // .force("collision", d3.forceCollide().radius(50)) // Adjust radius as needed
-  .on("tick", () => {
-    // Logic for rendering or updating nodes and links on each tick
-    link
-    .attr("x1", function (d) {
-      return Math.max(0, Math.min(svgWidth, d.source.x));
-    })
-    .attr("y1", function (d) {
-      return Math.max(0, Math.min(svgHeight, d.source.y));
-    })
-    .attr("x2", function (d) {
-      return Math.max(0, Math.min(svgWidth, d.target.x));
-    })
-    .attr("y2", function (d) {
-      if (d.target.child_type === "disease_type") {
-        return Math.max(0, Math.min(svgHeight, d.target.y)) + 8;
-      } else {
-        return Math.max(0, Math.min(svgHeight, d.target.y));
-      }
-    });
+  simulation = d3.forceSimulation(nodes)
+    .force("link", d3.forceLink(links).id(d => d.id).distance(130))
+    .force("charge", d3.forceManyBody().strength(-150))
+    .force("x", d3.forceX(svgWidth / 2))  // Attraction towards the center on the x-axis
+    .force("y", d3.forceY((svgHeight - 140) / 2))  // Attraction towards the center on the y-axis
+    // .force("collision", d3.forceCollide().radius(50)) // Adjust radius as needed
+    .on("tick", () => {
+      // Logic for rendering or updating nodes and links on each tick
+      link
+        .attr("x1", function (d) {
+          return Math.max(0, Math.min(svgWidth, d.source.x));
+        })
+        .attr("y1", function (d) {
+          return Math.max(0, Math.min(svgHeight, d.source.y));
+        })
+        .attr("x2", function (d) {
+          return Math.max(0, Math.min(svgWidth, d.target.x));
+        })
+        .attr("y2", function (d) {
+          if (d.target.child_type === "disease_type") {
+            return Math.max(0, Math.min(svgHeight, d.target.y)) + 8;
+          } else {
+            return Math.max(0, Math.min(svgHeight, d.target.y));
+          }
+        });
 
-  node.attr("transform", function (d) {
-    return `translate(${Math.max(
-      0,
-      Math.min(svgWidth, d.x)
-    )},${Math.max(0, Math.min(svgHeight, d.y))})`;
-  });
-  })
-  .on("end", () => {
-    // Fix the nodes' positions when the simulation ends
-    nodes.forEach((node) => {
-      node.fx = node.x;
-      node.fy = node.y;
+      node.attr("transform", function (d) {
+        return `translate(${Math.max(
+          0,
+          Math.min(svgWidth, d.x)
+        )},${Math.max(0, Math.min(svgHeight, d.y))})`;
+      });
+    })
+    .on("end", () => {
+      // Fix the nodes' positions when the simulation ends
+      nodes.forEach((node) => {
+        node.fx = node.x;
+        node.fy = node.y;
+      });
     });
-  });
 
 
   // Function to check if the simulation is settled and stop it
 
   // // Start the checking process after a delay to allow initial forces to act
   setTimeout(stopSimulationIfSettled, 4000);
-// 
+  // 
   link = svg
     .selectAll(".link")
     .data(links)
@@ -2749,7 +2783,7 @@ function createChart(links) {
     .filter(function (d) {
       return (
         d.child_type === "protein_type"
-         && !d.isParent && d.Protein_Class !== ""
+        && !d.isParent && d.Protein_Class !== ""
       );
     })
     .append("circle")
@@ -2794,7 +2828,7 @@ function createChart(links) {
   node
     .filter((node) => node.child_type === "disease_type")
     .on("click", function (event, d) {
-      showDialog_Disease(d.id, d.id , d);
+      showDialog_Disease(d.id, d.id, d);
     })
     // Attach cursor style change on mouseover to all nodes
     .on("mouseover", function () {
@@ -3197,7 +3231,7 @@ function redrawChart1(originalLinks) {
 // new redraw graph 
 const redrawChart = () => {
   // Restart the simulation
-  console.log(simulation , 'here is the simulation ')
+  console.log(simulation, 'here is the simulation ')
   nodes.forEach(function (node) {
     node.x += (Math.random() - 0.5) * 20; // Adjust the 20 to control the displacement range
     node.y += (Math.random() - 0.5) * 20;
@@ -3209,8 +3243,8 @@ const redrawChart = () => {
     .restart();
 
 
-  };
-  
+};
+
 
 
 // Get color based on interaction type
@@ -3475,8 +3509,8 @@ function createLegend() {
     // Assuming that you have already defined the "nodes" and "links" arrays
     // and the "hiddenInteractions" object to track the visibility of interactions.
 
-    
-// clickElementsByText([checkedInteractionTypes, checkedPhases]);
+
+    // clickElementsByText([checkedInteractionTypes, checkedPhases]);
 
     legendText.on("click", function () {
       var clickedText = d3.select(this);
@@ -3744,7 +3778,7 @@ let DiseaseColorMap = {
   "Male Urogenital": "#9932CC",
   "Occupational Diseases": "#2E8B57",
   "Genetic Inborn": "#4B0082",
-  "Female Urogenital" : "black"
+  "Female Urogenital": "black"
 };
 
 // tag5
@@ -3781,7 +3815,7 @@ function createDiseaseLegend() {
 
   var legendContent = d3.select("#legend_disease_status-content");
   legendContent.selectAll("div").remove();
- 
+
   var uniqueDisease = new Set();
 
   links.forEach(function (link) {
@@ -3941,7 +3975,7 @@ function createLegend_status() {
           }
         }
       });
-      
+
     var dropdownMenu = dropdown
       .append("div")
       .attr("class", "dropdown-menu")
@@ -4213,7 +4247,7 @@ function updateAllFilters() {
   d3.selectAll(".node:not(.node-parent)")
     .selectAll("circle, text , path")
     .style("visibility", function (d) {
-      
+
       if (d.hidden) {
         // if hidden by slider filter
         return "hidden";
@@ -4312,7 +4346,7 @@ function updateAllFilters() {
       (l) =>
         !hiddenInteractions[l.type] &&
         !hiddenProteinClasses[
-          nodes.find((n) => n.id === l.target.id).Protein_Class 
+        nodes.find((n) => n.id === l.target.id).Protein_Class
         ]
     );
 
@@ -4320,7 +4354,7 @@ function updateAllFilters() {
       (l) =>
         !hiddenInteractions[l.type] &&
         !hiddenDiseaseClasses[
-          nodes.find((n) => n.id === l.target.id).DiseaseClass
+        nodes.find((n) => n.id === l.target.id).DiseaseClass
         ]
     );
 
@@ -4339,7 +4373,7 @@ function updateAllFilters() {
       isHiddenBasedOnProteinClass ||
       isHiddenBasedOnDiseaseClass ||
       isHiddenBasedOnDrugType ||
-      flag 
+      flag
     ) {
       return "hidden";
     }
@@ -4499,17 +4533,17 @@ d3.select("#GetmoreData").on("click", function () {
 
   filteredData = [];
   child_nodes_data = [];
-  disease_nodes_data= []
+  disease_nodes_data = []
   child_links_data = [];
-  disease_links_data = [] ;
-  default_links_data = [] ; 
+  disease_links_data = [];
+  default_links_data = [];
 
 
 
   btn_count++;
   document.getElementById("ManagePreviousState").style.display = "block";
   if (thredhold_value < 5 && child_nodes > 180) {
- 
+
     slicedata = slicedata + 200;
   } else {
     if (thredhold_value <= 7) {
@@ -4532,7 +4566,7 @@ d3.select("#GetmoreData").on("click", function () {
 
 
 
-console.log(child_selection , ' child slection ')
+  console.log(child_selection, ' child slection ')
   processData(
     numberofnodes,
     slicedata,
@@ -4540,6 +4574,17 @@ console.log(child_selection , ' child slection ')
     checkedInteractionTypes,
     checkedPhases
   );
+  // Array of timeouts in milliseconds
+  const timeouts = [1000, 2000, 3000, 4000];
+
+  // Loop through each timeout and schedule the redraw
+  timeouts.forEach((timeout) => {
+    setTimeout(function () {
+      redrawChart3(links);
+    }, timeout);
+  });
+
+
 });
 
 
@@ -4549,12 +4594,12 @@ d3.select("#ManagePreviousState").on("click", function () {
   // simulation.stop();
   filteredData = [];
   child_nodes_data = [];
-  disease_nodes_data= []
+  disease_nodes_data = []
 
   child_links_data = [];
-  disease_links_data = [] ;
-  default_links_data = [] ; 
-  
+  disease_links_data = [];
+  default_links_data = [];
+
   btn_count--;
   if (btn_count <= 0) {
     document.getElementById("ManagePreviousState").style.display = "none";
@@ -4596,6 +4641,15 @@ d3.select("#ManagePreviousState").on("click", function () {
   ) {
     document.getElementById("GetmoreData").innerHTML = "Get more data";
   }
+  const timeouts = [1000, 2000, 3000, 4000];
+
+  // Loop through each timeout and schedule the redraw
+  timeouts.forEach((timeout) => {
+    setTimeout(function () {
+      redrawChart3(links);
+    }, timeout);
+  });
+
 });
 
 
